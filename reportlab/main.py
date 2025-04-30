@@ -97,7 +97,7 @@ def create_document(data, output_path: os.PathLike = "output.pdf") -> None:
 
         width = 0
         for col, w in column_widths:
-            if col in event["columns"]:
+            if col in event["appearsIn"]:
                 width += w * col_width
                 break
             else:
@@ -161,8 +161,8 @@ def parse_color(color: str) -> tuple:
 
 def columns_per_day(day: dict, repeating: list) -> list:
     """Get all columns appearing in the day"""
-    s = set(c for event in day["events"] for c in event["columns"])
-    s = s.union(c for event in repeating for c in event["columns"])
+    s = set(c for event in day["events"] for c in event["appearsIn"])
+    s = s.union(c for event in repeating for c in event["appearsIn"])
     cols = list(sorted(s))
     if "Beso" in cols:
         cols.remove("Beso")

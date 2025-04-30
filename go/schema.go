@@ -54,6 +54,9 @@ func (j *WapJsonCategoriesElem) UnmarshalJSON(value []byte) error {
 
 // Each day in the WAP.
 type WapJsonDaysElem struct {
+	// The columns this day is subdivided in. Can be refered by appearsIn for events.
+	Columns []string `json:"columns,omitempty" yaml:"columns,omitempty" mapstructure:"columns,omitempty"`
+
 	// All events that occur on this day.
 	Events []WapJsonDaysElemEventsElem `json:"events,omitempty" yaml:"events,omitempty" mapstructure:"events,omitempty"`
 
@@ -63,11 +66,11 @@ type WapJsonDaysElem struct {
 
 // An event.
 type WapJsonDaysElemEventsElem struct {
+	// Columns in which this event should appear.
+	AppearsIn []string `json:"appearsIn,omitempty" yaml:"appearsIn,omitempty" mapstructure:"appearsIn,omitempty"`
+
 	// Identifer of a defined category.
 	Category *string `json:"category,omitempty" yaml:"category,omitempty" mapstructure:"category,omitempty"`
-
-	// Columns in which this event should appea.
-	Columns []string `json:"columns,omitempty" yaml:"columns,omitempty" mapstructure:"columns,omitempty"`
 
 	// End time. In format HH:MM
 	End string `json:"end" yaml:"end" mapstructure:"end"`

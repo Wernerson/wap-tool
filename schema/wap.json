@@ -83,6 +83,14 @@
             "type": "number",
             "minimum": 0
           },
+          "columns": {
+            "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
+            "type": "array",
+            "items": {
+              "description": "A column name. For example Det1 or Beso.",
+              "type": "string"
+            }
+          },
           "events": {
             "description": "All events that occur on this day.",
             "type": "array",
@@ -116,8 +124,8 @@
                   "description": "Identifer of a defined category.",
                   "type": "string"
                 },
-                "columns": {
-                  "description": "Columns in which this event should appea.",
+                "appearsIn": {
+                  "description": "Columns in which this event should appear.",
                   "type": "array",
                   "items": {
                     "type": "string"

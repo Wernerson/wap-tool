@@ -17,7 +17,7 @@ Check the spec directly (TODO link)
 - `Event` has a start and end time.  Locations and responsible persons can be optionally assigned.
 - `Remarks` can be given, to be displayed as additional information on the side.
 
-Per event columns can be defined in which it should appear.
+Per event appearsIn can be defined in which it should appear.
 Alternatively, we can use an optional field `footnote` on an event.
 Footnotes are events in the "Beso" column that are fully described in the part below the WAP.
 

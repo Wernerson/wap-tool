@@ -134,7 +134,7 @@ func (w *Wap) processEvents() {
 				end:       end,
 				dayOffset: i,
 			}
-			addCols(i, event.Columns)
+			addCols(i, event.AppearsIn)
 			if event.Repeats != nil {
 				w.repeating = append(w.repeating, freshEvent)
 			}
@@ -178,7 +178,7 @@ func (w *Wap) processEvents() {
 			if event.end.Compare(nextEvent.start) <= 0 {
 				break
 			}
-			if o := overlap(nextEvent.json.Columns, event.json.Columns); len(o) > 0 {
+			if o := overlap(nextEvent.json.AppearsIn, event.json.AppearsIn); len(o) > 0 {
 				log.Printf("WARNING overlapping events in columns %v %v %v\n", o, event, nextEvent)
 			}
 		}

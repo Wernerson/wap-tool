@@ -29,11 +29,15 @@ categories:
 
 days:
   - offset: 0
+    columns: ["Det", "Beso"]
+    events: []
+  - offset: 1
+    columns: ["Det", "Beso"]
     events:
       - title: Test Event
         start: 09:00
         end: 08:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
         category: NonExisting
@@ -41,7 +45,7 @@ days:
       - title: Einrücken Vorbereiten
         start: 08:00
         end: 09:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
         category: Orange
@@ -49,12 +53,12 @@ days:
       - title: Einrücken
         start: 09:30
         end: 10:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
 
       - title: Zi-Bezug & Zi Ordnung
         start: 10:00
         end: 11:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: GK 106 & GK 108
         category: Orange
@@ -62,7 +66,7 @@ days:
       - title: EinrückungsOrange & Fahr Rape
         start: 10:00
         end: 11:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Einh Four
         location: FKhaus 15b
         category: Orange
@@ -70,7 +74,7 @@ days:
       - title: Fassung IAA-Mat
         start: 10:00
         end: 11:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Einh Fw
         location: Mat Mag
         category: Orange
@@ -78,7 +82,7 @@ days:
       - title: Zimmer Ordnung
         start: 11:00
         end: 11:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         category: Orange
         location: GK 106 & 108
         responsible: Det C
@@ -86,46 +90,46 @@ days:
       - title: Vpf Bern
         start: 12:00
         end: 12:45
-        columns: ["Det"]
+        appearsIn: ["Det"]
         category: Yellow
         repeats: daily
 
       - title: Feueralarm
         start: 11:30
         end: 11:45
-        columns: ["Det"]
+        appearsIn: ["Det"]
         category: Orange
 
       - title: Waffe abgeben
         start: 11:45
         end: 12:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         category: Orange
 
       - title: "20"
         start: 10:00
         end: 10:30
         footnote: "1000, Kontrolle AWB Karte, FKhaus 15, Det C"
-        columns: ["Beso"]
+        appearsIn: ["Beso"]
 
       - title: AWB / LMS Check
         category: Green
         start: 12:45
         end: 13:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
 
       - title: Manipulieren
         category: Green
         start: 13:00
         end: 14:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: Hinter GK
       - title: TPD Stgw-90
         category: Green
         start: 14:00
         end: 14:45
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: PD-Stand
 
@@ -133,7 +137,7 @@ days:
         category: Green
         start: 14:45
         end: 15:15
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: PD-Stand
 
@@ -141,7 +145,7 @@ days:
         category: Green
         start: 15:15
         end: 16:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
@@ -149,7 +153,7 @@ days:
         category: Green
         start: 16:00
         end: 16:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
@@ -157,7 +161,7 @@ days:
         category: Green
         start: 16:00
         end: 16:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
@@ -165,7 +169,7 @@ days:
         category: Green
         start: 16:30
         end: 17:15
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
@@ -173,7 +177,7 @@ days:
         category: Orange
         start: 17:15
         end: 18:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
@@ -181,14 +185,14 @@ days:
         category: "Yellow"
         start: 18:00
         end: 18:45
-        columns: ["Det"]
+        appearsIn: ["Det"]
         repeats: daily
 
       - title: Theorie Eigenschutz und Integrale Sicherheit
         category: Green
         start: 18:45
         end: 19:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
@@ -196,7 +200,7 @@ days:
         category: Orange
         start: 19:30
         end: 20:15
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
@@ -204,57 +208,58 @@ days:
         category: Green
         start: 20:15
         end: 20:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
 
       - title: Sport
         category: Green
         start: 20:30
         end: 22:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         location: Outdoor / Kraftraum
 
       - title: PD/ID
         category: "Yellow"
         start: 22:00
         end: 22:15
-        columns: ["Det"]
+        appearsIn: ["Det"]
         repeats: daily
 
       - title: ABV
         start: 22:15
         end: 22:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         repeats: daily
 
-  - offset: 1
+  - offset: 2
+    columns: ["Det", "Det C", "Beso"]
     events:
       - title: "30"
         start: 07:00
         end: 07:30
         footnote: "0700, Mat & Mun Ausgabe, MatMag / MunMag, C Planung"
-        columns: ["Beso"]
+        appearsIn: ["Beso"]
       - title: "Verladen Mat Mun"
         start: 07:00
         end: 07:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: Mat & Mun Mag
       - title: "Fsg Lunch"
         start: 07:00
         end: 07:30
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C Stv
         location: Timeout
       - title: "Vs SAND"
         category: "Vs"
         start: 07:30
         end: 08:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
       - title: "Schiessen"
         category: "Green"
         start: 08:00
         end: 12:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: Spl Sand
 
@@ -262,37 +267,37 @@ days:
         category: Yellow
         start: 12:00
         end: 12:45
-        columns: ["Det"]
+        appearsIn: ["Det"]
 
       - title: "Schiessen"
         category: "Green"
         start: 12:45
         end: 13:45
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: Spl Sand
       - title: "Vs BERN"
         category: "Vs"
         start: 13:45
         end: 14:15
-        columns: ["Det"]
+        appearsIn: ["Det"]
       - title: "GPD Stgm / Pist"
         category: "Green"
         start: 14:15
         end: 15:45
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: PD-Stand
       - title: "Reorg"
         category: "Green"
         start: 15:45
         end: 16:15
-        columns: ["Det"]
+        appearsIn: ["Det"]
       - title: "PA Mat Kontrolle"
         category: "Green"
         start: 16:15
         end: 18:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         responsible: Det C
         location: Mannschaftszimmer
 
@@ -300,13 +305,19 @@ days:
         category: "KVP"
         start: 18:45
         end: 22:00
-        columns: ["Det"]
+        appearsIn: ["Det"]
         location: Mannschaftszimmer
-  - offset: 2
-    events: []
   - offset: 3
+    columns: ["Det CNO", "Det CESA", "Det Zimm", "Det C", "Beso"]
     events: []
   - offset: 4
+    columns: ["Det", "Det C"]
+    events: []
+  - offset: 5
+    columns: ["Det 1", "Det 2", "Det 3", "Det 4", "Beso"]
+    events: []
+  - offset: 6
+    columns: ["Det 1", "Det 2", "Det 3", "Det 4", "Beso"]
     events: []
 
 remarks:
