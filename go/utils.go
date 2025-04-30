@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 type RGBColor struct {
@@ -55,4 +56,8 @@ func parseColor(s string) (c RGBColor, err error) {
 		return RGBColor{}, err
 	}
 	return RGBColor{uint8(rUint), uint8(gUint), uint8(bUint)}, nil
+}
+
+func parseDayTime(s string) (t time.Time, err error) {
+	return time.Parse("15:04", s)
 }
