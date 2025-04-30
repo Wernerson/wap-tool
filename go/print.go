@@ -25,8 +25,14 @@ type WAPDrawer interface {
 }
 
 type PDFDrawer struct {
-	pdf      *gopdf.GoPdf
-	pageSize *gopdf.Rect
+	pdf          *gopdf.GoPdf
+	wap          *Wap
+	pageSize     *gopdf.Rect
+	p1           gopdf.Point
+	wapBox       gopdf.Rect
+	hoursPerDay  int
+	minuteHeight float64
+	colWidth     float64
 }
 
 func NewPDFDrawer() *PDFDrawer {
@@ -34,14 +40,13 @@ func NewPDFDrawer() *PDFDrawer {
 	return &PDFDrawer{pdf: &pdf, pageSize: gopdf.PageSizeA4Landscape}
 }
 
-func (d *PDFDrawer) setupPage() (err error) {
+func (d *PDFDrawer) setupDocument() (err error) {
 	mm6ToPx := mmToPx(6)
 	trimbox := gopdf.Box{Left: mm6ToPx, Top: mm6ToPx, Right: d.pageSize.W - mm6ToPx, Bottom: d.pageSize.H - mm6ToPx}
 	d.pdf.Start(gopdf.Config{
 		PageSize: *d.pageSize,
 		TrimBox:  trimbox,
 	})
-	d.pdf.AddPage()
 	err = d.pdf.AddTTFFont("regular", "./ttf/OpenSans-Regular.ttf")
 	if err != nil {
 		return err
@@ -58,6 +63,20 @@ func (d *PDFDrawer) setupPage() (err error) {
 	if err != nil {
 		return err
 	}
+
+	// Padding left, top, right, and bottom from the page to the WAP Grid
+	PL := mmToPx(25)
+	PT := mmToPx(20)
+	PR := PL
+	PB := mmToPx(30)
+	// Top-Left starting point
+	d.p1 = gopdf.Point{X: PL, Y: PL}
+	d.wapBox = gopdf.Rect{W: d.pageSize.W - PL - PR, H: d.pageSize.H - PT - PB}
+	DAYS := 7
+	duration := d.wap.dayEnd.Sub(d.wap.dayStart)
+	d.hoursPerDay = int(duration.Hours())
+	d.colWidth = d.wapBox.W / float64(DAYS)
+	d.minuteHeight = d.wapBox.H / duration.Minutes()
 	return nil
 }
 
@@ -97,7 +116,8 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 }
 
 func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
-	d.setupPage()
+	d.wap = wap
+	d.setupDocument()
 	unit := ""
 	if wap.data.Meta.Unit != nil {
 		unit = *wap.data.Meta.Unit
@@ -106,9 +126,6 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	if wap.data.Meta.Version != nil {
 		version = *wap.data.Meta.Version
 	}
-	opt := gopdf.PageOption{
-		PageSize: d.pageSize,
-	}
 	d.drawHeaderAndFooter(
 		unit,
 		wap.data.Meta.Title,
@@ -116,57 +133,23 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		"",
 		"made with WAP-tool v0.1",
 		"")
-	d.pdf.AddPageWithOption(opt)
 
-	PL := mmToPx(25)
-	PR := PL
-	PT := mmToPx(20)
-	PB := mmToPx(30)
-	P1 := gopdf.Point{X: PL, Y: PL}
-	wapBox := gopdf.Rect{W: d.pageSize.W - PL - PR, H: d.pageSize.H - PT - PB}
-	DAYS := 7
-	duration := wap.dayEnd.Sub(wap.dayStart)
-	HOURS := int(duration.Hours())
-	colWidth := wapBox.W / float64(DAYS)
-	minuteHeight := wapBox.H / duration.Minutes()
-	ToGridSystem := func(t time.Time, dayIndex int) gopdf.Point {
-		deltaX := float64(dayIndex) * colWidth
-		deltaY := t.Sub(wap.dayStart).Minutes() * minuteHeight
-		return Add(P1, gopdf.Point{X: deltaX, Y: deltaY})
-	}
-	// The Big Grid
-	d.pdf.SetStrokeColor(0, 0, 0)
-	d.pdf.SetLineWidth(1)
-	drawGrid(d.pdf, P1, wapBox, HOURS, DAYS)
-	// Marks at 30 minutes
-	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
-	d.pdf.SetLineWidth(.5)
-	drawHorizontalLines(d.pdf, P1, wapBox, HOURS*2)
-	// Marks at 15 minutes
-	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
-	d.pdf.SetLineWidth(.2)
-	drawHorizontalLines(d.pdf, P1, wapBox, HOURS*4)
+	// TODO() add more pages if there are more days
+	// columns issue for repeating tasks: just draw it full
+	d.setupPage()
 
-	// Add time scale (mark all hours)
-	d.pdf.SetFontSize(8)
-	d.pdf.SetFillColor(0x00, 0x00, 0x00)
-	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
-	for hour := wap.dayStart.Hour(); hour <= wap.dayEnd.Hour(); hour += 1 {
-		p := Add(ToGridSystem(DayTime(hour, 0), 0), gopdf.Point{X: -20, Y: -6})
-		d.pdf.SetXY(p.X, p.Y)
-		// convert to military time format
-		d.pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
-	}
+	// TODO(refactor): make this a layouting subroutine
 	columnOptions := make([]map[string]columnInfo, wap.Days)
-	for i := range wap.Days {
-		columnInfos := AssignColumns(wap.columns[i], colWidth)
+	for i := range wap.data.Days {
+		// TODO the indexing could panic
+		columnInfos := AssignColumns(wap.columns[i], d.colWidth)
 		columnOptions[i] = columnInfos
 		// draw the column header
 		for colName, opts := range columnInfos {
 			heightInMinutes := 90.0
-			RectStart := Add(ToGridSystem(wap.dayStart, i),
-				gopdf.Point{X: opts.Offset, Y: -heightInMinutes * minuteHeight})
-			rect := gopdf.Rect{W: opts.W, H: heightInMinutes * minuteHeight}
+			RectStart := Add(d.toGridSystem(wap.dayStart, i),
+				gopdf.Point{X: opts.Offset, Y: -heightInMinutes * d.minuteHeight})
+			rect := gopdf.Rect{W: opts.W, H: heightInMinutes * d.minuteHeight}
 			d.pdf.SetXY(RectStart.X, RectStart.Y)
 			d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 			d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
@@ -181,21 +164,22 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 			d.pdf.RotateReset()
 		}
 	}
-
-	drawEvent := func(event Event) {
-		cat := event.json.Category
-		if cat == nil {
-			d.pdf.SetFillColor(127, 127, 127)
-		} else if c, ok := wap.colors[*cat]; ok {
-			d.pdf.SetFillColor(c.R, c.G, c.B)
-		} else {
-			d.pdf.SetFillColor(127, 127, 127)
+	for _, event := range wap.repeating {
+		for idx := event.dayOffset; idx < wap.Days; idx += 1 {
+			event.dayOffset = idx
+			// Special case. Repeating tasks could be defined on other days with different columns
+			// Just print them full width.
+			d.drawEvent(event, 0, d.colWidth)
 		}
-		// Adjust because of columns
+	}
+	for _, event := range wap.events {
 		width := 0.0
 		offset := -1.0
+		// TODO handle the special case where columns = [A, B, C] and appearsIn = [A, C]
+		// TODO(refactor): make this a layouting subroutine
 		appears := event.json.AppearsIn
-		for _, c := range wap.columns[event.dayOffset] {
+		for _, c := range d.wap.columns[event.dayOffset] {
+			log.Println(event, c)
 			if slices.Contains(appears, c) {
 				width += columnOptions[event.dayOffset][c].W
 				// ugly hack
@@ -204,61 +188,97 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 				}
 			}
 		}
-		// Special case. Repeating tasks could be defined on other days with different columns
-		// Just print them full width.
-		if event.repeats {
-			width = colWidth
+		if width > 0.0 {
+			d.drawEvent(event, offset, width)
+		} else {
+			log.Println("WARNING has no columns (appears in no columns): ", event)
 		}
-		// TODO handle the case where columns = [A, B, C] and appearsIn = [A, C]
-		RectStart := ToGridSystem(event.start, event.dayOffset)
-		RectStart.X += offset
-		minutes := event.end.Sub(event.start).Minutes()
-		rect := gopdf.Rect{W: width, H: minutes * minuteHeight}
-		PrintRect(d.pdf, RectStart, rect)
-		smallFont := 6
-		d.pdf.SetXY(RectStart.X, RectStart.Y-1)
-		d.pdf.SetTextColor(0x00, 0x00, 0x00)
-		d.pdf.SetFont("bold", "", smallFont)
-		title := event.json.Title
-		ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
-		if !ok {
-			log.Println("WARNING", "event title does not fit in rectangle!")
-		}
-		err := d.pdf.MultiCellWithOption(&rect, title,
-			gopdf.CellOption{
-				Align: gopdf.Center,
-			})
-		check(err)
-		description := ""
-		d.pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded-3)
-		if event.json.Location != nil {
-			description += *event.json.Location
-		}
-		if event.json.Responsible != nil {
-			description += ", " + *event.json.Responsible
-		}
-		d.pdf.SetFont("regular", "", smallFont)
-		err = d.pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*minuteHeight - heightNeeded}, description,
-			gopdf.CellOption{
-				Align: gopdf.Center,
-			})
-		check(err)
-	}
-	// TODO handle columns issue for repeating tasks: just draw it full?
-	for _, event := range wap.repeating {
-		for idx := event.dayOffset; idx < wap.Days; idx += 1 {
-			event.dayOffset = idx
-			drawEvent(event)
-		}
-	}
-	// TODO columns
-	for _, event := range wap.events {
-		drawEvent(event)
 	}
 
 	// possibly add more pages
 	d.pdf.WritePdf(outputPath)
 	return nil
+}
+
+func (d *PDFDrawer) setupPage() {
+	opt := gopdf.PageOption{
+		PageSize: d.pageSize,
+	}
+	DAYS := 7
+	d.pdf.AddPageWithOption(opt)
+	// The Big Grid
+	d.pdf.SetStrokeColor(0, 0, 0)
+	d.pdf.SetLineWidth(1)
+	drawGrid(d.pdf, d.p1, d.wapBox, d.hoursPerDay, DAYS)
+	// Marks at 30 minutes
+	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
+	d.pdf.SetLineWidth(.5)
+	drawHorizontalLines(d.pdf, d.p1, d.wapBox, d.hoursPerDay*2)
+	// Marks at 15 minutes
+	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
+	d.pdf.SetLineWidth(.2)
+	drawHorizontalLines(d.pdf, d.p1, d.wapBox, d.hoursPerDay*4)
+
+	// Add time scale (mark all hours)
+	d.pdf.SetFontSize(8)
+	d.pdf.SetFillColor(0x00, 0x00, 0x00)
+	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	for hour := d.wap.dayStart.Hour(); hour <= d.wap.dayEnd.Hour(); hour += 1 {
+		p := Add(d.toGridSystem(DayTime(hour, 0), 0), gopdf.Point{X: -20, Y: -6})
+		d.pdf.SetXY(p.X, p.Y)
+		// convert to military time format
+		d.pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
+	}
+}
+
+func (d *PDFDrawer) toGridSystem(t time.Time, dayIndex int) gopdf.Point {
+	deltaX := float64(dayIndex) * d.colWidth
+	deltaY := t.Sub(d.wap.dayStart).Minutes() * d.minuteHeight
+	return Add(d.p1, gopdf.Point{X: deltaX, Y: deltaY})
+}
+
+func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
+	cat := event.json.Category
+	if cat == nil {
+		d.pdf.SetFillColor(127, 127, 127)
+	} else if c, ok := d.wap.colors[*cat]; ok {
+		d.pdf.SetFillColor(c.R, c.G, c.B)
+	} else {
+		d.pdf.SetFillColor(127, 127, 127)
+	}
+	RectStart := d.toGridSystem(event.start, event.dayOffset)
+	RectStart.X += offset
+	minutes := event.end.Sub(event.start).Minutes()
+	rect := gopdf.Rect{W: width, H: minutes * d.minuteHeight}
+	PrintRect(d.pdf, RectStart, rect)
+	smallFont := 6
+	d.pdf.SetXY(RectStart.X, RectStart.Y-1)
+	d.pdf.SetTextColor(0x00, 0x00, 0x00)
+	d.pdf.SetFont("bold", "", smallFont)
+	title := event.json.Title
+	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
+	if !ok {
+		log.Println("WARNING", "event title does not fit in rectangle!")
+	}
+	err := d.pdf.MultiCellWithOption(&rect, title,
+		gopdf.CellOption{
+			Align: gopdf.Center,
+		})
+	check(err)
+	description := ""
+	d.pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded-3)
+	if event.json.Location != nil {
+		description += *event.json.Location
+	}
+	if event.json.Responsible != nil {
+		description += ", " + *event.json.Responsible
+	}
+	d.pdf.SetFont("regular", "", smallFont)
+	err = d.pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*d.minuteHeight - heightNeeded}, description,
+		gopdf.CellOption{
+			Align: gopdf.Center,
+		})
+	check(err)
 }
 
 type columnInfo struct {
