@@ -99,13 +99,6 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	pdf.SetStrokeColor(0x80, 0x80, 0x80)
 	pdf.SetLineWidth(0.5)
 	Grid(&pdf, P1, wapBox, HOURS*2, DAYS*SMALL_COLS)
-	// [ ] Create based on Time settings
-	// A test rectangle
-	pdf.SetFillColor(0, 0xff, 0)
-	testPoint := ToGridSystem(DayTime(10, 30), 1)
-	log.Print(testPoint, colWidth, 30*minuteHeight)
-	pdf.Rectangle(testPoint.X, testPoint.Y, colWidth, 30*minuteHeight, "DF", 0, 0)
-	PrintRect(&pdf, testPoint, colWidth, 30*minuteHeight)
 	// Add time scale (mark all hours)
 	pdf.SetFontSize(8)
 	pdf.SetFillColor(0x00, 0x00, 0x00)
@@ -117,19 +110,35 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		// convert to military time format
 		pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
 	}
-	// [ ] check for different page sizes
 
-	// pdf.Cell(nil, "Hi")
-	pdf.AddPage()
-	pdf.SetY(400)
-	pdf.Text("page 2 content")
+	// TODO repeating tasks
+	// TODO columns
+	for _, event := range wap.events {
+		// A test rectangle
+		cat := event.json.Category
+		if cat == nil {
+			pdf.SetFillColor(127, 127, 127)
+		} else if c, ok := wap.colors[*cat]; ok {
+			pdf.SetFillColor(c.R, c.G, c.B)
+		} else {
+			pdf.SetFillColor(127, 127, 127)
+		}
+		RectStart := ToGridSystem(event.start, event.dayOffset)
+		minutes := event.end.Sub(event.start).Minutes()
+		PrintRect(&pdf, RectStart, colWidth, minutes*minuteHeight)
+		// TODO Add the text
+	}
+
+	// possibly add more pages
 	pdf.WritePdf(outputPath)
 	return nil
 }
 
 func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, width, height float64) {
 	err := pdf.Rectangle(p.X, p.Y, p.X+width, p.Y+height, "DF", 0, 0)
-	check(err)
+	if err != nil {
+		log.Println("ERROR", err)
+	}
 }
 
 func Add(p1, p2 gopdf.Point) gopdf.Point {
