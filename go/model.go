@@ -12,6 +12,8 @@ type Wap struct {
 	repeating []Event
 	events    []Event
 	columns   map[int]map[string]struct{}
+	dayStart  time.Time
+	dayEnd    time.Time
 }
 
 type Event struct {
@@ -35,6 +37,25 @@ func NewWAP(data *WapJson) (w *Wap) {
 	w.columns = make(map[int]map[string]struct{})
 	w.parseColors()
 	w.processEvents()
+	w.dayStart = DayTime(23, 30)
+	if data.Meta.StartTime != nil {
+		t1, err := parseDayTime(*data.Meta.StartTime)
+		if err != nil {
+			log.Println(err)
+			log.Println("WARNING not defined when the day start. Falling back to default.")
+		} else {
+			w.dayStart = t1
+		}
+	}
+	if data.Meta.EndTime != nil {
+		t2, err := parseDayTime(*data.Meta.EndTime)
+		if err != nil {
+			log.Println(err)
+			log.Println("WARNING not defined when the day ends. Falling back to default.")
+		} else {
+			w.dayEnd = t2
+		}
+	}
 	return
 }
 
@@ -74,13 +95,13 @@ func (w *Wap) processEvents() {
 			start, err := parseDayTime(event.Start)
 			if err != nil {
 				log.Println(err.Error())
-				log.Print("WARNING no start time defined. Ignoring event.")
+				log.Println("WARNING no start time defined. Ignoring event.")
 				continue
 			}
 			end, err := parseDayTime(event.End)
 			if err != nil {
 				log.Println(err.Error())
-				log.Print("WARNING no end time defined. Trying to implicitly find it.")
+				log.Println("WARNING no end time defined. Trying to implicitly find it.")
 			}
 			freshEvent := Event{
 				json:      &event,

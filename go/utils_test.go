@@ -34,21 +34,17 @@ func TestColorParsing(t *testing.T) {
 }
 
 func TestTimeParsing(t *testing.T) {
-	date := func(hour, minute int) time.Time {
-		return time.Date(0, 1, 1, hour, minute, 0, 0, time.UTC)
-	}
-
 	tests := []struct {
 		input    string
 		expected time.Time
 		wantErr  bool
 	}{
-		{"07:30", date(7, 30), false},
-		{"7:30", date(7, 30), false},
-		{"00:00", date(0, 0), false},
-		{"12:00", date(12, 0), false},
-		{"25:00", date(0, 0), true},
-		{"08:61", date(0, 0), true},
+		{"07:30", DayTime(7, 30), false},
+		{"7:30", DayTime(7, 30), false},
+		{"00:00", DayTime(0, 0), false},
+		{"12:00", DayTime(12, 0), false},
+		{"25:00", DayTime(0, 0), true},
+		{"08:61", DayTime(0, 0), true},
 	}
 
 	for _, tt := range tests {

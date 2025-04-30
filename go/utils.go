@@ -61,3 +61,7 @@ func parseColor(s string) (c RGBColor, err error) {
 func parseDayTime(s string) (t time.Time, err error) {
 	return time.Parse("15:04", s)
 }
+
+func DayTime(hour, minute int) time.Time {
+	return time.Date(0, 1, 1, hour, minute, 0, 0, time.UTC)
+}
