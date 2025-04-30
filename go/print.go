@@ -61,6 +61,41 @@ func (d *PDFDrawer) setupPage() (err error) {
 	return nil
 }
 
+func (d *PDFDrawer) drawHeaderAndFooter(
+	topLeft, topMiddle, topRight string,
+	botLeft, botMiddle, botRight string,
+) {
+	headerFontSize := 12.0
+	d.pdf.SetFontSize(headerFontSize)
+	padding := mmToPx(1.5)
+	d.pdf.AddHeader(func() {
+		d.pdf.SetY(padding)
+		d.pdf.SetX(padding)
+		d.pdf.CellWithOption(nil, topLeft, gopdf.CellOption{Align: gopdf.Left})
+		tmW, err := d.pdf.MeasureTextWidth(topMiddle)
+		check(err)
+		d.pdf.SetX(d.pageSize.W/2 - tmW/2)
+		d.pdf.CellWithOption(nil, topMiddle, gopdf.CellOption{Align: gopdf.Center})
+		trW, err := d.pdf.MeasureTextWidth(topRight)
+		check(err)
+		d.pdf.SetX(d.pageSize.W - trW - padding)
+		d.pdf.CellWithOption(nil, topRight, gopdf.CellOption{Align: gopdf.Right})
+	})
+	d.pdf.AddFooter(func() {
+		d.pdf.SetY(d.pageSize.H - padding - headerFontSize)
+		d.pdf.SetX(padding)
+		d.pdf.CellWithOption(nil, botLeft, gopdf.CellOption{Align: gopdf.Left})
+		bmW, err := d.pdf.MeasureTextWidth(botMiddle)
+		check(err)
+		d.pdf.SetX(d.pageSize.W/2 - bmW/2)
+		d.pdf.CellWithOption(nil, botMiddle, gopdf.CellOption{Align: gopdf.Center})
+		brW, err := d.pdf.MeasureTextWidth(botRight)
+		check(err)
+		d.pdf.SetX(d.pageSize.W - brW - padding)
+		d.pdf.CellWithOption(nil, botRight, gopdf.CellOption{Align: gopdf.Right})
+	})
+}
+
 func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	d.setupPage()
 	unit := ""
@@ -71,33 +106,16 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	if wap.data.Meta.Version != nil {
 		version = *wap.data.Meta.Version
 	}
-	padding := mmToPx(1.5)
-	d.pdf.AddHeader(func() {
-		d.pdf.SetY(padding)
-		d.pdf.SetX(padding)
-		d.pdf.Cell(nil, unit)
-		tm := wap.data.Meta.Title
-		tmW, err := d.pdf.MeasureTextWidth(tm)
-		check(err)
-		d.pdf.SetX(d.pageSize.W/2 - tmW/2)
-		d.pdf.CellWithOption(nil, tm, gopdf.CellOption{Align: gopdf.Center})
-		tr := version
-		trW, err := d.pdf.MeasureTextWidth(tr)
-		check(err)
-		d.pdf.SetX(d.pageSize.W - trW - padding)
-		d.pdf.CellWithOption(nil, tr, gopdf.CellOption{Align: gopdf.Right})
-	})
-	d.pdf.AddFooter(func() {
-		footerText := "footer"
-		ftH, err := d.pdf.MeasureCellHeightByText(footerText)
-		check(err)
-		d.pdf.SetY(d.pageSize.H - padding - ftH)
-		d.pdf.Cell(nil, "footer")
-	})
-	// Page trim-box
 	opt := gopdf.PageOption{
 		PageSize: d.pageSize,
 	}
+	d.drawHeaderAndFooter(
+		unit,
+		wap.data.Meta.Title,
+		version,
+		"",
+		"made with WAP-tool v0.1",
+		"")
 	d.pdf.AddPageWithOption(opt)
 
 	d.pdf.SetStrokeColor(255, 0, 0)
