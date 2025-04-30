@@ -3,14 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
+	"sort"
 	"time"
 )
 
 type Wap struct {
 	data      *WapJson
 	colors    map[string]RGBColor
-	repeating []Event
-	events    []Event
+	repeating Events
+	events    Events
 	columns   map[int]map[string]struct{}
 	dayStart  time.Time
 	dayEnd    time.Time
@@ -20,6 +21,17 @@ type Event struct {
 	json       *WapJsonDaysElemEventsElem
 	start, end time.Time
 	dayOffset  int
+}
+
+type Events []Event
+
+func (e Events) Len() int      { return len(e) }
+func (e Events) Swap(i, j int) { e[i], e[j] = e[j], e[i] }
+func (e Events) Less(i, j int) bool {
+	if e[i].dayOffset < e[j].dayOffset {
+		return true
+	}
+	return e[i].dayOffset == e[j].dayOffset && e[i].start.Compare(e[j].start) == -1
 }
 
 func (e Event) String() string {
@@ -116,4 +128,5 @@ func (w *Wap) processEvents() {
 			w.events = append(w.events, freshEvent)
 		}
 	}
+	sort.Sort(w.events)
 }
