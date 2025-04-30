@@ -11,7 +11,7 @@ import (
 
 func check(err error) {
 	if err != nil {
-		panic(err)
+		log.Println("ERROR", err)
 	}
 }
 
@@ -19,6 +19,9 @@ func check(err error) {
 func mmToPx(mm float64) float64 {
 	return 3.78 * mm
 }
+
+// TODO consider using a struct to group options and helper functions
+// possibly make a Printer interface
 
 func MakePDF(wap *Wap, outputPath string) (err error) {
 	pdf := gopdf.GoPdf{}
@@ -123,25 +126,23 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		columnInfos := AssignColumns(wap.columns[i], colWidth)
 		columnOptions[i] = columnInfos
 		// draw the column header
-		pdf.SetFontSize(6)
 		for colName, opts := range columnInfos {
-			RectStart := Add(ToGridSystem(wap.dayStart.Add(-time.Minute*70.0), i), gopdf.Point{X: opts.Offset, Y: 0})
-			height := 70 * minuteHeight
-			rect := gopdf.Rect{W: opts.W, H: height}
+			heightInMinutes := 90.0
+			RectStart := Add(ToGridSystem(wap.dayStart, i),
+				gopdf.Point{X: opts.Offset, Y: -heightInMinutes * minuteHeight})
+			rect := gopdf.Rect{W: opts.W, H: heightInMinutes * minuteHeight}
 			pdf.SetXY(RectStart.X, RectStart.Y)
-			pdf.SetFillColor(0xf0, 0xf0, 0xf0)
 			pdf.SetStrokeColor(0x00, 0x00, 0x00)
+			pdf.SetFillColor(0xf0, 0xf0, 0xf0)
 			PrintRect(&pdf, RectStart, rect)
-			log.Println("DEBUG", colName, RectStart.X+opts.Offset, RectStart.Y)
-			pdf.SetFillColor(0x00, 0x00, 0x00)
-			// TODO rotation is broken
-			// pdf.Rotate(90.0, RectStart.X, RectStart.Y+height)
-			err := pdf.Cell(&rect, colName)
-			// pdf.RotateReset()
-			if err != nil {
-				// pdf.RotateReset()
-				log.Println("ERROR", err)
-			}
+			pdf.SetTextColor(0x00, 0x00, 0x00)
+			pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
+			pdf.SetFont("bold", "", 6)
+			pdf.CellWithOption(&rect, colName,
+				gopdf.CellOption{
+					Align: gopdf.Center | gopdf.Middle,
+				})
+			pdf.RotateReset()
 		}
 	}
 
@@ -191,9 +192,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 			gopdf.CellOption{
 				Align: gopdf.Center,
 			})
-		if err != nil {
-			log.Println("ERROR", err)
-		}
+		check(err)
 		description := ""
 		pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded-3)
 		if event.json.Location != nil {
@@ -207,9 +206,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 			gopdf.CellOption{
 				Align: gopdf.Center,
 			})
-		if err != nil {
-			log.Println("ERROR", err)
-		}
+		check(err)
 	}
 	// TODO handle columns issue for repeating tasks: just draw it full?
 	for _, event := range wap.repeating {
@@ -252,9 +249,7 @@ func AssignColumns(columns []string, width float64) map[string]columnInfo {
 
 func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {
 	err := pdf.Rectangle(p.X, p.Y, p.X+rect.W, p.Y+rect.H, "DF", 0, 0)
-	if err != nil {
-		log.Println("ERROR", err)
-	}
+	check(err)
 }
 
 func Add(p1, p2 gopdf.Point) gopdf.Point {
