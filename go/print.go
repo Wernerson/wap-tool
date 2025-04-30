@@ -12,6 +12,7 @@ import (
 func check(err error) {
 	if err != nil {
 		log.Println("ERROR", err)
+		panic(err)
 	}
 }
 
@@ -174,7 +175,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 			if width > 0.0 {
 				d.drawEvent(event, offset, width)
 			} else {
-				log.Println("WARNING has no columns (appearsIn is empty). Will print it full width: ", event)
+				log.Println("WARNING appearsIn is empty. Will print the event full width: ", event)
 				d.drawEvent(event, offset, d.colWidth)
 			}
 		}
@@ -265,6 +266,9 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	RectStart := d.toGridSystem(event.start, event.dayOffset%7)
 	RectStart.X += offset
 	minutes := event.end.Sub(event.start).Minutes()
+	if minutes < 0 {
+		return
+	}
 	rect := gopdf.Rect{W: width, H: minutes * d.minuteHeight}
 	drawRect(d.pdf, RectStart, rect)
 	smallFont := 6
@@ -274,7 +278,7 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	title := event.json.Title
 	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
 	if !ok {
-		log.Println("WARNING", "event title does not fit in rectangle!")
+		log.Println("WARNING", "title does not fit in rectangle:", event.json.Title)
 	}
 	err := d.pdf.MultiCellWithOption(&rect, title,
 		gopdf.CellOption{
@@ -289,12 +293,17 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	if event.json.Responsible != nil {
 		description += ", " + *event.json.Responsible
 	}
+
 	d.pdf.SetFont("regular", "", smallFont)
-	err = d.pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*d.minuteHeight - heightNeeded}, description,
-		gopdf.CellOption{
-			Align: gopdf.Center,
-		})
-	check(err)
+	ok, _, _ = d.pdf.IsFitMultiCell(&rect, description)
+	if !ok {
+		log.Println("WARNING description does not fit: ", description)
+	} else {
+		d.pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*d.minuteHeight - heightNeeded}, description,
+			gopdf.CellOption{
+				Align: gopdf.Center,
+			})
+	}
 }
 
 type columnInfo struct {
