@@ -112,9 +112,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	}
 
 	// TODO repeating tasks
-	// TODO columns
-	for _, event := range wap.events {
-		// A test rectangle
+	drawEvent := func(event Event) {
 		cat := event.json.Category
 		if cat == nil {
 			pdf.SetFillColor(127, 127, 127)
@@ -127,6 +125,16 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		minutes := event.end.Sub(event.start).Minutes()
 		PrintRect(&pdf, RectStart, colWidth, minutes*minuteHeight)
 		// TODO Add the text
+	}
+	for _, event := range wap.repeating {
+		for idx := event.dayOffset; idx < wap.Days; idx += 1 {
+			event.dayOffset = idx
+			drawEvent(event)
+		}
+	}
+	// TODO columns
+	for _, event := range wap.events {
+		drawEvent(event)
 	}
 
 	// possibly add more pages

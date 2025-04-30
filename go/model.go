@@ -8,6 +8,7 @@ import (
 )
 
 type Wap struct {
+	Days      int
 	data      *WapJson
 	colors    map[string]RGBColor
 	repeating Events
@@ -61,6 +62,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 	w.parseColors()
 	w.processEvents()
 	w.dayStart = DayTime(23, 30)
+	w.Days = 7 // TODO
 	if data.Meta.StartTime != nil {
 		t1, err := parseDayTime(*data.Meta.StartTime)
 		if err != nil {
