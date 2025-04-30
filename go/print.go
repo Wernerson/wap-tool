@@ -158,22 +158,30 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 			if event.dayOffset != i {
 				continue
 			}
-			width := 0.0
+			eventWidth := 0.0
 			offset := -1.0
-			// TODO handle the special case where columns = [A, B, C] and appearsIn = [A, C]
-			// TODO(refactor): make this a layouting subroutine
 			appears := event.json.AppearsIn
+			// TODO handle the special case where columns = [A, B, C] and appearsIn = [A, C]
 			for _, c := range d.wap.columns[event.dayOffset] {
 				if slices.Contains(appears, c) {
-					width += columnOptions[event.dayOffset][c].W
-					// ugly hack
+					eventWidth += columnOptions[event.dayOffset][c].W
+					// ugly, just find the first column
 					if offset < 0.0 {
 						offset = columnOptions[event.dayOffset][c].Offset
 					}
 				}
 			}
-			if width > 0.0 {
-				d.drawEvent(event, offset, width)
+			if event.parallelCols > 0 {
+				// Assumption: this can only happen for events in a single columns
+				// Example:
+				// |   Det         |
+				// | ev1 | ev2 |ev3|
+				eventWidth = eventWidth / float64(event.parallelCols+1)
+				offset += float64(event.parallelIdx) * eventWidth
+				log.Println("YEET", event, eventWidth, offset)
+			}
+			if eventWidth > 0.0 {
+				d.drawEvent(event, offset, eventWidth)
 			} else {
 				log.Println("WARNING appearsIn is empty. Will print the event full width: ", event)
 				d.drawEvent(event, offset, d.colWidth)

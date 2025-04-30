@@ -21,10 +21,12 @@ type Wap struct {
 }
 
 type Event struct {
-	json       *WapJsonDaysElemEventsElem
-	start, end time.Time
-	dayOffset  int
-	repeats    bool
+	json         *WapJsonDaysElemEventsElem
+	start, end   time.Time
+	dayOffset    int
+	repeats      bool
+	parallelCols int
+	parallelIdx  int
 }
 
 type Events []Event
@@ -175,6 +177,14 @@ func (w *Wap) processEvents() {
 			}
 		}
 		// - Check for overlap
+		// For example events ev1 and ev2 that overlap in time will have
+		//	-----
+		// | ev1 |-----|
+		// |	 | ev2 |
+		// -------------
+		// ev1.parallelCols = ev2.parallelCols = 1	(the number of other events in this column)
+		// ev1.parallelIdx = 1 and ev2.parallelIdx = 2
+		overlapping := event.parallelIdx
 		for j := i + 1; j < len(w.events); j += 1 {
 			nextEvent := w.events[j]
 			if nextEvent.dayOffset != event.dayOffset {
@@ -185,8 +195,11 @@ func (w *Wap) processEvents() {
 			}
 			if o := overlap(nextEvent.json.AppearsIn, event.json.AppearsIn); len(o) > 0 {
 				log.Printf("WARNING overlapping events in columns %v %v %v\n", o, event, nextEvent)
+				w.events[j].parallelIdx++
+				overlapping++
 			}
 		}
+		w.events[i].parallelCols = overlapping
 		// - TODO validate that appearsIn references a column defined for that day.
 	}
 }
