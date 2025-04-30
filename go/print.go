@@ -30,11 +30,19 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		TrimBox:  trimbox,
 	})
 	pdf.AddPage()
-	err = pdf.AddTTFFont("OpenSans", "./OpenSans-Regular.ttf")
+	err = pdf.AddTTFFont("regular", "./ttf/OpenSans-Regular.ttf")
 	if err != nil {
 		return err
 	}
-	err = pdf.SetFont("OpenSans", "", 14)
+	err = pdf.AddTTFFont("bold", "./ttf/OpenSans-Bold.ttf")
+	if err != nil {
+		return err
+	}
+	err = pdf.AddTTFFont("italic", "./ttf/OpenSans-Italic.ttf")
+	if err != nil {
+		return err
+	}
+	err = pdf.SetFont("regular", "", 14)
 	if err != nil {
 		return err
 	}
