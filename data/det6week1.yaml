@@ -1,0 +1,273 @@
+# yaml-language-server: $schema=../schema/wap.json
+meta:
+  author: Hptm H
+  firstDay: 2025-04-21
+  startTime: "06:00"
+  endTime: "23:00"
+
+categories:
+  - identifier: AGA
+    name: Allgemeine Grundausbildung
+    color: "#00b050"
+  - identifier: admin
+    color: "#ff9900"
+  - identifier: Vs
+    name: Verschiebung
+    color: "#00b0f0"
+  - identifier: FD
+    name: Fachdienst
+    color: "#ffffcc"
+  - identifier: Vpf
+    name: Verpflegung
+    color: "#ffffcc"
+
+days:
+  - offset: 0
+    events:
+      - title: Einrücken Vorbereiten
+        start: 08:00
+        end: 09:30
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+        category: admin
+
+      - title: Einrücken
+        start: 09:30
+        end: 10:00
+        columns: ["Det"]
+
+      - title: Zi-Bezug & Zi Ordnung
+        start: 10:00
+        end: 11:00
+        columns: ["Det"]
+        responsible: Det C
+        location: GK 106 & GK 108
+        category: admin
+
+      - title: Einrückungsadmin & Fahr Rape
+        start: 10:00
+        end: 11:00
+        columns: ["Det"]
+        responsible: Einh Four
+        location: FKhaus 15b
+        category: admin
+
+      - title: Fassung IAA-Mat
+        start: 10:00
+        end: 11:00
+        columns: ["Det"]
+        responsible: Einh Fw
+        location: Mat Mag
+        category: admin
+
+      - title: Feueralarm
+        start: 11:30
+        end: 11:45
+        columns: ["Det"]
+        category: admin
+
+      - title: Waffe abgeben
+        start: 11:45
+        end: 12:00
+        columns: ["Det"]
+        category: admin
+
+      - title: "20"
+        start: 10:00
+        end: 10:30
+        footnote: "1000, Kontrolle AWB Karte, FKhaus 15, Det C"
+        columns: ["Beso"]
+
+      - title: AWB / LMS Check
+        category: Aga
+        start: 12:45
+        end: 13:00
+        columns: ["Det"]
+
+      - title: Manipulieren
+        category: Aga
+        start: 12:45
+        end: 14:00
+        columns: ["Det"]
+        responsible: Det C
+        location: Hinter GK
+
+      - title: TPD Stgw-90
+        category: Aga
+        start: 14:00
+        end: 14:45
+        columns: ["Det"]
+        responsible: Det C
+        location: PD-Stand
+
+      - title: PD SM90
+        category: Aga
+        start: 14:45
+        end: 15:15
+        columns: ["Det"]
+        responsible: Det C
+        location: PD-Stand
+
+      - title: SAN D
+        category: Aga
+        start: 15:15
+        end: 16:00
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+
+      - title: LMS IS
+        category: Aga
+        start: 16:00
+        end: 16:30
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+
+      - title: AWB / LMS Check
+        category: Aga
+        start: 16:00
+        end: 16:30
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+
+      - title: LMS IS
+        category: Aga
+        start: 16:30
+        end: 17:15
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+
+      - title: Diensttheorie + KomD
+        category: Admin
+        start: 17:15
+        end: 18:00
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+
+      - title: PD/ID
+        category: "Vpf"
+        start: 18:00
+        end: 18:45
+        columns: ["Det"]
+        repeats: daily
+
+      - title: Theorie Eigenschutz und Integrale Sicherheit
+        category: Aga
+        start: 18:45
+        end: 19:30
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+
+      - title: Kennenlernrunde
+        category: Admin
+        start: 19:30
+        end: 20:15
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+
+      - title: Tenue Sport erstellen
+        category: Aga
+        start: 20:15
+        end: 20:30
+        columns: ["Det"]
+
+      - title: Sport
+        category: Aga
+        start: 20:15
+        end: 22:00
+        columns: ["Det"]
+        location: Outdoor / Kraftraum
+
+      - title: PD/ID
+        category: "Vpf"
+        start: 22:00
+        end: 22:20
+        columns: ["Det"]
+        repeats: daily
+
+      - title: ABV
+        start: 22:20
+        end: 22:30
+        columns: ["Det"]
+        repeats: daily
+
+  - offset: 1
+    events:
+      - title: "30"
+        start: 07:00
+        end: 07:30
+        footnote: "0700, Mat & Mun Ausgabe, MatMag / MunMag, C Planung"
+        columns: ["Beso"]
+      - title: "Verladen Mat Mun"
+        start: 07:00
+        end: 07:30
+        columns: ["Det"]
+        responsible: Det C
+        location: Mat & Mun Mag
+      - title: "Fsg Lunch"
+        start: 07:00
+        end: 07:30
+        columns: ["Det"]
+        responsible: Det C Stv
+        location: Timeout
+      - title: "Vs SAND"
+        category: "Vs"
+        start: 07:30
+        end: 08:00
+        columns: ["Det"]
+      - title: "Schiessen"
+        category: "AGA"
+        start: 08:00
+        end: 12:00
+        columns: ["Det"]
+        responsible: Det C
+        location: Spl Sand
+      - title: "Schiessen"
+        category: "AGA"
+        start: 12:45
+        end: 13:45
+        columns: ["Det"]
+        responsible: Det C
+        location: Spl Sand
+      - title: "Vs BERN"
+        category: "Vs"
+        start: 13:45
+        end: 14:15
+        columns: ["Det"]
+      - title: "GPD Stgm / Pist"
+        category: "AGA"
+        start: 14:15
+        end: 15:45
+        columns: ["Det"]
+        responsible: Det C
+        location: PD-Stand
+      - title: "Reorg"
+        category: "AGA"
+        start: 15:45
+        end: 16:15
+        columns: ["Det"]
+      - title: "PA Mat Kontrolle"
+        category: "AGA"
+        start: 16:15
+        end: 18:00
+        columns: ["Det"]
+        responsible: Det C
+        location: Mannschaftszimmer
+
+      - title: "KVP"
+        category: "KVP"
+        start: 18:45
+        end: 22:00
+        columns: ["Det"]
+        location: Mannschaftszimmer
+
+remarks:
+  - Some remark.
+  - Signed by Me.
