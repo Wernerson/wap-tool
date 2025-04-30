@@ -179,15 +179,15 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		rect := gopdf.Rect{W: width, H: minutes * minuteHeight}
 		PrintRect(&pdf, RectStart, rect)
 		smallFont := 6
-		pdf.SetXY(RectStart.X, RectStart.Y)
+		pdf.SetXY(RectStart.X, RectStart.Y-1)
 		pdf.SetTextColor(0x00, 0x00, 0x00)
 		pdf.SetFont("bold", "", smallFont)
 		title := event.json.Title
-		if ok, _, _ := pdf.IsFitMultiCell(&rect, title); !ok {
-			log.Println("WARNING", "event text does not fit in rectangle!")
+		ok, heightNeeded, _ := pdf.IsFitMultiCell(&rect, title)
+		if !ok {
+			log.Println("WARNING", "event title does not fit in rectangle!")
 		}
-		// err := pdf.MultiCell(&rect, title)
-		err := pdf.CellWithOption(&rect, title,
+		err := pdf.MultiCellWithOption(&rect, title,
 			gopdf.CellOption{
 				Align: gopdf.Center,
 			})
@@ -195,7 +195,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 			log.Println("ERROR", err)
 		}
 		description := ""
-		pdf.SetXY(RectStart.X, RectStart.Y+float64(smallFont))
+		pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded-3)
 		if event.json.Location != nil {
 			description += *event.json.Location
 		}
@@ -203,7 +203,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 			description += ", " + *event.json.Responsible
 		}
 		pdf.SetFont("regular", "", smallFont)
-		err = pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*minuteHeight - float64(smallFont)}, description,
+		err = pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*minuteHeight - heightNeeded}, description,
 			gopdf.CellOption{
 				Align: gopdf.Center,
 			})
