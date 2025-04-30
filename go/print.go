@@ -136,14 +136,15 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 
 	columnOptions := make([]map[string]columnInfo, wap.Days)
 	for i := range wap.data.Days {
-		if i%7 == 0 {
+		weekday := i % 7
+		if weekday == 0 {
 			// start a new week
 			d.setupPage()
 		}
 		// Draw the column header
 		columnInfos := d.assignColumnLocations(wap.columns[i], d.colWidth)
 		columnOptions[i] = columnInfos
-		d.drawColumnHeader(i%7, columnInfos)
+		d.drawColumnHeader(weekday, columnInfos)
 		// draw repeating events
 		for _, event := range wap.events {
 			if event.repeats && event.dayOffset <= i {
@@ -173,7 +174,8 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 			if width > 0.0 {
 				d.drawEvent(event, offset, width)
 			} else {
-				log.Println("WARNING has no columns (appears in no columns): ", event)
+				log.Println("WARNING has no columns (appearsIn is empty). Will print it full width: ", event)
+				d.drawEvent(event, offset, d.colWidth)
 			}
 		}
 	}
@@ -260,7 +262,7 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	} else {
 		d.pdf.SetFillColor(127, 127, 127)
 	}
-	RectStart := d.toGridSystem(event.start, event.dayOffset)
+	RectStart := d.toGridSystem(event.start, event.dayOffset%7)
 	RectStart.X += offset
 	minutes := event.end.Sub(event.start).Minutes()
 	rect := gopdf.Rect{W: width, H: minutes * d.minuteHeight}

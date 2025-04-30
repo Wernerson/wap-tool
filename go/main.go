@@ -24,11 +24,12 @@ func readYaml(inputPath string) (wap *WapJson, err error) {
 
 func main() {
 	// read sample data
-	wapData, err := readYaml("../data/det6week1.yaml")
+	inputPath := "../data/det6week1.yaml"
+	log.Println("INFO reading wap definition at ", inputPath)
+	wapData, err := readYaml(inputPath)
 	if err != nil {
-		log.Print("Error reading yaml: ", err.Error())
+		log.Print("ERROR reading yaml: ", err.Error())
 	}
 	wap := NewWAP(wapData)
-	log.Printf("WAP: %v", wap)
 	NewPDFDrawer().Draw(wap, "/dev/stdout")
 }
