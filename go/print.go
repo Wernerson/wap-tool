@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"time"
 
 	"github.com/signintech/gopdf"
@@ -12,9 +13,14 @@ func check(err error) {
 	}
 }
 
+// Convert milimeters to pixels
+func mmToPx(mm float64) float64 {
+	return 3.78 * mm
+}
+
 func MakePDF(wap *Wap, outputPath string) (err error) {
 	pdf := gopdf.GoPdf{}
-	mm6ToPx := 22.68
+	mm6ToPx := mmToPx(6)
 	pageSize := gopdf.PageSizeA4Landscape
 	trimbox := gopdf.Box{Left: mm6ToPx, Top: mm6ToPx, Right: pageSize.W - mm6ToPx, Bottom: pageSize.H - mm6ToPx}
 	pdf.Start(gopdf.Config{
@@ -38,7 +44,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	if wap.data.Meta.Version != nil {
 		version = *wap.data.Meta.Version
 	}
-	padding := mm6ToPx / 4
+	padding := mmToPx(1.5)
 	pdf.AddHeader(func() {
 		pdf.SetY(padding)
 		pdf.SetX(padding)
@@ -68,15 +74,38 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	}
 	pdf.AddPageWithOption(opt)
 
-	// [ ] Find the correct Start and bounds
 	pdf.SetStrokeColor(255, 0, 0)
 	pdf.SetLineWidth(1)
-	Grid(&pdf, gopdf.Point{X: 50, Y: 50}, gopdf.Rect{W: 400, H: 400}, 5, 5)
+	PL := mmToPx(25)
+	PR := PL
+	PT := mmToPx(20)
+	PB := mmToPx(30)
+	P1 := gopdf.Point{X: PL, Y: PL}
+	wapBox := gopdf.Rect{W: pageSize.W - PL - PR, H: pageSize.H - PT - PB}
+	// [ ] Find the correct Start and bounds
+	DAYS := 7
+	duration := wap.dayEnd.Sub(wap.dayStart)
+	HOURS := int(duration.Hours())
+	SMALL_COLS := 5
+	colWidth := wapBox.W / float64(DAYS)
+	minuteHeight := wapBox.H / duration.Minutes()
+	ToGridSystem := func(t time.Time, dayIndex int) gopdf.Point {
+		deltaX := float64(dayIndex) * colWidth
+		deltaY := t.Sub(wap.dayStart).Minutes() * minuteHeight
+		return Add(P1, gopdf.Point{X: deltaX, Y: deltaY})
+	}
+	Grid(&pdf, P1, wapBox, HOURS, DAYS)
 	pdf.SetStrokeColor(0x80, 0x80, 0x80)
 	pdf.SetLineWidth(0.5)
-	Grid(&pdf, gopdf.Point{X: 50, Y: 50}, gopdf.Rect{W: 400, H: 400}, 20, 20)
+	Grid(&pdf, P1, wapBox, HOURS*2, DAYS*SMALL_COLS)
 	// [ ] Create based on Time settings
 	// [ ] Convert into local coordinates
+	// A test rectangle
+	pdf.SetFillColor(0, 0xff, 0)
+	testPoint := ToGridSystem(DayTime(10, 30), 1)
+	log.Print(testPoint, colWidth, 30*minuteHeight)
+	pdf.Rectangle(testPoint.X, testPoint.Y, colWidth, 30*minuteHeight, "DF", 0, 0)
+	PrintRect(&pdf, testPoint, colWidth, 30*minuteHeight)
 	// [ ] Add time labels
 	// [ ] check for different page sizes
 
@@ -86,6 +115,15 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	pdf.Text("page 2 content")
 	pdf.WritePdf(outputPath)
 	return nil
+}
+
+func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, width, height float64) {
+	err := pdf.Rectangle(p.X, p.Y, p.X+width, p.Y+height, "DF", 0, 0)
+	check(err)
+}
+
+func Add(p1, p2 gopdf.Point) gopdf.Point {
+	return gopdf.Point{X: p1.X + p2.X, Y: p1.Y + p2.Y}
 }
 
 // Draw a grid on pdf where start is the top left corner and bounds is the size of the grid.
@@ -103,5 +141,4 @@ func Grid(pdf *gopdf.GoPdf, start gopdf.Point, bounds gopdf.Rect, rows, columns 
 		x := start.X + colWidth*float64(w)
 		pdf.Line(x, start.Y, x, start.Y+bounds.H)
 	}
-	return nil
 }
