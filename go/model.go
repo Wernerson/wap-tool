@@ -22,6 +22,7 @@ type Event struct {
 	json       *WapJsonDaysElemEventsElem
 	start, end time.Time
 	dayOffset  int
+	repeats    bool
 }
 
 type Events []Event
@@ -125,6 +126,7 @@ func (w *Wap) processEvents() {
 				dayOffset: i,
 			}
 			if event.Repeats != nil {
+				freshEvent.repeats = true
 				w.repeating = append(w.repeating, freshEvent)
 			}
 			w.events = append(w.events, freshEvent)

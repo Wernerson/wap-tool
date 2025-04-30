@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"slices"
 	"time"
 
 	"github.com/signintech/gopdf"
@@ -145,9 +146,29 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		} else {
 			pdf.SetFillColor(127, 127, 127)
 		}
+		// Adjust because of columns
+		width := 0.0
+		offset := -1.0
+		appears := event.json.AppearsIn
+		for _, c := range wap.columns[event.dayOffset] {
+			if slices.Contains(appears, c) {
+				width += columnOptions[event.dayOffset][c].W
+				// ugly hack
+				if offset < 0.0 {
+					offset = columnOptions[event.dayOffset][c].Offset
+				}
+			}
+		}
+		// Special case. Repeating tasks could be defined on other days with different columns
+		// Just print them full width.
+		if event.repeats {
+			width = colWidth
+		}
+		// TODO handle the case where columns = [A, B, C] and appearsIn = [A, C]
 		RectStart := ToGridSystem(event.start, event.dayOffset)
+		RectStart.X += offset
 		minutes := event.end.Sub(event.start).Minutes()
-		rect := gopdf.Rect{W: colWidth, H: minutes * minuteHeight}
+		rect := gopdf.Rect{W: width, H: minutes * minuteHeight}
 		PrintRect(&pdf, RectStart, rect)
 		pdf.SetXY(RectStart.X, RectStart.Y)
 		pdf.SetFontSize(6)
@@ -175,6 +196,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 			log.Println("ERROR", err)
 		}
 	}
+	// TODO handle columns issue for repeating tasks: just draw it full?
 	for _, event := range wap.repeating {
 		for idx := event.dayOffset; idx < wap.Days; idx += 1 {
 			event.dayOffset = idx
