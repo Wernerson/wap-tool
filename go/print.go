@@ -142,7 +142,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	columnOptions := make([]map[string]columnInfo, wap.Days)
 	for i := range wap.data.Days {
 		// TODO the indexing could panic
-		columnInfos := AssignColumns(wap.columns[i], d.colWidth)
+		columnInfos := d.assignColumnLocations(wap.columns[i], d.colWidth)
 		columnOptions[i] = columnInfos
 		// draw the column header
 		for colName, opts := range columnInfos {
@@ -153,7 +153,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 			d.pdf.SetXY(RectStart.X, RectStart.Y)
 			d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 			d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
-			PrintRect(d.pdf, RectStart, rect)
+			drawRect(d.pdf, RectStart, rect)
 			d.pdf.SetTextColor(0x00, 0x00, 0x00)
 			d.pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
 			d.pdf.SetFont("bold", "", 6)
@@ -250,7 +250,7 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	RectStart.X += offset
 	minutes := event.end.Sub(event.start).Minutes()
 	rect := gopdf.Rect{W: width, H: minutes * d.minuteHeight}
-	PrintRect(d.pdf, RectStart, rect)
+	drawRect(d.pdf, RectStart, rect)
 	smallFont := 6
 	d.pdf.SetXY(RectStart.X, RectStart.Y-1)
 	d.pdf.SetTextColor(0x00, 0x00, 0x00)
@@ -288,7 +288,7 @@ type columnInfo struct {
 	W float64
 }
 
-func AssignColumns(columns []string, width float64) map[string]columnInfo {
+func (d *PDFDrawer) assignColumnLocations(columns []string, width float64) map[string]columnInfo {
 	m := make(map[string]columnInfo)
 	// divide evently
 	if len(columns) == 0 {
@@ -301,11 +301,6 @@ func AssignColumns(columns []string, width float64) map[string]columnInfo {
 		accumulator += columnWidth
 	}
 	return m
-}
-
-func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {
-	err := pdf.Rectangle(p.X, p.Y, p.X+rect.W, p.Y+rect.H, "DF", 0, 0)
-	check(err)
 }
 
 func Add(p1, p2 gopdf.Point) gopdf.Point {

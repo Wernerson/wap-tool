@@ -26,3 +26,9 @@ func drawVerticalLines(pdf *gopdf.GoPdf, start gopdf.Point, bounds gopdf.Rect, c
 		pdf.Line(x, start.Y, x, start.Y+bounds.H)
 	}
 }
+
+// shorthand
+func drawRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {
+	err := pdf.Rectangle(p.X, p.Y, p.X+rect.W, p.Y+rect.H, "DF", 0, 0)
+	check(err)
+}
