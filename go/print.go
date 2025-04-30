@@ -67,10 +67,41 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		TrimBox:  &trimbox,
 	}
 	pdf.AddPageWithOption(opt)
+
+	// [ ] Find the correct Start and bounds
+	pdf.SetStrokeColor(255, 0, 0)
+	pdf.SetLineWidth(1)
+	Grid(&pdf, gopdf.Point{X: 50, Y: 50}, gopdf.Rect{W: 400, H: 400}, 5, 5)
+	pdf.SetStrokeColor(0x80, 0x80, 0x80)
+	pdf.SetLineWidth(0.5)
+	Grid(&pdf, gopdf.Point{X: 50, Y: 50}, gopdf.Rect{W: 400, H: 400}, 20, 20)
+	// [ ] Create based on Time settings
+	// [ ] Convert into local coordinates
+	// [ ] Add time labels
+	// [ ] check for different page sizes
+
 	// pdf.Cell(nil, "Hi")
 	pdf.AddPage()
 	pdf.SetY(400)
 	pdf.Text("page 2 content")
 	pdf.WritePdf(outputPath)
+	return nil
+}
+
+// Draw a grid on pdf where start is the top left corner and bounds is the size of the grid.
+// rows and columns define the number of rows and columns.
+func Grid(pdf *gopdf.GoPdf, start gopdf.Point, bounds gopdf.Rect, rows, columns int) {
+	rowHeight := bounds.H / float64(rows)
+	colWidth := bounds.W / float64(columns)
+	// Draw horizontal lines ---
+	for h := range rows + 1 {
+		y := start.Y + rowHeight*float64(h)
+		pdf.Line(start.X, y, start.X+bounds.W, y)
+	}
+	// Draw vertical lines |
+	for w := range columns + 1 {
+		x := start.X + colWidth*float64(w)
+		pdf.Line(x, start.Y, x, start.Y+bounds.H)
+	}
 	return nil
 }
