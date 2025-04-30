@@ -30,6 +30,14 @@ categories:
 days:
   - offset: 0
     events:
+      - title: Test Event
+        start: 09:00
+        end: 08:00
+        columns: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+        category: NonExisting
+
       - title: Einrücken Vorbereiten
         start: 08:00
         end: 09:30
@@ -108,7 +116,7 @@ days:
 
       - title: Manipulieren
         category: Green
-        start: 12:45
+        start: 13:00
         end: 14:00
         columns: ["Det"]
         responsible: Det C
@@ -201,7 +209,7 @@ days:
 
       - title: Sport
         category: Green
-        start: 20:15
+        start: 20:30
         end: 22:00
         columns: ["Det"]
         location: Outdoor / Kraftraum

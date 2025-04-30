@@ -48,7 +48,7 @@ func (e Events) Less(i, j int) bool {
 func (e Event) String() string {
 	t1 := e.start.Format("15:04")
 	t2 := e.end.Format("15:04")
-	return fmt.Sprintf("#%d %v-%v %v\n", e.dayOffset, t1, t2, e.json.Title)
+	return fmt.Sprintf("Event(#%d %v-%v %v)", e.dayOffset, t1, t2, e.json.Title)
 }
 
 func NewWAP(data *WapJson) (w *Wap) {
@@ -140,4 +140,56 @@ func (w *Wap) processEvents() {
 		}
 	}
 	sort.Sort(w.events)
+
+	// Validate
+	for i, event := range w.events {
+		// - Check it has a valid duration
+		if !event.end.After(event.start) {
+			log.Printf("WARNING event ends before it starts: %v %v\n", event.start, event.end)
+			event.start, event.end = event.end, event.start
+		}
+		// MAYBE: Give it an end if it has none
+		// if NO_END {
+		// 	if i+1 < len(w.events) {
+		// 		nextEvent := w.events[i+1]
+		// 		if event.dayOffset == nextEvent.dayOffset {
+		// 			event.end = nextEvent.start
+		// 		} else {
+		// 			event.end = w.dayEnd
+		// 		}
+		// 	}
+		// }
+		// - Check for valid category
+		if cat := event.json.Category; cat != nil {
+			if _, ok := w.colors[*cat]; !ok {
+				// MAYBE: add helpful message how to fix it
+				log.Printf("WARNING category %v is not defined\n", *cat)
+				event.json.Category = nil
+			}
+		}
+		// - Check for overlap
+		for j := i + 1; j < len(w.events); j += 1 {
+			nextEvent := w.events[j]
+			if nextEvent.dayOffset != event.dayOffset {
+				break
+			}
+			if event.end.Compare(nextEvent.start) <= 0 {
+				break
+			}
+			if o := overlap(nextEvent.json.Columns, event.json.Columns); len(o) > 0 {
+				log.Printf("WARNING overlapping events in columns %v %v %v\n", o, event, nextEvent)
+			}
+		}
+	}
+}
+
+func overlap(xs []string, ys []string) (res []string) {
+	for _, x := range xs {
+		for _, y := range ys {
+			if x == y {
+				res = append(res, x)
+			}
+		}
+	}
+	return
 }
