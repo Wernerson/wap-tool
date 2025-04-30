@@ -185,7 +185,7 @@ type WapJsonMeta struct {
 	StartTime *string `json:"startTime,omitempty" yaml:"startTime,omitempty" mapstructure:"startTime,omitempty"`
 
 	// The title of the WAP. Often contains the week number.
-	Title *string `json:"title,omitempty" yaml:"title,omitempty" mapstructure:"title,omitempty"`
+	Title string `json:"title" yaml:"title" mapstructure:"title"`
 
 	// The unit the WAP is for
 	Unit *string `json:"unit,omitempty" yaml:"unit,omitempty" mapstructure:"unit,omitempty"`
@@ -205,6 +205,9 @@ func (j *WapJsonMeta) UnmarshalJSON(value []byte) error {
 	}
 	if _, ok := raw["firstDay"]; raw != nil && !ok {
 		return fmt.Errorf("field firstDay in WapJsonMeta: required")
+	}
+	if _, ok := raw["title"]; raw != nil && !ok {
+		return fmt.Errorf("field title in WapJsonMeta: required")
 	}
 	type Plain WapJsonMeta
 	var plain Plain

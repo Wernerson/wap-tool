@@ -46,7 +46,7 @@
           "type": "string"
         }
       },
-      "required": ["author", "firstDay"]
+      "required": ["author", "title", "firstDay"]
     },
     "categories": {
       "description": "Defines categories for events to display them styled.",

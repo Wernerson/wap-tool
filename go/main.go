@@ -29,6 +29,6 @@ func main() {
 		log.Print("Error reading yaml: ", err.Error())
 	}
 	wap := NewWAP(wapData)
-
 	log.Printf("WAP: %v", wap)
+	MakePDF(wap, "hello.pdf")
 }
