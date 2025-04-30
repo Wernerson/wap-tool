@@ -146,7 +146,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		d.drawColumnHeader(i%7, columnInfos)
 		// draw repeating events
 		for _, event := range wap.events {
-			if event.repeats && event.dayOffset < i {
+			if event.repeats && event.dayOffset <= i {
 				event.dayOffset = i % 7
 				d.drawEvent(event, 0, d.colWidth)
 			}
@@ -162,7 +162,6 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 			// TODO(refactor): make this a layouting subroutine
 			appears := event.json.AppearsIn
 			for _, c := range d.wap.columns[event.dayOffset] {
-				log.Println(event, c)
 				if slices.Contains(appears, c) {
 					width += columnOptions[event.dayOffset][c].W
 					// ugly hack

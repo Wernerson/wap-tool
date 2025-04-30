@@ -30,5 +30,5 @@ func main() {
 	}
 	wap := NewWAP(wapData)
 	log.Printf("WAP: %v", wap)
-	NewPDFDrawer().Draw(wap, "hello.pdf")
+	NewPDFDrawer().Draw(wap, "/dev/stdout")
 }
