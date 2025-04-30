@@ -145,7 +145,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		// Draw the column header
 		columnInfos := d.assignColumnLocations(wap.columns[i], d.colWidth)
 		columnOptions[i] = columnInfos
-		d.drawColumnHeader(weekday, columnInfos)
+		d.drawColumnHeader(i, columnInfos)
 		// draw repeating events
 		for _, event := range wap.events {
 			if event.repeats && event.dayOffset <= i {
@@ -223,24 +223,42 @@ func (d *PDFDrawer) toGridSystem(t time.Time, dayIndex int) gopdf.Point {
 }
 
 // Draw the column header
-// For example |Det1|Det2|Det3|
-// 0 <= day < 7
-func (d *PDFDrawer) drawColumnHeader(day int, ci map[string]columnInfo) {
-	heightInMinutes := 90.0
+// For example | Montag, 21.04.2025 |
+// For example | Det1 | Det2 | Det3 |
+func (d *PDFDrawer) drawColumnHeader(dayOffset int, ci map[string]columnInfo) {
+	day := dayOffset % 7
+	detHeightMin := 90.0
+	dayHeightMin := 20.0
+	// Box for the week
+	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
+	RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
+		gopdf.Point{X: 0, Y: -(detHeightMin + dayHeightMin) * d.minuteHeight})
+	rect := gopdf.Rect{W: d.colWidth, H: dayHeightMin * d.minuteHeight}
+	drawRect(d.pdf, RectStart, rect)
+	d.pdf.SetXY(RectStart.X, RectStart.Y)
+	d.pdf.SetFont("bold", "", 6)
+	d.pdf.SetTextColor(0x00, 0x00, 0x00)
+	dayName := d.wap.dayNames[dayOffset]
+	d.pdf.CellWithOption(&rect, dayName,
+		gopdf.CellOption{
+			Align: gopdf.Center | gopdf.Middle,
+		})
+
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
 	// empty box if no columns are defined
 	if len(ci) == 0 {
 		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
-			gopdf.Point{X: 0, Y: -heightInMinutes * d.minuteHeight})
-		rect := gopdf.Rect{W: d.colWidth, H: heightInMinutes * d.minuteHeight}
+			gopdf.Point{X: 0, Y: -detHeightMin * d.minuteHeight})
+		rect := gopdf.Rect{W: d.colWidth, H: detHeightMin * d.minuteHeight}
 		d.pdf.SetXY(RectStart.X, RectStart.Y)
 		drawRect(d.pdf, RectStart, rect)
 	}
 	for colName, opts := range ci {
 		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
-			gopdf.Point{X: opts.Offset, Y: -heightInMinutes * d.minuteHeight})
-		rect := gopdf.Rect{W: opts.W, H: heightInMinutes * d.minuteHeight}
+			gopdf.Point{X: opts.Offset, Y: -detHeightMin * d.minuteHeight})
+		rect := gopdf.Rect{W: opts.W, H: detHeightMin * d.minuteHeight}
 		d.pdf.SetXY(RectStart.X, RectStart.Y)
 		drawRect(d.pdf, RectStart, rect)
 		d.pdf.SetTextColor(0x00, 0x00, 0x00)

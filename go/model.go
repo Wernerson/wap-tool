@@ -14,6 +14,8 @@ type Wap struct {
 	repeating Events
 	events    Events
 	columns   [][]string
+	firstDay  time.Time
+	dayNames  []string
 	dayStart  time.Time
 	dayEnd    time.Time
 }
@@ -63,8 +65,13 @@ func NewWAP(data *WapJson) (w *Wap) {
 	w.dayStart = DayTime(23, 30)
 	w.Days = len(data.Days)
 	w.columns = make([][]string, w.Days)
+	w.dayNames = make([]string, w.Days)
 
-	w.processEvents()
+	firstDayD, err := time.Parse(time.DateOnly, data.Meta.FirstDay)
+	if err != nil {
+		log.Fatal("ERROR failed to parse date. Use the format YYYY-MM-DD: ", err)
+	}
+	w.firstDay = firstDayD
 	if data.Meta.StartTime != nil {
 		t1, err := parseDayTime(*data.Meta.StartTime)
 		if err != nil {
@@ -83,6 +90,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 			w.dayEnd = t2
 		}
 	}
+	w.processEvents()
 	return
 }
 
@@ -106,6 +114,12 @@ func (w *Wap) parseColors() {
 
 func (w *Wap) processEvents() {
 	for i, day := range w.data.Days {
+		if day.Name != nil {
+			w.dayNames[i] = *day.Name
+		} else {
+			correctedTime := w.firstDay.AddDate(0, 0, i)
+			w.dayNames[i] = correctedTime.Weekday().String() + ", " + correctedTime.Format(time.DateOnly)
+		}
 		w.columns[i] = day.Columns
 		for _, event := range day.Events {
 			start, err := parseDayTime(event.Start)
