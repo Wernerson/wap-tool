@@ -4,12 +4,15 @@ meta:
   firstDay: 2025-04-21
   startTime: "06:00"
   endTime: "23:00"
+  unit: Cy Kp 42/3
+  title: Det 6 - Woche 1
+  version: "Stand: 17.04.2025"
 
 categories:
-  - identifier: AGA
+  - identifier: Green
     name: Allgemeine Grundausbildung
     color: "#00b050"
-  - identifier: admin
+  - identifier: Orange
     color: "#ff9900"
   - identifier: Vs
     name: Verschiebung
@@ -17,9 +20,12 @@ categories:
   - identifier: FD
     name: Fachdienst
     color: "#ffffcc"
-  - identifier: Vpf
+  - identifier: Yellow
     name: Verpflegung
     color: "#ffffcc"
+  - identifier: KVP
+    name: Verpflegung
+    color: "#ff000080"
 
 days:
   - offset: 0
@@ -30,7 +36,7 @@ days:
         columns: ["Det"]
         responsible: Det C
         location: FKhaus 15b
-        category: admin
+        category: Orange
 
       - title: Einrücken
         start: 09:30
@@ -43,15 +49,15 @@ days:
         columns: ["Det"]
         responsible: Det C
         location: GK 106 & GK 108
-        category: admin
+        category: Orange
 
-      - title: Einrückungsadmin & Fahr Rape
+      - title: EinrückungsOrange & Fahr Rape
         start: 10:00
         end: 11:00
         columns: ["Det"]
         responsible: Einh Four
         location: FKhaus 15b
-        category: admin
+        category: Orange
 
       - title: Fassung IAA-Mat
         start: 10:00
@@ -59,19 +65,34 @@ days:
         columns: ["Det"]
         responsible: Einh Fw
         location: Mat Mag
-        category: admin
+        category: Orange
+
+      - title: Zimmer Ordnung
+        start: 11:00
+        end: 11:30
+        columns: ["Det"]
+        category: Orange
+        location: GK 106 & 108
+        responsible: Det C
+
+      - title: Vpf Bern
+        start: 12:00
+        end: 12:45
+        columns: ["Det"]
+        category: Yellow
+        repeats: daily
 
       - title: Feueralarm
         start: 11:30
         end: 11:45
         columns: ["Det"]
-        category: admin
+        category: Orange
 
       - title: Waffe abgeben
         start: 11:45
         end: 12:00
         columns: ["Det"]
-        category: admin
+        category: Orange
 
       - title: "20"
         start: 10:00
@@ -80,13 +101,13 @@ days:
         columns: ["Beso"]
 
       - title: AWB / LMS Check
-        category: Aga
+        category: Green
         start: 12:45
         end: 13:00
         columns: ["Det"]
 
       - title: Manipulieren
-        category: Aga
+        category: Green
         start: 12:45
         end: 14:00
         columns: ["Det"]
@@ -94,7 +115,7 @@ days:
         location: Hinter GK
 
       - title: TPD Stgw-90
-        category: Aga
+        category: Green
         start: 14:00
         end: 14:45
         columns: ["Det"]
@@ -102,7 +123,7 @@ days:
         location: PD-Stand
 
       - title: PD SM90
-        category: Aga
+        category: Green
         start: 14:45
         end: 15:15
         columns: ["Det"]
@@ -110,7 +131,7 @@ days:
         location: PD-Stand
 
       - title: SAN D
-        category: Aga
+        category: Green
         start: 15:15
         end: 16:00
         columns: ["Det"]
@@ -118,7 +139,7 @@ days:
         location: FKhaus 15b
 
       - title: LMS IS
-        category: Aga
+        category: Green
         start: 16:00
         end: 16:30
         columns: ["Det"]
@@ -126,7 +147,7 @@ days:
         location: FKhaus 15b
 
       - title: AWB / LMS Check
-        category: Aga
+        category: Green
         start: 16:00
         end: 16:30
         columns: ["Det"]
@@ -134,7 +155,7 @@ days:
         location: FKhaus 15b
 
       - title: LMS IS
-        category: Aga
+        category: Green
         start: 16:30
         end: 17:15
         columns: ["Det"]
@@ -142,22 +163,22 @@ days:
         location: FKhaus 15b
 
       - title: Diensttheorie + KomD
-        category: Admin
+        category: Orange
         start: 17:15
         end: 18:00
         columns: ["Det"]
         responsible: Det C
         location: FKhaus 15b
 
-      - title: PD/ID
-        category: "Vpf"
+      - title: Vpf Bern
+        category: "Yellow"
         start: 18:00
         end: 18:45
         columns: ["Det"]
         repeats: daily
 
       - title: Theorie Eigenschutz und Integrale Sicherheit
-        category: Aga
+        category: Green
         start: 18:45
         end: 19:30
         columns: ["Det"]
@@ -165,7 +186,7 @@ days:
         location: FKhaus 15b
 
       - title: Kennenlernrunde
-        category: Admin
+        category: Orange
         start: 19:30
         end: 20:15
         columns: ["Det"]
@@ -173,27 +194,27 @@ days:
         location: FKhaus 15b
 
       - title: Tenue Sport erstellen
-        category: Aga
+        category: Green
         start: 20:15
         end: 20:30
         columns: ["Det"]
 
       - title: Sport
-        category: Aga
+        category: Green
         start: 20:15
         end: 22:00
         columns: ["Det"]
         location: Outdoor / Kraftraum
 
       - title: PD/ID
-        category: "Vpf"
+        category: "Yellow"
         start: 22:00
-        end: 22:20
+        end: 22:15
         columns: ["Det"]
         repeats: daily
 
       - title: ABV
-        start: 22:20
+        start: 22:15
         end: 22:30
         columns: ["Det"]
         repeats: daily
@@ -223,14 +244,21 @@ days:
         end: 08:00
         columns: ["Det"]
       - title: "Schiessen"
-        category: "AGA"
+        category: "Green"
         start: 08:00
         end: 12:00
         columns: ["Det"]
         responsible: Det C
         location: Spl Sand
+
+      - title: Vpf Sand
+        category: Yellow
+        start: 12:00
+        end: 12:45
+        columns: ["Det"]
+
       - title: "Schiessen"
-        category: "AGA"
+        category: "Green"
         start: 12:45
         end: 13:45
         columns: ["Det"]
@@ -242,19 +270,19 @@ days:
         end: 14:15
         columns: ["Det"]
       - title: "GPD Stgm / Pist"
-        category: "AGA"
+        category: "Green"
         start: 14:15
         end: 15:45
         columns: ["Det"]
         responsible: Det C
         location: PD-Stand
       - title: "Reorg"
-        category: "AGA"
+        category: "Green"
         start: 15:45
         end: 16:15
         columns: ["Det"]
       - title: "PA Mat Kontrolle"
-        category: "AGA"
+        category: "Green"
         start: 16:15
         end: 18:00
         columns: ["Det"]
@@ -267,6 +295,12 @@ days:
         end: 22:00
         columns: ["Det"]
         location: Mannschaftszimmer
+  - offset: 2
+    events: []
+  - offset: 3
+    events: []
+  - offset: 4
+    events: []
 
 remarks:
   - Some remark.
