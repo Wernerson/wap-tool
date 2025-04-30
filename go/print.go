@@ -14,8 +14,13 @@ func check(err error) {
 
 func MakePDF(wap *Wap, outputPath string) (err error) {
 	pdf := gopdf.GoPdf{}
+	mm6ToPx := 22.68
 	pageSize := gopdf.PageSizeA4Landscape
-	pdf.Start(gopdf.Config{PageSize: *pageSize})
+	trimbox := gopdf.Box{Left: mm6ToPx, Top: mm6ToPx, Right: pageSize.W - mm6ToPx, Bottom: pageSize.H - mm6ToPx}
+	pdf.Start(gopdf.Config{
+		PageSize: *pageSize,
+		TrimBox:  trimbox,
+	})
 	pdf.AddPage()
 	err = pdf.AddTTFFont("OpenSans", "./OpenSans-Regular.ttf")
 	if err != nil {
@@ -33,10 +38,10 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	if wap.data.Meta.Version != nil {
 		version = *wap.data.Meta.Version
 	}
-	pagePadding := 5.0
+	padding := mm6ToPx / 4
 	pdf.AddHeader(func() {
-		pdf.SetY(pagePadding)
-		pdf.SetX(pagePadding)
+		pdf.SetY(padding)
+		pdf.SetX(padding)
 		pdf.Cell(nil, unit)
 		tm := wap.data.Meta.Title
 		tmW, err := pdf.MeasureTextWidth(tm)
@@ -46,20 +51,23 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		tr := version
 		trW, err := pdf.MeasureTextWidth(tr)
 		check(err)
-		pdf.SetX(pageSize.W - trW - pagePadding)
+		pdf.SetX(pageSize.W - trW - padding)
 		pdf.CellWithOption(nil, tr, gopdf.CellOption{Align: gopdf.Right})
 	})
 	pdf.AddFooter(func() {
 		footerText := "footer"
 		ftH, err := pdf.MeasureCellHeightByText(footerText)
 		check(err)
-		pdf.SetY(pageSize.H - pagePadding - ftH)
+		pdf.SetY(pageSize.H - padding - ftH)
 		pdf.Cell(nil, "footer")
 	})
-
-	pdf.AddPage()
-	pdf.SetY(400)
-	pdf.Text("page 1 content")
+	// Page trim-box
+	opt := gopdf.PageOption{
+		PageSize: *&pageSize,
+		TrimBox:  &trimbox,
+	}
+	pdf.AddPageWithOption(opt)
+	// pdf.Cell(nil, "Hi")
 	pdf.AddPage()
 	pdf.SetY(400)
 	pdf.Text("page 2 content")
