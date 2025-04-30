@@ -118,19 +118,15 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		"")
 	d.pdf.AddPageWithOption(opt)
 
-	d.pdf.SetStrokeColor(255, 0, 0)
-	d.pdf.SetLineWidth(1)
 	PL := mmToPx(25)
 	PR := PL
 	PT := mmToPx(20)
 	PB := mmToPx(30)
 	P1 := gopdf.Point{X: PL, Y: PL}
 	wapBox := gopdf.Rect{W: d.pageSize.W - PL - PR, H: d.pageSize.H - PT - PB}
-	// [ ] Find the correct Start and bounds
 	DAYS := 7
 	duration := wap.dayEnd.Sub(wap.dayStart)
 	HOURS := int(duration.Hours())
-	SMALL_COLS := 5
 	colWidth := wapBox.W / float64(DAYS)
 	minuteHeight := wapBox.H / duration.Minutes()
 	ToGridSystem := func(t time.Time, dayIndex int) gopdf.Point {
@@ -138,10 +134,19 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		deltaY := t.Sub(wap.dayStart).Minutes() * minuteHeight
 		return Add(P1, gopdf.Point{X: deltaX, Y: deltaY})
 	}
-	Grid(d.pdf, P1, wapBox, HOURS, DAYS)
+	// The Big Grid
+	d.pdf.SetStrokeColor(0, 0, 0)
+	d.pdf.SetLineWidth(1)
+	drawGrid(d.pdf, P1, wapBox, HOURS, DAYS)
+	// Marks at 30 minutes
 	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
-	d.pdf.SetLineWidth(0.5)
-	Grid(d.pdf, P1, wapBox, HOURS*2, DAYS*SMALL_COLS)
+	d.pdf.SetLineWidth(.5)
+	drawHorizontalLines(d.pdf, P1, wapBox, HOURS*2)
+	// Marks at 15 minutes
+	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
+	d.pdf.SetLineWidth(.2)
+	drawHorizontalLines(d.pdf, P1, wapBox, HOURS*4)
+
 	// Add time scale (mark all hours)
 	d.pdf.SetFontSize(8)
 	d.pdf.SetFillColor(0x00, 0x00, 0x00)
@@ -285,21 +290,4 @@ func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {
 
 func Add(p1, p2 gopdf.Point) gopdf.Point {
 	return gopdf.Point{X: p1.X + p2.X, Y: p1.Y + p2.Y}
-}
-
-// Draw a grid on pdf where start is the top left corner and bounds is the size of the grid.
-// rows and columns define the number of rows and columns.
-func Grid(pdf *gopdf.GoPdf, start gopdf.Point, bounds gopdf.Rect, rows, columns int) {
-	rowHeight := bounds.H / float64(rows)
-	colWidth := bounds.W / float64(columns)
-	// Draw horizontal lines ---
-	for h := range rows + 1 {
-		y := start.Y + rowHeight*float64(h)
-		pdf.Line(start.X, y, start.X+bounds.W, y)
-	}
-	// Draw vertical lines |
-	for w := range columns + 1 {
-		x := start.X + colWidth*float64(w)
-		pdf.Line(x, start.Y, x, start.Y+bounds.H)
-	}
 }
