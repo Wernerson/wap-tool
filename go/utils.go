@@ -11,6 +11,10 @@ type RGBColor struct {
 	B uint8 // Blue component (0-255)
 }
 
+func (c RGBColor) String() string {
+	return fmt.Sprintf("#%02X%02X%02X", c.R, c.G, c.B)
+}
+
 // Compare compares two RGBColor structs.
 // Returns -1 if the current color is less than the other,
 // 0 if they are equal, and 1 if the current color is greater.
