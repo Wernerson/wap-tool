@@ -20,35 +20,49 @@ func mmToPx(mm float64) float64 {
 	return 3.78 * mm
 }
 
-// TODO consider using a struct to group options and helper functions
-// possibly make a Printer interface
+type WAPDrawer interface {
+	Draw(wap *Wap, output_path string)
+}
 
-func MakePDF(wap *Wap, outputPath string) (err error) {
+type PDFDrawer struct {
+	pdf      *gopdf.GoPdf
+	pageSize *gopdf.Rect
+}
+
+func NewPDFDrawer() *PDFDrawer {
 	pdf := gopdf.GoPdf{}
+	return &PDFDrawer{pdf: &pdf, pageSize: gopdf.PageSizeA4Landscape}
+}
+
+func (d *PDFDrawer) setupPage() (err error) {
 	mm6ToPx := mmToPx(6)
-	pageSize := gopdf.PageSizeA4Landscape
-	trimbox := gopdf.Box{Left: mm6ToPx, Top: mm6ToPx, Right: pageSize.W - mm6ToPx, Bottom: pageSize.H - mm6ToPx}
-	pdf.Start(gopdf.Config{
-		PageSize: *pageSize,
+	trimbox := gopdf.Box{Left: mm6ToPx, Top: mm6ToPx, Right: d.pageSize.W - mm6ToPx, Bottom: d.pageSize.H - mm6ToPx}
+	d.pdf.Start(gopdf.Config{
+		PageSize: *d.pageSize,
 		TrimBox:  trimbox,
 	})
-	pdf.AddPage()
-	err = pdf.AddTTFFont("regular", "./ttf/OpenSans-Regular.ttf")
+	d.pdf.AddPage()
+	err = d.pdf.AddTTFFont("regular", "./ttf/OpenSans-Regular.ttf")
 	if err != nil {
 		return err
 	}
-	err = pdf.AddTTFFont("bold", "./ttf/OpenSans-Bold.ttf")
+	err = d.pdf.AddTTFFont("bold", "./ttf/OpenSans-Bold.ttf")
 	if err != nil {
 		return err
 	}
-	err = pdf.AddTTFFont("italic", "./ttf/OpenSans-Italic.ttf")
+	err = d.pdf.AddTTFFont("italic", "./ttf/OpenSans-Italic.ttf")
 	if err != nil {
 		return err
 	}
-	err = pdf.SetFont("regular", "", 14)
+	err = d.pdf.SetFont("regular", "", 14)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
+	d.setupPage()
 	unit := ""
 	if wap.data.Meta.Unit != nil {
 		unit = *wap.data.Meta.Unit
@@ -58,43 +72,42 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		version = *wap.data.Meta.Version
 	}
 	padding := mmToPx(1.5)
-	pdf.AddHeader(func() {
-		pdf.SetY(padding)
-		pdf.SetX(padding)
-		pdf.Cell(nil, unit)
+	d.pdf.AddHeader(func() {
+		d.pdf.SetY(padding)
+		d.pdf.SetX(padding)
+		d.pdf.Cell(nil, unit)
 		tm := wap.data.Meta.Title
-		tmW, err := pdf.MeasureTextWidth(tm)
+		tmW, err := d.pdf.MeasureTextWidth(tm)
 		check(err)
-		pdf.SetX(pageSize.W/2 - tmW/2)
-		pdf.CellWithOption(nil, tm, gopdf.CellOption{Align: gopdf.Center})
+		d.pdf.SetX(d.pageSize.W/2 - tmW/2)
+		d.pdf.CellWithOption(nil, tm, gopdf.CellOption{Align: gopdf.Center})
 		tr := version
-		trW, err := pdf.MeasureTextWidth(tr)
+		trW, err := d.pdf.MeasureTextWidth(tr)
 		check(err)
-		pdf.SetX(pageSize.W - trW - padding)
-		pdf.CellWithOption(nil, tr, gopdf.CellOption{Align: gopdf.Right})
+		d.pdf.SetX(d.pageSize.W - trW - padding)
+		d.pdf.CellWithOption(nil, tr, gopdf.CellOption{Align: gopdf.Right})
 	})
-	pdf.AddFooter(func() {
+	d.pdf.AddFooter(func() {
 		footerText := "footer"
-		ftH, err := pdf.MeasureCellHeightByText(footerText)
+		ftH, err := d.pdf.MeasureCellHeightByText(footerText)
 		check(err)
-		pdf.SetY(pageSize.H - padding - ftH)
-		pdf.Cell(nil, "footer")
+		d.pdf.SetY(d.pageSize.H - padding - ftH)
+		d.pdf.Cell(nil, "footer")
 	})
 	// Page trim-box
 	opt := gopdf.PageOption{
-		PageSize: *&pageSize,
-		TrimBox:  &trimbox,
+		PageSize: d.pageSize,
 	}
-	pdf.AddPageWithOption(opt)
+	d.pdf.AddPageWithOption(opt)
 
-	pdf.SetStrokeColor(255, 0, 0)
-	pdf.SetLineWidth(1)
+	d.pdf.SetStrokeColor(255, 0, 0)
+	d.pdf.SetLineWidth(1)
 	PL := mmToPx(25)
 	PR := PL
 	PT := mmToPx(20)
 	PB := mmToPx(30)
 	P1 := gopdf.Point{X: PL, Y: PL}
-	wapBox := gopdf.Rect{W: pageSize.W - PL - PR, H: pageSize.H - PT - PB}
+	wapBox := gopdf.Rect{W: d.pageSize.W - PL - PR, H: d.pageSize.H - PT - PB}
 	// [ ] Find the correct Start and bounds
 	DAYS := 7
 	duration := wap.dayEnd.Sub(wap.dayStart)
@@ -107,19 +120,19 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		deltaY := t.Sub(wap.dayStart).Minutes() * minuteHeight
 		return Add(P1, gopdf.Point{X: deltaX, Y: deltaY})
 	}
-	Grid(&pdf, P1, wapBox, HOURS, DAYS)
-	pdf.SetStrokeColor(0x80, 0x80, 0x80)
-	pdf.SetLineWidth(0.5)
-	Grid(&pdf, P1, wapBox, HOURS*2, DAYS*SMALL_COLS)
+	Grid(d.pdf, P1, wapBox, HOURS, DAYS)
+	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
+	d.pdf.SetLineWidth(0.5)
+	Grid(d.pdf, P1, wapBox, HOURS*2, DAYS*SMALL_COLS)
 	// Add time scale (mark all hours)
-	pdf.SetFontSize(8)
-	pdf.SetFillColor(0x00, 0x00, 0x00)
-	pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	d.pdf.SetFontSize(8)
+	d.pdf.SetFillColor(0x00, 0x00, 0x00)
+	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	for hour := wap.dayStart.Hour(); hour <= wap.dayEnd.Hour(); hour += 1 {
 		p := Add(ToGridSystem(DayTime(hour, 0), 0), gopdf.Point{X: -20, Y: -6})
-		pdf.SetXY(p.X, p.Y)
+		d.pdf.SetXY(p.X, p.Y)
 		// convert to military time format
-		pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
+		d.pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
 	}
 	columnOptions := make([]map[string]columnInfo, wap.Days)
 	for i := range wap.Days {
@@ -131,29 +144,29 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 			RectStart := Add(ToGridSystem(wap.dayStart, i),
 				gopdf.Point{X: opts.Offset, Y: -heightInMinutes * minuteHeight})
 			rect := gopdf.Rect{W: opts.W, H: heightInMinutes * minuteHeight}
-			pdf.SetXY(RectStart.X, RectStart.Y)
-			pdf.SetStrokeColor(0x00, 0x00, 0x00)
-			pdf.SetFillColor(0xf0, 0xf0, 0xf0)
-			PrintRect(&pdf, RectStart, rect)
-			pdf.SetTextColor(0x00, 0x00, 0x00)
-			pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
-			pdf.SetFont("bold", "", 6)
-			pdf.CellWithOption(&rect, colName,
+			d.pdf.SetXY(RectStart.X, RectStart.Y)
+			d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
+			d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
+			PrintRect(d.pdf, RectStart, rect)
+			d.pdf.SetTextColor(0x00, 0x00, 0x00)
+			d.pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
+			d.pdf.SetFont("bold", "", 6)
+			d.pdf.CellWithOption(&rect, colName,
 				gopdf.CellOption{
 					Align: gopdf.Center | gopdf.Middle,
 				})
-			pdf.RotateReset()
+			d.pdf.RotateReset()
 		}
 	}
 
 	drawEvent := func(event Event) {
 		cat := event.json.Category
 		if cat == nil {
-			pdf.SetFillColor(127, 127, 127)
+			d.pdf.SetFillColor(127, 127, 127)
 		} else if c, ok := wap.colors[*cat]; ok {
-			pdf.SetFillColor(c.R, c.G, c.B)
+			d.pdf.SetFillColor(c.R, c.G, c.B)
 		} else {
-			pdf.SetFillColor(127, 127, 127)
+			d.pdf.SetFillColor(127, 127, 127)
 		}
 		// Adjust because of columns
 		width := 0.0
@@ -178,31 +191,31 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		RectStart.X += offset
 		minutes := event.end.Sub(event.start).Minutes()
 		rect := gopdf.Rect{W: width, H: minutes * minuteHeight}
-		PrintRect(&pdf, RectStart, rect)
+		PrintRect(d.pdf, RectStart, rect)
 		smallFont := 6
-		pdf.SetXY(RectStart.X, RectStart.Y-1)
-		pdf.SetTextColor(0x00, 0x00, 0x00)
-		pdf.SetFont("bold", "", smallFont)
+		d.pdf.SetXY(RectStart.X, RectStart.Y-1)
+		d.pdf.SetTextColor(0x00, 0x00, 0x00)
+		d.pdf.SetFont("bold", "", smallFont)
 		title := event.json.Title
-		ok, heightNeeded, _ := pdf.IsFitMultiCell(&rect, title)
+		ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
 		if !ok {
 			log.Println("WARNING", "event title does not fit in rectangle!")
 		}
-		err := pdf.MultiCellWithOption(&rect, title,
+		err := d.pdf.MultiCellWithOption(&rect, title,
 			gopdf.CellOption{
 				Align: gopdf.Center,
 			})
 		check(err)
 		description := ""
-		pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded-3)
+		d.pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded-3)
 		if event.json.Location != nil {
 			description += *event.json.Location
 		}
 		if event.json.Responsible != nil {
 			description += ", " + *event.json.Responsible
 		}
-		pdf.SetFont("regular", "", smallFont)
-		err = pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*minuteHeight - heightNeeded}, description,
+		d.pdf.SetFont("regular", "", smallFont)
+		err = d.pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*minuteHeight - heightNeeded}, description,
 			gopdf.CellOption{
 				Align: gopdf.Center,
 			})
@@ -221,7 +234,7 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	}
 
 	// possibly add more pages
-	pdf.WritePdf(outputPath)
+	d.pdf.WritePdf(outputPath)
 	return nil
 }
 
