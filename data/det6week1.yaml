@@ -37,13 +37,6 @@ days:
   - name: "Dienstag"
     columns: ["Det"]
     events:
-      - title: Test Event
-        start: 09:00
-        end: 08:00
-        appearsIn: ["Det"]
-        responsible: Det C
-        location: FKhaus 15b
-        category: NonExisting
 
       - title: Einrücken Vorbereiten
         start: 08:00
@@ -501,6 +494,27 @@ days:
         category: Lightgreen
         start: 19:00
         end: 20:30
+
+  - name: "Freitag"
+  - columns: []
+  - columns: []
+  - columns: []
+    events:
+      - title: Test end before start
+        start: 09:00
+        end: 08:00
+        appearsIn: ["Det"]
+        responsible: Det C
+        location: FKhaus 15b
+      - title: Test short duration
+        start: 09:00
+        end: 09:05
+        appearsIn: ["Det"]
+        responsible: Det C
+      - title: Test NonExisting category
+        start: 09:30
+        end: 09:45
+        category: NonExisting
 remarks:
   - Some remark.
   - Signed by Me.

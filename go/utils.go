@@ -65,3 +65,11 @@ func parseDayTime(s string) (t time.Time, err error) {
 func DayTime(hour, minute int) time.Time {
 	return time.Date(0, 1, 1, hour, minute, 0, 0, time.UTC)
 }
+
+func Min(x, y float64) float64 {
+	if x < y {
+		return x
+	} else {
+		return y
+	}
+}

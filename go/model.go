@@ -153,10 +153,15 @@ func (w *Wap) processEvents() {
 	// Validate
 	for i, event := range w.events {
 		// - Check it has a valid duration
-		if !event.end.After(event.start) {
-			log.Printf("WARNING event ends before it starts: %v %v\n", event.start, event.end)
-			event.start, event.end = event.end, event.start
+		duration := event.end.Sub(event.start)
+		if duration < 0 {
+			log.Printf("WARNING event ends before it starts: %v\n", event)
 		}
+		minimumDurationMin := 10
+		if duration.Minutes() < float64(minimumDurationMin) {
+			log.Printf("WARNING event length %v min too short and will not be properly displayed. The duration should be at least %d min\n", duration.Minutes(), minimumDurationMin)
+		}
+
 		// MAYBE: Give it an end if it has none
 		// if NO_END {
 		// 	if i+1 < len(w.events) {
@@ -201,6 +206,8 @@ func (w *Wap) processEvents() {
 		}
 		w.events[i].parallelCols = overlapping
 		// - TODO validate that appearsIn references a column defined for that day.
+
+		// - TODO note if there is unallocated time
 	}
 }
 

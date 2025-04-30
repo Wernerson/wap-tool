@@ -178,7 +178,6 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 				// | ev1 | ev2 |ev3|
 				eventWidth = eventWidth / float64(event.parallelCols+1)
 				offset += float64(event.parallelIdx) * eventWidth
-				log.Println("YEET", event, eventWidth, offset)
 			}
 			if eventWidth > 0.0 {
 				d.drawEvent(event, offset, eventWidth)
@@ -297,11 +296,23 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	}
 	rect := gopdf.Rect{W: width, H: minutes * d.minuteHeight}
 	drawRect(d.pdf, RectStart, rect)
-	smallFont := 6
-	d.pdf.SetXY(RectStart.X, RectStart.Y-1)
+
+	d.pdf.SetXY(RectStart.X, RectStart.Y)
 	d.pdf.SetTextColor(0x00, 0x00, 0x00)
-	d.pdf.SetFont("bold", "", smallFont)
 	title := event.json.Title
+
+	titleFontSize := 7
+	// Limit the size for the title
+	// to avoid making it too large
+	rect.H = Min(rect.H, float64(titleFontSize)*2)
+	// Dynamically decrease font-size until it fits
+	for ; titleFontSize >= 4; titleFontSize -= 1 {
+		d.pdf.SetFont("bold", "", titleFontSize)
+		ok, _, _ := d.pdf.IsFitMultiCell(&rect, title)
+		if ok {
+			break
+		}
+	}
 	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
 	if !ok {
 		log.Println("WARNING", "title does not fit in rectangle:", event.json.Title)
@@ -312,7 +323,7 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 		})
 	check(err)
 	description := ""
-	d.pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded-3)
+	d.pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded)
 	if event.json.Location != nil {
 		description += *event.json.Location
 	}
@@ -320,7 +331,7 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 		description += ", " + *event.json.Responsible
 	}
 
-	d.pdf.SetFont("regular", "", smallFont)
+	d.pdf.SetFont("regular", "", 6)
 	ok, _, _ = d.pdf.IsFitMultiCell(&rect, description)
 	if !ok {
 		log.Println("WARNING description does not fit: ", description)
