@@ -121,7 +121,6 @@ days:
         columns: ["Det"]
         responsible: Det C
         location: Hinter GK
-
       - title: TPD Stgw-90
         category: Green
         start: 14:00

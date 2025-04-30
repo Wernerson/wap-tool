@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -99,14 +100,23 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	pdf.SetLineWidth(0.5)
 	Grid(&pdf, P1, wapBox, HOURS*2, DAYS*SMALL_COLS)
 	// [ ] Create based on Time settings
-	// [ ] Convert into local coordinates
 	// A test rectangle
 	pdf.SetFillColor(0, 0xff, 0)
 	testPoint := ToGridSystem(DayTime(10, 30), 1)
 	log.Print(testPoint, colWidth, 30*minuteHeight)
 	pdf.Rectangle(testPoint.X, testPoint.Y, colWidth, 30*minuteHeight, "DF", 0, 0)
 	PrintRect(&pdf, testPoint, colWidth, 30*minuteHeight)
-	// [ ] Add time labels
+	// Add time scale (mark all hours)
+	pdf.SetFontSize(8)
+	pdf.SetFillColor(0x00, 0x00, 0x00)
+	pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	for hour := wap.dayStart.Hour(); hour <= wap.dayEnd.Hour(); hour += 1 {
+		p := Add(ToGridSystem(DayTime(hour, 0), 0), gopdf.Point{X: -20, Y: -6})
+		pdf.SetX(p.X)
+		pdf.SetY(p.Y)
+		// convert to military time format
+		pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
+	}
 	// [ ] check for different page sizes
 
 	// pdf.Cell(nil, "Hi")
