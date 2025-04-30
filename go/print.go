@@ -109,6 +109,32 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		// convert to military time format
 		pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
 	}
+	columnOptions := make([]map[string]columnInfo, wap.Days)
+	for i := range wap.Days {
+		columnInfos := AssignColumns(wap.columns[i], colWidth)
+		columnOptions[i] = columnInfos
+		// draw the column header
+		pdf.SetFontSize(6)
+		for colName, opts := range columnInfos {
+			RectStart := Add(ToGridSystem(wap.dayStart.Add(-time.Minute*70.0), i), gopdf.Point{X: opts.Offset, Y: 0})
+			height := 70 * minuteHeight
+			rect := gopdf.Rect{W: opts.W, H: height}
+			pdf.SetXY(RectStart.X, RectStart.Y)
+			pdf.SetFillColor(0xf0, 0xf0, 0xf0)
+			pdf.SetStrokeColor(0x00, 0x00, 0x00)
+			PrintRect(&pdf, RectStart, rect)
+			log.Println("DEBUG", colName, RectStart.X+opts.Offset, RectStart.Y)
+			pdf.SetFillColor(0x00, 0x00, 0x00)
+			// TODO rotation is broken
+			// pdf.Rotate(90.0, RectStart.X, RectStart.Y+height)
+			err := pdf.Cell(&rect, colName)
+			// pdf.RotateReset()
+			if err != nil {
+				// pdf.RotateReset()
+				log.Println("ERROR", err)
+			}
+		}
+	}
 
 	drawEvent := func(event Event) {
 		cat := event.json.Category
@@ -123,7 +149,6 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		minutes := event.end.Sub(event.start).Minutes()
 		rect := gopdf.Rect{W: colWidth, H: minutes * minuteHeight}
 		PrintRect(&pdf, RectStart, rect)
-		// TODO Add the text
 		pdf.SetXY(RectStart.X, RectStart.Y)
 		pdf.SetFontSize(6)
 		pdf.SetFillColor(0x00, 0x00, 0x00)
@@ -164,6 +189,28 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	// possibly add more pages
 	pdf.WritePdf(outputPath)
 	return nil
+}
+
+type columnInfo struct {
+	// Offset from the x of the day
+	Offset float64
+	// Width of the column
+	W float64
+}
+
+func AssignColumns(columns []string, width float64) map[string]columnInfo {
+	m := make(map[string]columnInfo)
+	// divide evently
+	if len(columns) == 0 {
+		return m
+	}
+	columnWidth := width / float64(len(columns))
+	accumulator := 0.0
+	for _, c := range columns {
+		m[c] = columnInfo{Offset: accumulator, W: columnWidth}
+		accumulator += columnWidth
+	}
+	return m
 }
 
 func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {

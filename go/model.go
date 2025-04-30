@@ -13,7 +13,7 @@ type Wap struct {
 	colors    map[string]RGBColor
 	repeating Events
 	events    Events
-	columns   map[int]map[string]struct{}
+	columns   map[int][]string
 	dayStart  time.Time
 	dayEnd    time.Time
 }
@@ -58,7 +58,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 	w.colors = make(map[string]RGBColor)
 	w.events = []Event{}
 	w.repeating = []Event{}
-	w.columns = make(map[int]map[string]struct{})
+	w.columns = make(map[int][]string)
 	w.parseColors()
 	w.processEvents()
 	w.dayStart = DayTime(23, 30)
@@ -103,19 +103,9 @@ func (w *Wap) parseColors() {
 }
 
 func (w *Wap) processEvents() {
-
-	addCols := func(idx int, cols []string) {
-		for _, c := range cols {
-			if m, ok := w.columns[idx]; ok {
-				m[c] = struct{}{}
-			} else {
-				w.columns[idx] = map[string]struct{}{c: struct{}{}}
-			}
-		}
-	}
-
 	for i, day := range w.data.Days {
 		// TODO day.Offset
+		w.columns[i] = day.Columns
 		for _, event := range day.Events {
 			start, err := parseDayTime(event.Start)
 			if err != nil {
@@ -134,7 +124,6 @@ func (w *Wap) processEvents() {
 				end:       end,
 				dayOffset: i,
 			}
-			addCols(i, event.AppearsIn)
 			if event.Repeats != nil {
 				w.repeating = append(w.repeating, freshEvent)
 			}
@@ -182,6 +171,7 @@ func (w *Wap) processEvents() {
 				log.Printf("WARNING overlapping events in columns %v %v %v\n", o, event, nextEvent)
 			}
 		}
+		// - TODO validate that appearsIn references a column defined for that day.
 	}
 }
 
