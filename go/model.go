@@ -25,13 +25,24 @@ type Event struct {
 
 type Events []Event
 
+// Implement sort.Interface for Events
 func (e Events) Len() int      { return len(e) }
 func (e Events) Swap(i, j int) { e[i], e[j] = e[j], e[i] }
+
+// Lexicographic order by day, start time and end time
 func (e Events) Less(i, j int) bool {
 	if e[i].dayOffset < e[j].dayOffset {
 		return true
+	} else if e[i].dayOffset > e[j].dayOffset {
+		return false
 	}
-	return e[i].dayOffset == e[j].dayOffset && e[i].start.Compare(e[j].start) == -1
+	if e[i].start.Compare(e[j].start) == -1 {
+		return true
+	}
+	if e[i].start.Compare(e[j].start) == 0 {
+		return e[i].end.Compare(e[j].end) < 0
+	}
+	return false
 }
 
 func (e Event) String() string {
