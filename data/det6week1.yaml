@@ -373,12 +373,113 @@ days:
     columns: ["Det 1", "Det 2", "Det 3", "Det 4"]
     events: []
   - name: Montag
-    columns: ["Det"]
+    columns: ["Det", "Det C"]
+    events:
+      - title: FD
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det"]
+      - title: FD
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det C"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det C"]
+      - title: Tenue sport erstellen
+        category: Lightgreen
+        start: 18:45
+        end: 19:00
+      - title: Sport
+        category: Lightgreen
+        start: 19:00
+        end: 20:30
   - name: Dienstag
-    columns: ["Det"]
+    columns: ["Det", "Det C"]
+    events:
+      - title: FD
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det"]
+      - title: FD
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det C"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det C"]
   - name: Mittwoch
-    columns: ["Det"]
-
+    columns: ["Det", "Det C"]
+    events:
+      - title: FD
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det"]
+      - title: FD
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det C"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det C"]
+  - name: Donnerstag
+    columns: ["Det", "Det C"]
+    events:
+      - title: FD
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det"]
+      - title: FD
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det C"]
+      - title: Kontrollbesuche
+        category: FD
+        start: 12:45
+        end: 18:00
+        appearsIn: ["Det C"]
+      - title: Tenue sport erstellen
+        category: Lightgreen
+        start: 18:45
+        end: 19:00
+      - title: Sport
+        category: Lightgreen
+        start: 19:00
+        end: 20:30
 remarks:
   - Some remark.
   - Signed by Me.
