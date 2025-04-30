@@ -364,8 +364,30 @@ days:
         end: "18:00"
         appearsIn: ["Det Zimm", "Det C"]
   - name: Freitag
-    columns: ["Det", "Det C"]
-    events: []
+    columns: ["Det"]
+    # test weird overlaps
+    events:
+      - title: FD
+        start: 07:15
+        end: 12:00
+        appearsIn: ["Det"]
+        category: FD
+      - title: Kontroll Besuche
+        start: 08:15
+        end: 11:15
+        appearsIn: ["Det"]
+        category: FD
+      - title: FD
+        start: 12:45
+        end: 17:00
+        appearsIn: ["Det"]
+        category: FD
+      - title: PD / ID / Kas Reinigung
+        start: 16:00
+        end: 17:00
+        appearsIn: ["Det"]
+        category: Yellow
+
   - name: Samstag
     columns: ["Det 1", "Det 2", "Det 3", "Det 4"]
     events: []
