@@ -33,10 +33,8 @@ categories:
     color: "#ff000080"
 
 days:
-  - offset: 0
-    columns: ["Det"]
-    events: []
-  - offset: 1
+  - name: "Montag"
+  - name: "Dienstag"
     columns: ["Det"]
     events:
       - title: Test Event
@@ -235,7 +233,7 @@ days:
         appearsIn: ["Det"]
         repeats: daily
 
-  - offset: 2
+  - name: Mittwoch
     columns: ["Det", "Det C"]
     events:
       # - title: "30"
@@ -327,7 +325,7 @@ days:
         end: 22:00
         appearsIn: ["Det", "Det C"]
         location: Mannschaftszimmer
-  - offset: 3
+  - name: Donnerstag
     columns: ["Det CNO", "Det CESA", "Det Zimm", "Det C"]
     events:
       - title: FD
@@ -365,15 +363,21 @@ days:
         start: "12:45"
         end: "18:00"
         appearsIn: ["Det Zimm", "Det C"]
-  - offset: 4
+  - name: Freitag
     columns: ["Det", "Det C"]
     events: []
-  - offset: 5
+  - name: Samstag
     columns: ["Det 1", "Det 2", "Det 3", "Det 4"]
     events: []
-  - offset: 6
+  - name: Sonntag
     columns: ["Det 1", "Det 2", "Det 3", "Det 4"]
     events: []
+  - name: Montag
+    columns: ["Det"]
+  - name: Dienstag
+    columns: ["Det"]
+  - name: Mittwoch
+    columns: ["Det"]
 
 remarks:
   - Some remark.

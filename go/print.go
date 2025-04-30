@@ -134,68 +134,51 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		"made with WAP-tool v0.1",
 		"")
 
-	// TODO() add more pages if there are more days
-	// columns issue for repeating tasks: just draw it full
-	d.setupPage()
-
-	// TODO(refactor): make this a layouting subroutine
 	columnOptions := make([]map[string]columnInfo, wap.Days)
 	for i := range wap.data.Days {
-		// TODO the indexing could panic
+		if i%7 == 0 {
+			// start a new week
+			d.setupPage()
+		}
+		// Draw the column header
 		columnInfos := d.assignColumnLocations(wap.columns[i], d.colWidth)
 		columnOptions[i] = columnInfos
-		// draw the column header
-		for colName, opts := range columnInfos {
-			heightInMinutes := 90.0
-			RectStart := Add(d.toGridSystem(wap.dayStart, i),
-				gopdf.Point{X: opts.Offset, Y: -heightInMinutes * d.minuteHeight})
-			rect := gopdf.Rect{W: opts.W, H: heightInMinutes * d.minuteHeight}
-			d.pdf.SetXY(RectStart.X, RectStart.Y)
-			d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
-			d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
-			drawRect(d.pdf, RectStart, rect)
-			d.pdf.SetTextColor(0x00, 0x00, 0x00)
-			d.pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
-			d.pdf.SetFont("bold", "", 6)
-			d.pdf.CellWithOption(&rect, colName,
-				gopdf.CellOption{
-					Align: gopdf.Center | gopdf.Middle,
-				})
-			d.pdf.RotateReset()
-		}
-	}
-	for _, event := range wap.repeating {
-		for idx := event.dayOffset; idx < wap.Days; idx += 1 {
-			event.dayOffset = idx
-			// Special case. Repeating tasks could be defined on other days with different columns
-			// Just print them full width.
-			d.drawEvent(event, 0, d.colWidth)
-		}
-	}
-	for _, event := range wap.events {
-		width := 0.0
-		offset := -1.0
-		// TODO handle the special case where columns = [A, B, C] and appearsIn = [A, C]
-		// TODO(refactor): make this a layouting subroutine
-		appears := event.json.AppearsIn
-		for _, c := range d.wap.columns[event.dayOffset] {
-			log.Println(event, c)
-			if slices.Contains(appears, c) {
-				width += columnOptions[event.dayOffset][c].W
-				// ugly hack
-				if offset < 0.0 {
-					offset = columnOptions[event.dayOffset][c].Offset
-				}
+		d.drawColumnHeader(i%7, columnInfos)
+		// draw repeating events
+		for _, event := range wap.events {
+			if event.repeats && event.dayOffset < i {
+				event.dayOffset = i % 7
+				d.drawEvent(event, 0, d.colWidth)
 			}
 		}
-		if width > 0.0 {
-			d.drawEvent(event, offset, width)
-		} else {
-			log.Println("WARNING has no columns (appears in no columns): ", event)
+		// draw events for this day
+		for _, event := range wap.events {
+			if event.dayOffset != i {
+				continue
+			}
+			width := 0.0
+			offset := -1.0
+			// TODO handle the special case where columns = [A, B, C] and appearsIn = [A, C]
+			// TODO(refactor): make this a layouting subroutine
+			appears := event.json.AppearsIn
+			for _, c := range d.wap.columns[event.dayOffset] {
+				log.Println(event, c)
+				if slices.Contains(appears, c) {
+					width += columnOptions[event.dayOffset][c].W
+					// ugly hack
+					if offset < 0.0 {
+						offset = columnOptions[event.dayOffset][c].Offset
+					}
+				}
+			}
+			if width > 0.0 {
+				d.drawEvent(event, offset, width)
+			} else {
+				log.Println("WARNING has no columns (appears in no columns): ", event)
+			}
 		}
 	}
-
-	// possibly add more pages
+	log.Println("INFO writing pdf to ", outputPath)
 	d.pdf.WritePdf(outputPath)
 	return nil
 }
@@ -235,6 +218,38 @@ func (d *PDFDrawer) toGridSystem(t time.Time, dayIndex int) gopdf.Point {
 	deltaX := float64(dayIndex) * d.colWidth
 	deltaY := t.Sub(d.wap.dayStart).Minutes() * d.minuteHeight
 	return Add(d.p1, gopdf.Point{X: deltaX, Y: deltaY})
+}
+
+// Draw the column header
+// For example |Det1|Det2|Det3|
+// 0 <= day < 7
+func (d *PDFDrawer) drawColumnHeader(day int, ci map[string]columnInfo) {
+	heightInMinutes := 90.0
+	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
+	// empty box if no columns are defined
+	if len(ci) == 0 {
+		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
+			gopdf.Point{X: 0, Y: -heightInMinutes * d.minuteHeight})
+		rect := gopdf.Rect{W: d.colWidth, H: heightInMinutes * d.minuteHeight}
+		d.pdf.SetXY(RectStart.X, RectStart.Y)
+		drawRect(d.pdf, RectStart, rect)
+	}
+	for colName, opts := range ci {
+		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
+			gopdf.Point{X: opts.Offset, Y: -heightInMinutes * d.minuteHeight})
+		rect := gopdf.Rect{W: opts.W, H: heightInMinutes * d.minuteHeight}
+		d.pdf.SetXY(RectStart.X, RectStart.Y)
+		drawRect(d.pdf, RectStart, rect)
+		d.pdf.SetTextColor(0x00, 0x00, 0x00)
+		d.pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
+		d.pdf.SetFont("bold", "", 6)
+		d.pdf.CellWithOption(&rect, colName,
+			gopdf.CellOption{
+				Align: gopdf.Center | gopdf.Middle,
+			})
+		d.pdf.RotateReset()
+	}
 }
 
 func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {

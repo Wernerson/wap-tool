@@ -13,7 +13,7 @@ type Wap struct {
 	colors    map[string]RGBColor
 	repeating Events
 	events    Events
-	columns   map[int][]string
+	columns   [][]string
 	dayStart  time.Time
 	dayEnd    time.Time
 }
@@ -59,11 +59,12 @@ func NewWAP(data *WapJson) (w *Wap) {
 	w.colors = make(map[string]RGBColor)
 	w.events = []Event{}
 	w.repeating = []Event{}
-	w.columns = make(map[int][]string)
 	w.parseColors()
-	w.processEvents()
 	w.dayStart = DayTime(23, 30)
-	w.Days = 7 // TODO
+	w.Days = len(data.Days)
+	w.columns = make([][]string, w.Days)
+
+	w.processEvents()
 	if data.Meta.StartTime != nil {
 		t1, err := parseDayTime(*data.Meta.StartTime)
 		if err != nil {
@@ -105,7 +106,6 @@ func (w *Wap) parseColors() {
 
 func (w *Wap) processEvents() {
 	for i, day := range w.data.Days {
-		// TODO day.Offset
 		w.columns[i] = day.Columns
 		for _, event := range day.Events {
 			start, err := parseDayTime(event.Start)

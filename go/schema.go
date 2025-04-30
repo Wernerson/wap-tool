@@ -60,8 +60,8 @@ type WapJsonDaysElem struct {
 	// All events that occur on this day.
 	Events []WapJsonDaysElemEventsElem `json:"events,omitempty" yaml:"events,omitempty" mapstructure:"events,omitempty"`
 
-	// Offset from firstDay.
-	Offset *float64 `json:"offset,omitempty" yaml:"offset,omitempty" mapstructure:"offset,omitempty"`
+	// Name or title for the day.
+	Name *string `json:"name,omitempty" yaml:"name,omitempty" mapstructure:"name,omitempty"`
 }
 
 // An event.
@@ -153,20 +153,6 @@ func (j *WapJsonDaysElemEventsElem) UnmarshalJSON(value []byte) error {
 		return fmt.Errorf("field %s pattern match: must match %s", "Start", `^[0-2]\d:[0-5]\d$`)
 	}
 	*j = WapJsonDaysElemEventsElem(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *WapJsonDaysElem) UnmarshalJSON(value []byte) error {
-	type Plain WapJsonDaysElem
-	var plain Plain
-	if err := json.Unmarshal(value, &plain); err != nil {
-		return err
-	}
-	if plain.Offset != nil && 0 > *plain.Offset {
-		return fmt.Errorf("field %s: must be >= %v", "offset", 0)
-	}
-	*j = WapJsonDaysElem(plain)
 	return nil
 }
 

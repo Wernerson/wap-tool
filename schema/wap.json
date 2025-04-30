@@ -78,10 +78,9 @@
         "description": "Each day in the WAP.",
         "type": "object",
         "properties": {
-          "offset": {
-            "description": "Offset from firstDay.",
-            "type": "number",
-            "minimum": 0
+          "name": {
+            "description": "Name or title for the day.",
+            "type": "string"
           },
           "columns": {
             "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
