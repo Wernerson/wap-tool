@@ -37,7 +37,6 @@ days:
   - name: "Dienstag"
     columns: ["Det"]
     events:
-
       - title: Einrücken Vorbereiten
         start: 08:00
         end: 09:30
@@ -517,4 +516,13 @@ days:
         category: NonExisting
 remarks:
   - Some remark.
+  - >+
+    Several lines of text,
+    with some "quotes" of various 'types',
+    and also a blank line:
+
+    and some text with
+      extra indentation
+    on the next line,
+    plus another line at the end.
   - Signed by Me.
