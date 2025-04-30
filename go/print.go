@@ -105,13 +105,11 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	for hour := wap.dayStart.Hour(); hour <= wap.dayEnd.Hour(); hour += 1 {
 		p := Add(ToGridSystem(DayTime(hour, 0), 0), gopdf.Point{X: -20, Y: -6})
-		pdf.SetX(p.X)
-		pdf.SetY(p.Y)
+		pdf.SetXY(p.X, p.Y)
 		// convert to military time format
 		pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
 	}
 
-	// TODO repeating tasks
 	drawEvent := func(event Event) {
 		cat := event.json.Category
 		if cat == nil {
@@ -123,8 +121,34 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 		}
 		RectStart := ToGridSystem(event.start, event.dayOffset)
 		minutes := event.end.Sub(event.start).Minutes()
-		PrintRect(&pdf, RectStart, colWidth, minutes*minuteHeight)
+		rect := gopdf.Rect{W: colWidth, H: minutes * minuteHeight}
+		PrintRect(&pdf, RectStart, rect)
 		// TODO Add the text
+		pdf.SetXY(RectStart.X, RectStart.Y)
+		pdf.SetFontSize(6)
+		pdf.SetFillColor(0x00, 0x00, 0x00)
+		pdf.SetStrokeColor(0x00, 0x00, 0x00)
+		title := event.json.Title
+		if ok, _, _ := pdf.IsFitMultiCell(&rect, title); !ok {
+			log.Println("WARNING", "event text does not fit in rectangle!")
+		}
+		err := pdf.MultiCell(&rect, title)
+		if err != nil {
+			log.Println("ERROR", err)
+		}
+		description := ""
+		pdf.Br(0.0)
+		pdf.SetX(RectStart.X)
+		if event.json.Location != nil {
+			description += *event.json.Location
+		}
+		if event.json.Responsible != nil {
+			description += ", " + *event.json.Responsible
+		}
+		err = pdf.MultiCell(&rect, description)
+		if err != nil {
+			log.Println("ERROR", err)
+		}
 	}
 	for _, event := range wap.repeating {
 		for idx := event.dayOffset; idx < wap.Days; idx += 1 {
@@ -142,8 +166,8 @@ func MakePDF(wap *Wap, outputPath string) (err error) {
 	return nil
 }
 
-func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, width, height float64) {
-	err := pdf.Rectangle(p.X, p.Y, p.X+width, p.Y+height, "DF", 0, 0)
+func PrintRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {
+	err := pdf.Rectangle(p.X, p.Y, p.X+rect.W, p.Y+rect.H, "DF", 0, 0)
 	if err != nil {
 		log.Println("ERROR", err)
 	}
