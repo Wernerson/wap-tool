@@ -86,9 +86,9 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 	botLeft, botMiddle, botRight string,
 ) {
 	headerFontSize := 12.0
-	d.pdf.SetFontSize(headerFontSize)
 	padding := mmToPx(1.5)
 	d.pdf.AddHeader(func() {
+		d.pdf.SetFontSize(headerFontSize)
 		d.pdf.SetY(padding)
 		d.pdf.SetX(padding)
 		d.pdf.CellWithOption(nil, topLeft, gopdf.CellOption{Align: gopdf.Left})
@@ -102,6 +102,7 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 		d.pdf.CellWithOption(nil, topRight, gopdf.CellOption{Align: gopdf.Right})
 	})
 	d.pdf.AddFooter(func() {
+		d.pdf.SetFontSize(headerFontSize)
 		d.pdf.SetY(d.pageSize.H - padding - headerFontSize)
 		d.pdf.SetX(padding)
 		d.pdf.CellWithOption(nil, botLeft, gopdf.CellOption{Align: gopdf.Left})
@@ -127,13 +128,21 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	if wap.data.Meta.Version != nil {
 		version = *wap.data.Meta.Version
 	}
+	author := wap.data.Meta.Author
+	title := wap.data.Meta.Title
+	producer := "WAP-tool " + VERSION
+	d.pdf.SetInfo(gopdf.PdfInfo{
+		Author:   author,
+		Title:    title,
+		Producer: producer,
+	})
 	d.drawHeaderAndFooter(
 		unit,
-		wap.data.Meta.Title,
+		title,
 		version,
 		"",
-		"made with WAP-tool v0.1",
-		"")
+		"made with "+producer,
+		author)
 
 	columnOptions := make([]map[string]columnInfo, wap.Days)
 	for i := range wap.data.Days {

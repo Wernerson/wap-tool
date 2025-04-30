@@ -8,6 +8,8 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
+var VERSION = "v0.1"
+
 func readYaml(inputPath string) (wap *WapJson, err error) {
 	dat, err := os.ReadFile(inputPath)
 	if err != nil {
