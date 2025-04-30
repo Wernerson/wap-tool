@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "$id": "https://milab.ch/wap/debug/v2.schema.json",
+  "title": "WAP",
+  "description": "Wochenarbeitsplan (WAP): schedule for a military week with events and logistical informations.",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "Metadata concerning the WAP.",
+      "type": "object",
+      "properties": {
+        "author": {
+          "description": "The person who created the WAP.",
+          "type": "string"
+        },
+        "startTime": {
+          "description": "The earliest time displayed in the WAP. Given in format HH-MM",
+          "type": "string",
+          "pattern": "^[0-2]\\d:[0-5]\\d$"
+        },
+        "endTime": {
+          "description": "The latest time displayed in the WAP. Given in format HH-MM",
+          "type": "string",
+          "pattern": "^[0-2]\\d:[0-5]\\d$"
+        },
+        "firstDay": {
+          "description": "The first day of the WAP. Given in format YYYY-MM-DD",
+          "type": "string",
+          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$"
+        },
+        "lastDay": {
+          "description": "The last day of the WAP. Given in format YYYY-MM-DD",
+          "type": "string",
+          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$"
+        },
+        "unit": {
+          "description": "The unit the WAP is for",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title of the WAP. Often contains the week number.",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the WAP or when it was last modified.",
+          "type": "string"
+        }
+      },
+      "required": ["author", "title", "firstDay"]
+    },
+    "categories": {
+      "description": "Defines categories for events to display them styled.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+            "identifier": {
+              "description": "Short identifier for the category. To be used as reference from events.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name of the category",
+              "type": "string"
+            },
+            "color": {
+              "description": "Color to give the category",
+              "type": "string"
+            }
+        },
+        "required": ["identifier"],
+        "uniqueItems": true
+      }
+    },
+    "days": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "description": "Each day in the WAP.",
+        "type": "object",
+        "properties": {
+          "offset": {
+            "description": "Offset from firstDay.",
+            "type": "number",
+            "minimum": 0
+          },
+          "columns": {
+            "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
+            "type": "array",
+            "items": {
+              "description": "A column name. For example Det1 or Beso.",
+              "type": "string"
+            }
+          },
+          "events": {
+            "description": "All events that occur on this day.",
+            "type": "array",
+            "items": {
+              "description": "An event.",
+              "type": "object",
+              "properties": {
+                "title": {
+                  "description": "Title of the event.",
+                  "type": "string"
+                },
+                "start": { 
+                  "description": "Start time. In format HH:MM",
+                  "type": "string",
+                  "pattern": "^[0-2]\\d:[0-5]\\d$"
+                },
+                "end": {
+                  "description": "End time. In format HH:MM",
+                  "type": "string",
+                  "pattern": "^[0-2]\\d:[0-5]\\d$"
+                },
+                "responsible": {
+                  "description": "The person responsible for this event.",
+                  "type": "string"
+                },
+                "location": {
+                  "description": "Location where the event takes place.",
+                  "type": "string"
+                },
+                "category": {
+                  "description": "Identifer of a defined category.",
+                  "type": "string"
+                },
+                "appearsIn": {
+                  "description": "Columns in which this event should appear.",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "repeats": {
+                  "description": "if the event repeats periodically.",
+                  "enum": ["no", "daily", "weekly"]
+                },
+                "footnote": {
+                  "description": "Description of the event to be displayed as a footnote below the plan."
+                }
+              },
+              "required": ["title", "start", "end"]
+            }
+          }
+        }
+      }
+    },
+    "remarks": {
+        "description": "Additional remarks.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+    }
+  }
+}
