@@ -3,30 +3,46 @@ package main
 import (
 	"fmt"
 	"log"
+	"slices"
 	"sort"
 	"time"
 )
 
+var DefaultColor = RGBColor{0xf0, 0xf0, 0xf0}
+var MinimumEventDurationMin = 10
+
+// Main type representing a WAP
 type Wap struct {
-	Days      int
-	data      *WapJson
-	colors    map[string]RGBColor
-	repeating Events
-	events    Events
-	columns   [][]string
-	firstDay  time.Time
-	dayNames  []string
-	dayStart  time.Time
-	dayEnd    time.Time
+	Days   int
+	events Events
+	// Styling information
+	categories map[string]RGBColor
+	columns    [][]string
+	firstDay   time.Time
+	dayNames   []string
+	dayStart   time.Time
+	dayEnd     time.Time
+	// Metadata
+	Unit, Version, Author, Title string
+	Remarks                      []string
 }
 
+// Represents a valid Event
+// This is distinct from WapJsonDaysElemEventsElem that may misses optional fields.
+// The following invariants hold.
+// w is the parent Wap this event is part of.
+// - start.Before(end)
+// - 0 <= dayOffset && dayOffset < w.Days
+// - set(appearsIn) subset w.Days[dayOffset]
+// - w.categories[Category]
 type Event struct {
-	json         *WapJsonDaysElemEventsElem
-	start, end   time.Time
-	dayOffset    int
-	repeats      bool
-	parallelCols int
-	parallelIdx  int
+	Start, End  time.Time
+	DayOffset   int
+	Repeats     bool
+	AppearsIn   []string
+	Category    string
+	Title       string
+	Description string
 }
 
 type Events []Event
@@ -35,40 +51,41 @@ type Events []Event
 func (e Events) Len() int      { return len(e) }
 func (e Events) Swap(i, j int) { e[i], e[j] = e[j], e[i] }
 
-// Lexicographic order by day, start time and end time
+// Lexicographic order by (DayOffset, Start, End)
 func (e Events) Less(i, j int) bool {
-	if e[i].dayOffset < e[j].dayOffset {
+	if e[i].DayOffset < e[j].DayOffset {
 		return true
-	} else if e[i].dayOffset > e[j].dayOffset {
+	} else if e[i].DayOffset > e[j].DayOffset {
 		return false
 	}
-	if e[i].start.Compare(e[j].start) == -1 {
+	if e[i].Start.Compare(e[j].Start) == -1 {
 		return true
 	}
-	if e[i].start.Compare(e[j].start) == 0 {
-		return e[i].end.Compare(e[j].end) < 0
+	if e[i].Start.Compare(e[j].Start) == 0 {
+		return e[i].End.Compare(e[j].End) < 0
 	}
 	return false
 }
 
 func (e Event) String() string {
-	t1 := e.start.Format("15:04")
-	t2 := e.end.Format("15:04")
-	return fmt.Sprintf("Event(#%d %v-%v %v)", e.dayOffset, t1, t2, e.json.Title)
+	t1 := e.Start.Format("15:04")
+	t2 := e.End.Format("15:04")
+	return fmt.Sprintf("Event(#%d %v-%v %v)", e.DayOffset, t1, t2, e.Title)
 }
 
 func NewWAP(data *WapJson) (w *Wap) {
 	w = new(Wap)
-	w.data = data
-	w.colors = make(map[string]RGBColor)
+	w.categories = make(map[string]RGBColor)
+	// Default color
+	w.categories[""] = DefaultColor
 	w.events = []Event{}
-	w.repeating = []Event{}
-	w.parseColors()
-	w.dayStart = DayTime(23, 30)
+	w.parseColors(data.Categories)
+	w.dayStart = DayTime(5, 30)
+	w.dayEnd = DayTime(23, 30)
 	w.Days = len(data.Days)
 	w.columns = make([][]string, w.Days)
 	w.dayNames = make([]string, w.Days)
-
+	w.Remarks = slices.Clone(data.Remarks)
 	firstDayD, err := time.Parse(time.DateOnly, data.Meta.FirstDay)
 	if err != nil {
 		log.Fatal("ERROR failed to parse date. Use the format YYYY-MM-DD: ", err)
@@ -92,30 +109,40 @@ func NewWAP(data *WapJson) (w *Wap) {
 			w.dayEnd = t2
 		}
 	}
-	w.processEvents()
+
+	if data.Meta.Unit != nil {
+		w.Unit = *data.Meta.Unit
+	}
+	if data.Meta.Version != nil {
+		w.Version = *data.Meta.Version
+	} else {
+		w.Version = time.Now().Format(time.DateOnly)
+	}
+	w.Author = data.Meta.Author
+	w.Title = data.Meta.Title
+
+	w.parseEvents(data.Days)
 	return
 }
 
 func (w *Wap) String() string {
-	return fmt.Sprintf("raw: %v\ncolors: %v\nevents: %v\ncolumns: %v",
-		w.data, w.colors, w.events, w.columns)
+	return fmt.Sprintf("colors: %v\nevents: %v\ncolumns: %v",
+		w.categories, w.events, w.columns)
 }
 
-func (w *Wap) parseColors() {
-	for _, cat := range w.data.Categories {
-		c, err := parseColor(*cat.Color)
+func (w *Wap) parseColors(categories []WapJsonCategoriesElem) {
+	for _, cat := range categories {
+		c, err := parseColor(cat.Color)
 		if err != nil {
-			log.Println(err.Error())
-			log.Println("WARNING falling back to default colors")
-			// MAYBE: pick from a set of predefined columns
-			c = RGBColor{127, 127, 127}
+			log.Println("WARNING falling back to default colors: ", err.Error())
+			c = DefaultColor
 		}
-		w.colors[cat.Identifier] = c
+		w.categories[cat.Identifier] = c
 	}
 }
 
-func (w *Wap) processEvents() {
-	for i, day := range w.data.Days {
+func (w *Wap) parseEvents(days []WapJsonDaysElem) {
+	for i, day := range days {
 		if day.Name != nil {
 			w.dayNames[i] = *day.Name
 		} else {
@@ -126,24 +153,52 @@ func (w *Wap) processEvents() {
 		for _, event := range day.Events {
 			start, err := parseDayTime(event.Start)
 			if err != nil {
-				log.Println(err.Error())
-				log.Println("WARNING no start time defined. Ignoring event.")
+				log.Println("ERROR: failed to parse start time: ", err.Error())
 				continue
 			}
 			end, err := parseDayTime(event.End)
 			if err != nil {
-				log.Println(err.Error())
-				log.Println("WARNING no end time defined. Trying to implicitly find it.")
+				log.Println("ERROR: failed to parse end time: ", err.Error())
+				continue
+			}
+			if end.Before(start) {
+				log.Println("WARNING end before start time. Swapping it.")
+				start, end = end, start
+			}
+			description := ""
+			if event.Location != nil {
+				description += *event.Location
+			}
+			if event.Responsible != nil {
+				if description != "" {
+					description += ", "
+				}
+				description += *event.Responsible
 			}
 			freshEvent := Event{
-				json:      &event,
-				start:     start,
-				end:       end,
-				dayOffset: i,
+				Start:       start,
+				End:         end,
+				Title:       event.Title,
+				Description: description,
+				DayOffset:   i,
+				AppearsIn:   []string{},
+			}
+			for _, col := range event.AppearsIn {
+				if slices.Contains(day.Columns, col) {
+					freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
+				} else {
+					log.Printf("WARNING ignoring column %v that is not defined for day %d\n", col, i)
+				}
+			}
+			if len(event.AppearsIn) == 0 {
+				log.Println("WARNING appearsIn is empty. The event implicitly appears in all columns for this day.", event)
+				freshEvent.AppearsIn = slices.Clone(day.Columns)
+			}
+			if event.Category != nil {
+				freshEvent.Category = *event.Category
 			}
 			if event.Repeats != nil {
-				freshEvent.repeats = true
-				w.repeating = append(w.repeating, freshEvent)
+				freshEvent.Repeats = true
 			}
 			w.events = append(w.events, freshEvent)
 		}
@@ -151,22 +206,21 @@ func (w *Wap) processEvents() {
 	sort.Sort(w.events)
 
 	// Validate
-	for i, event := range w.events {
+	for _, event := range w.events {
 		// - Check it has a valid duration
-		duration := event.end.Sub(event.start)
+		duration := event.End.Sub(event.Start)
 		if duration < 0 {
 			log.Printf("WARNING event ends before it starts: %v\n", event)
 		}
-		minimumDurationMin := 10
-		if duration.Minutes() < float64(minimumDurationMin) {
-			log.Printf("WARNING event length %v min too short and will not be properly displayed. The duration should be at least %d min\n", duration.Minutes(), minimumDurationMin)
+		if duration.Minutes() < float64(MinimumEventDurationMin) {
+			log.Printf("WARNING event length %v min too short and will not be properly displayed. The duration should be at least %d min\n", duration.Minutes(), MinimumEventDurationMin)
 		}
 
-		if event.start.Before(w.dayStart) {
+		if event.Start.Before(w.dayStart) {
 			log.Printf("WARNING start time before the day start %v for event %v", w.dayStart, event)
 		}
 
-		if w.dayEnd.Before(event.end) {
+		if w.dayEnd.Before(event.End) {
 			log.Printf("WARNING end time before the day end %v for event %v", w.dayEnd, event)
 		}
 
@@ -182,50 +236,11 @@ func (w *Wap) processEvents() {
 		// 	}
 		// }
 		// - Check for valid category
-		if cat := event.json.Category; cat != nil {
-			if _, ok := w.colors[*cat]; !ok {
-				// MAYBE: add helpful message how to fix it
-				log.Printf("WARNING category %v is not defined\n", *cat)
-				event.json.Category = nil
-			}
+		if _, ok := w.categories[event.Category]; !ok {
+			// MAYBE: add helpful message how to fix it
+			log.Printf("WARNING category %v is not defined\n", event.Category)
+			event.Category = ""
 		}
-		// - Check for overlap
-		// For example events ev1 and ev2 that overlap in time will have
-		//	-----
-		// | ev1 |-----|
-		// |	 | ev2 |
-		// -------------
-		// ev1.parallelCols = ev2.parallelCols = 1	(the number of other events in this column)
-		// ev1.parallelIdx = 1 and ev2.parallelIdx = 2
-		overlapping := event.parallelIdx
-		for j := i + 1; j < len(w.events); j += 1 {
-			nextEvent := w.events[j]
-			if nextEvent.dayOffset != event.dayOffset {
-				break
-			}
-			if event.end.Compare(nextEvent.start) <= 0 {
-				break
-			}
-			if o := overlap(nextEvent.json.AppearsIn, event.json.AppearsIn); len(o) > 0 {
-				log.Printf("WARNING overlapping events in columns %v %v %v\n", o, event, nextEvent)
-				w.events[j].parallelIdx++
-				overlapping++
-			}
-		}
-		w.events[i].parallelCols = overlapping
-		// - TODO validate that appearsIn references a column defined for that day.
-
-		// - TODO note if there is unallocated time
+		// - MAYBE note if there is unallocated time
 	}
-}
-
-func overlap(xs []string, ys []string) (res []string) {
-	for _, x := range xs {
-		for _, y := range ys {
-			if x == y {
-				res = append(res, x)
-			}
-		}
-	}
-	return
 }

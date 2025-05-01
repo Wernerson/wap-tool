@@ -25,7 +25,7 @@ type WapJson struct {
 
 type WapJsonCategoriesElem struct {
 	// Color to give the category
-	Color *string `json:"color,omitempty" yaml:"color,omitempty" mapstructure:"color,omitempty"`
+	Color string `json:"color" yaml:"color" mapstructure:"color"`
 
 	// Short identifier for the category. To be used as reference from events.
 	Identifier string `json:"identifier" yaml:"identifier" mapstructure:"identifier"`
@@ -39,6 +39,9 @@ func (j *WapJsonCategoriesElem) UnmarshalJSON(value []byte) error {
 	var raw map[string]interface{}
 	if err := json.Unmarshal(value, &raw); err != nil {
 		return err
+	}
+	if _, ok := raw["color"]; raw != nil && !ok {
+		return fmt.Errorf("field color in WapJsonCategoriesElem: required")
 	}
 	if _, ok := raw["identifier"]; raw != nil && !ok {
 		return fmt.Errorf("field identifier in WapJsonCategoriesElem: required")

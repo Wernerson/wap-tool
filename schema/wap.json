@@ -67,7 +67,7 @@
               "type": "string"
             }
         },
-        "required": ["identifier"],
+        "required": ["identifier", "color"],
         "uniqueItems": true
       }
     },

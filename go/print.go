@@ -120,96 +120,35 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	d.wap = wap
 	d.setupDocument()
-	unit := ""
-	if wap.data.Meta.Unit != nil {
-		unit = *wap.data.Meta.Unit
-	}
-	version := time.Now().Format(time.DateOnly)
-	if wap.data.Meta.Version != nil {
-		version = *wap.data.Meta.Version
-	}
-	author := wap.data.Meta.Author
-	title := wap.data.Meta.Title
 	producer := "WAP-tool " + VERSION
 	d.pdf.SetInfo(gopdf.PdfInfo{
-		Author:   author,
-		Title:    title,
+		Author:   wap.Author,
+		Title:    wap.Title,
 		Producer: producer,
 	})
 	d.drawHeaderAndFooter(
-		unit,
-		title,
-		version,
+		wap.Unit,
+		wap.Title,
+		wap.Version,
 		"",
 		"made with "+producer,
-		author)
+		wap.Author)
 
-	columnOptions := make([]map[string]columnInfo, wap.Days)
-	for i := range wap.data.Days {
+	layout := d.Layout()
+	for i := range wap.Days {
 		weekday := i % 7
 		if weekday == 0 {
 			// start a new week
 			d.setupPage()
+			d.drawRemarks()
 		}
-		// Draw the column header
-		columnInfos := d.assignColumnLocations(wap.columns[i], d.colWidth)
-		columnOptions[i] = columnInfos
-		d.drawColumnHeader(i, columnInfos)
-		d.drawRemarks()
-		// draw repeating events
-		for _, event := range wap.events {
-			if event.repeats && event.dayOffset <= i {
-				event.dayOffset = i % 7
-				d.drawEvent(event, 0, d.colWidth)
-			}
-		}
+		d.drawColumnHeader(i)
 		// draw events for this day
-		for _, event := range wap.events {
-			if event.dayOffset != i {
+		for _, elem := range layout {
+			if elem.dayOffset != i {
 				continue
 			}
-			if event.parallelCols > 0 {
-				// Assumption: this can only happen for events in a single columns
-				// Example:
-				// |   Det         |
-				// | ev1 | ev2 |ev3|
-				eventWidth := d.colWidth / float64(event.parallelCols+1)
-				offset := float64(event.parallelIdx) * eventWidth
-				d.drawEvent(event, offset, eventWidth)
-				continue
-			}
-			eventWidth := 0.0
-			offset := 0.0
-			appears := event.json.AppearsIn
-			if len(appears) == 0 {
-				log.Println("WARNING appearsIn is empty. Will print the event full width: ", event)
-				d.drawEvent(event, offset, d.colWidth)
-			}
-			// if an event appears in multiple consecutive columns they can be merged
-			// for ev1 that appears in columns A and B:
-			// | A | B |
-			// |  ev1  |
-			// if the columns are not adjacent, the event is printed in multiple ones
-			// for ev1 that appears in columns A and C:
-			// | A   | B   | C   |
-			// | ev1 | ... | ev2 |
-			active := false // true if we are expanding a column
-			for _, c := range d.wap.columns[event.dayOffset] {
-				if slices.Contains(appears, c) {
-					eventWidth += columnOptions[event.dayOffset][c].W
-					if !active {
-						active = true
-						offset = columnOptions[event.dayOffset][c].Offset
-					}
-				} else if active {
-					active = false
-					d.drawEvent(event, offset, eventWidth)
-					eventWidth = 0.0
-				}
-			}
-			if active {
-				d.drawEvent(event, offset, eventWidth)
-			}
+			d.drawEvent(elem)
 		}
 	}
 	log.Println("INFO writing pdf to ", outputPath)
@@ -244,7 +183,7 @@ func (d *PDFDrawer) drawRemarks() {
 	rectStart = d.toGridSystem(d.wap.dayStart, d.bigColumns-1)
 	d.pdf.SetXY(rectStart.X, rectStart.Y)
 	d.pdf.SetFont("regular", "", 6)
-	for _, remark := range d.wap.data.Remarks {
+	for _, remark := range d.wap.Remarks {
 		txt := " - " + remark
 		_, h, _ := d.pdf.IsFitMultiCell(&colRect, txt)
 		d.pdf.MultiCell(&colRect, txt)
@@ -293,7 +232,8 @@ func (d *PDFDrawer) toGridSystem(t time.Time, dayIndex int) gopdf.Point {
 // Draw the column header
 // For example | Montag, 21.04.2025 |
 // For example | Det1 | Det2 | Det3 |
-func (d *PDFDrawer) drawColumnHeader(dayOffset int, ci map[string]columnInfo) {
+func (d *PDFDrawer) drawColumnHeader(dayOffset int) {
+	columnLocation := d.assignColumnLocations(d.wap.columns[dayOffset], d.colWidth)
 	day := dayOffset % 7
 	detHeightMin := 90.0
 	dayHeightMin := 20.0
@@ -316,13 +256,13 @@ func (d *PDFDrawer) drawColumnHeader(dayOffset int, ci map[string]columnInfo) {
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
 	// empty box if no columns are defined
-	if len(ci) == 0 {
+	if len(columnLocation) == 0 {
 		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
 			gopdf.Point{X: 0, Y: -detHeightMin * d.minuteHeight})
 		rect := gopdf.Rect{W: d.colWidth, H: detHeightMin * d.minuteHeight}
 		drawRect(d.pdf, RectStart, rect)
 	}
-	for colName, opts := range ci {
+	for colName, opts := range columnLocation {
 		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
 			gopdf.Point{X: opts.Offset, Y: -detHeightMin * d.minuteHeight})
 		rect := gopdf.Rect{W: opts.W, H: detHeightMin * d.minuteHeight}
@@ -339,39 +279,22 @@ func (d *PDFDrawer) drawColumnHeader(dayOffset int, ci map[string]columnInfo) {
 	}
 }
 
-func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
-	cat := event.json.Category
-	if cat == nil {
-		d.pdf.SetFillColor(127, 127, 127)
-	} else if c, ok := d.wap.colors[*cat]; ok {
+func (d *PDFDrawer) drawEvent(elem EventPosition) {
+	event := elem.Event
+	if c, ok := d.wap.categories[event.Category]; ok {
 		d.pdf.SetFillColor(c.R, c.G, c.B)
-	} else {
-		d.pdf.SetFillColor(127, 127, 127)
 	}
-	// sanitize the event before printing
-	if event.start.Before(d.wap.dayStart) {
-		event.start = d.wap.dayStart
-	}
-	if d.wap.dayEnd.Before(event.end) {
-		event.end = d.wap.dayEnd
-	}
-	RectStart := d.toGridSystem(event.start, event.dayOffset%7)
-	RectStart.X += offset
-	minutes := event.end.Sub(event.start).Minutes()
-	if minutes <= 0 {
-		return
-	}
-	rect := gopdf.Rect{W: width, H: minutes * d.minuteHeight}
-	drawRect(d.pdf, RectStart, rect)
-
-	d.pdf.SetXY(RectStart.X, RectStart.Y)
+	drawRect(d.pdf, elem.P, elem.R)
+	d.pdf.SetXY(elem.P.X, elem.P.Y)
 	d.pdf.SetTextColor(0x00, 0x00, 0x00)
-	title := event.json.Title
-
+	title := event.Title
 	titleFontSize := 7
 	// Limit the size for the title
 	// to avoid making it too large
-	rect.H = Min(rect.H, float64(titleFontSize)*2)
+	rect := gopdf.Rect{
+		W: elem.R.W,
+		H: Min(elem.R.H, float64(titleFontSize)*2),
+	}
 	// Dynamically decrease font-size until it fits
 	for ; titleFontSize >= 4; titleFontSize -= 1 {
 		d.pdf.SetFont("bold", "", titleFontSize)
@@ -382,34 +305,32 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	}
 	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
 	if !ok {
-		log.Println("WARNING", "title does not fit in rectangle:", event.json.Title)
+		log.Println("WARNING", "title does not fit in rectangle:", event.Title)
 	}
 	err := d.pdf.MultiCellWithOption(&rect, title,
 		gopdf.CellOption{
 			Align: gopdf.Center,
 		})
 	check(err)
-	description := ""
-	d.pdf.SetXY(RectStart.X, RectStart.Y+heightNeeded)
-	if event.json.Location != nil {
-		description += *event.json.Location
-	}
-	if event.json.Responsible != nil {
-		description += ", " + *event.json.Responsible
-	}
+	d.pdf.SetXY(elem.P.X, elem.P.Y+heightNeeded)
 
 	d.pdf.SetFont("regular", "", 6)
-	ok, _, _ = d.pdf.IsFitMultiCell(&rect, description)
+	ok, _, _ = d.pdf.IsFitMultiCell(&rect, event.Description)
 	if !ok {
-		log.Println("WARNING description does not fit: ", description)
+		log.Println("WARNING description does not fit: ", event.Description)
 	} else {
-		d.pdf.MultiCellWithOption(&gopdf.Rect{W: width, H: minutes*d.minuteHeight - heightNeeded}, description,
+		descriptionRect := gopdf.Rect{
+			W: elem.R.W,
+			H: elem.R.W - heightNeeded,
+		}
+		d.pdf.MultiCellWithOption(&descriptionRect, event.Description,
 			gopdf.CellOption{
 				Align: gopdf.Center,
 			})
 	}
 }
 
+// TODO(refactor) reuse EventPosition?
 type columnInfo struct {
 	// Offset from the x of the day
 	Offset float64
@@ -434,4 +355,152 @@ func (d *PDFDrawer) assignColumnLocations(columns []string, width float64) map[s
 
 func Add(p1, p2 gopdf.Point) gopdf.Point {
 	return gopdf.Point{X: p1.X + p2.X, Y: p1.Y + p2.Y}
+}
+
+// P=(X, y) ------- W	width
+// |
+// | H	and height
+type EventPosition struct {
+	// top-left corner
+	P gopdf.Point
+	// the rectangle
+	R gopdf.Rect
+	// reference to the original Event
+	Event        *Event
+	dayOffset    int // hack: need this for repeating events
+	parallelCols int // 0 <= parallelCols < len(day.Columns) - 1
+	parallelIdx  int // 0 <= parallelCols < len(day.Columns) - 1
+}
+
+// TODO can we make this independent of the specific drawer?
+
+// Computes a layout for each event
+func (d *PDFDrawer) Layout() (res []EventPosition) {
+	// Initialize
+	for _, event := range d.wap.events {
+		// sanitize the event before printing (only local here)
+		if event.Start.Before(d.wap.dayStart) {
+			event.Start = d.wap.dayStart
+		}
+		if d.wap.dayEnd.Before(event.End) {
+			event.End = d.wap.dayEnd
+		}
+		minutes := event.End.Sub(event.Start).Minutes()
+		if minutes <= 0 {
+			continue
+		}
+		height := minutes * d.minuteHeight
+		RectStart := d.toGridSystem(event.Start, event.DayOffset%7)
+
+		res = append(res, EventPosition{
+			dayOffset: event.DayOffset,
+			P:         RectStart,
+			R:         gopdf.Rect{W: d.colWidth, H: height},
+			Event:     &event})
+	}
+	// First pass
+	for i, ev := range res {
+		// - Check for overlap
+		// For example events ev1 and ev2 that overlap in time will have
+		//	-----
+		// | ev1 |-----|
+		// |	 | ev2 |
+		// -------------
+		// ev1.parallelCols = ev2.parallelCols = 1	(the number of other events in this column)
+		// ev1.parallelIdx = 1 and ev2.parallelIdx = 2
+		overlapping := ev.parallelIdx
+		for j := i + 1; j < len(res); j += 1 {
+			next := res[j]
+			if next.Event.DayOffset != ev.Event.DayOffset {
+				break
+			}
+			if ev.Event.End.Compare(next.Event.Start) <= 0 {
+				break
+			}
+			if o := overlap(next.Event.AppearsIn, ev.Event.AppearsIn); len(o) > 0 {
+				log.Printf("WARNING overlapping events in columns %v %v %v\n", o, ev, next)
+				res[j].parallelIdx++
+				overlapping++
+			}
+		}
+		res[i].parallelCols = overlapping
+	}
+	// Second pass
+
+	newPositions := []EventPosition{}
+	for i, elem := range res {
+		event := elem.Event
+		if event.Repeats {
+			res[i].R.W = d.colWidth
+			for day := range d.wap.Days {
+				if event.DayOffset <= day {
+					elem.dayOffset = day
+					elem.P = d.toGridSystem(event.Start, day%7)
+					newPositions = append(newPositions, elem)
+				}
+			}
+			continue
+		}
+		if elem.parallelCols > 0 {
+			// Assumption: this can only happen for events in a single columns
+			// Example:
+			// |   Det         |
+			// | ev1 | ev2 |ev3|
+			eventWidth := d.colWidth / float64(elem.parallelCols+1)
+			offset := float64(elem.parallelIdx) * eventWidth
+			res[i].P.X += offset
+			res[i].R.W = eventWidth
+			continue
+		}
+		eventWidth := 0.0
+		offset := 0.0
+		// if an event appears in multiple consecutive columns they can be merged
+		// for ev1 that appears in columns A and B:
+		// | A | B |
+		// |  ev1  |
+		// if the columns are not adjacent, the event is printed in multiple ones
+		// for ev1 that appears in columns A and C:
+		// | A   | B   | C   |
+		// | ev1 | ... | ev2 |
+		active := false // true if we are expanding a column
+		columnLocation := d.assignColumnLocations(d.wap.columns[event.DayOffset], d.colWidth)
+		// TODO ugly cloning: the original event also still exists!
+		for _, c := range d.wap.columns[event.DayOffset] {
+			if slices.Contains(event.AppearsIn, c) {
+				eventWidth += columnLocation[c].W
+				if !active {
+					active = true
+					offset = columnLocation[c].Offset
+				}
+			} else if active {
+				active = false
+				clone := res[i]
+				clone.P.X += offset
+				clone.R.W = eventWidth
+				newPositions = append(newPositions, clone)
+				eventWidth = 0.0
+			}
+		}
+		if active {
+			clone := res[i]
+			clone.P.X += offset
+			clone.R.W = eventWidth
+			newPositions = append(newPositions, clone)
+		}
+	}
+	for _, e := range newPositions {
+		res = append(res, e)
+	}
+	return
+}
+
+func overlap(xs []string, ys []string) (res []string) {
+	for _, x := range xs {
+		for _, y := range ys {
+			if x == y {
+				res = append(res, x)
+			}
+		}
+	}
+	return
 }
