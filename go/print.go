@@ -179,7 +179,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 				continue
 			}
 			eventWidth := 0.0
-			offset := -1.0
+			offset := 0.0
 			appears := event.json.AppearsIn
 			if len(appears) == 0 {
 				log.Println("WARNING appearsIn is empty. Will print the event full width: ", event)
