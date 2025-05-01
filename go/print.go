@@ -333,10 +333,17 @@ func (d *PDFDrawer) drawEvent(event Event, offset, width float64) {
 	} else {
 		d.pdf.SetFillColor(127, 127, 127)
 	}
+	// sanitize the event before printing
+	if event.start.Before(d.wap.dayStart) {
+		event.start = d.wap.dayStart
+	}
+	if d.wap.dayEnd.Before(event.end) {
+		event.end = d.wap.dayEnd
+	}
 	RectStart := d.toGridSystem(event.start, event.dayOffset%7)
 	RectStart.X += offset
 	minutes := event.end.Sub(event.start).Minutes()
-	if minutes < 0 {
+	if minutes <= 0 {
 		return
 	}
 	rect := gopdf.Rect{W: width, H: minutes * d.minuteHeight}
