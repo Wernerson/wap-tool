@@ -168,32 +168,47 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 			if event.dayOffset != i {
 				continue
 			}
-			eventWidth := 0.0
-			offset := -1.0
-			appears := event.json.AppearsIn
-			// TODO handle the special case where columns = [A, B, C] and appearsIn = [A, C]
-			for _, c := range d.wap.columns[event.dayOffset] {
-				if slices.Contains(appears, c) {
-					eventWidth += columnOptions[event.dayOffset][c].W
-					// ugly, just find the first column
-					if offset < 0.0 {
-						offset = columnOptions[event.dayOffset][c].Offset
-					}
-				}
-			}
 			if event.parallelCols > 0 {
 				// Assumption: this can only happen for events in a single columns
 				// Example:
 				// |   Det         |
 				// | ev1 | ev2 |ev3|
-				eventWidth = eventWidth / float64(event.parallelCols+1)
-				offset += float64(event.parallelIdx) * eventWidth
-			}
-			if eventWidth > 0.0 {
+				eventWidth := d.colWidth / float64(event.parallelCols+1)
+				offset := float64(event.parallelIdx) * eventWidth
 				d.drawEvent(event, offset, eventWidth)
-			} else {
+				continue
+			}
+			eventWidth := 0.0
+			offset := -1.0
+			appears := event.json.AppearsIn
+			if len(appears) == 0 {
 				log.Println("WARNING appearsIn is empty. Will print the event full width: ", event)
 				d.drawEvent(event, offset, d.colWidth)
+			}
+			// if an event appears in multiple consecutive columns they can be merged
+			// for ev1 that appears in columns A and B:
+			// | A | B |
+			// |  ev1  |
+			// if the columns are not adjacent, the event is printed in multiple ones
+			// for ev1 that appears in columns A and C:
+			// | A   | B   | C   |
+			// | ev1 | ... | ev2 |
+			active := false // true if we are expanding a column
+			for _, c := range d.wap.columns[event.dayOffset] {
+				if slices.Contains(appears, c) {
+					eventWidth += columnOptions[event.dayOffset][c].W
+					if !active {
+						active = true
+						offset = columnOptions[event.dayOffset][c].Offset
+					}
+				} else if active {
+					active = false
+					d.drawEvent(event, offset, eventWidth)
+					eventWidth = 0.0
+				}
+			}
+			if active {
+				d.drawEvent(event, offset, eventWidth)
 			}
 		}
 	}
