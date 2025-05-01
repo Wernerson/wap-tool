@@ -31,6 +31,7 @@ type PDFDrawer struct {
 	pageSize     *gopdf.Rect
 	p1           gopdf.Point
 	wapBox       gopdf.Rect
+	bigColumns   int
 	hoursPerDay  int
 	minuteHeight float64
 	colWidth     float64
@@ -38,7 +39,7 @@ type PDFDrawer struct {
 
 func NewPDFDrawer() *PDFDrawer {
 	pdf := gopdf.GoPdf{}
-	return &PDFDrawer{pdf: &pdf, pageSize: gopdf.PageSizeA4Landscape}
+	return &PDFDrawer{pdf: &pdf, pageSize: gopdf.PageSizeA4Landscape, bigColumns: 8}
 }
 
 func (d *PDFDrawer) setupDocument() (err error) {
@@ -73,10 +74,9 @@ func (d *PDFDrawer) setupDocument() (err error) {
 	// Top-Left starting point
 	d.p1 = gopdf.Point{X: PL, Y: PL}
 	d.wapBox = gopdf.Rect{W: d.pageSize.W - PL - PR, H: d.pageSize.H - PT - PB}
-	DAYS := 7
 	duration := d.wap.dayEnd.Sub(d.wap.dayStart)
 	d.hoursPerDay = int(duration.Hours())
-	d.colWidth = d.wapBox.W / float64(DAYS)
+	d.colWidth = d.wapBox.W / float64(d.bigColumns)
 	d.minuteHeight = d.wapBox.H / duration.Minutes()
 	return nil
 }
@@ -155,6 +155,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		columnInfos := d.assignColumnLocations(wap.columns[i], d.colWidth)
 		columnOptions[i] = columnInfos
 		d.drawColumnHeader(i, columnInfos)
+		d.drawRemarks()
 		// draw repeating events
 		for _, event := range wap.events {
 			if event.repeats && event.dayOffset <= i {
@@ -201,16 +202,52 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	return nil
 }
 
+func (d *PDFDrawer) drawRemarks() {
+	// Remarks
+	detHeightMin := 90.0
+	rectStart := d.toGridSystem(d.wap.dayStart, d.bigColumns-1)
+	headerRect := gopdf.Rect{W: d.colWidth, H: detHeightMin * d.minuteHeight}
+	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	d.pdf.SetFillColor(0xff, 0xff, 0xff)
+	minutes := d.wap.dayEnd.Sub(d.wap.dayStart).Minutes()
+	colRect := gopdf.Rect{W: d.colWidth, H: minutes * d.minuteHeight}
+	drawRect(d.pdf, rectStart, colRect)
+
+	// Header
+	rectStart.Y -= detHeightMin * d.minuteHeight
+	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
+	drawRect(d.pdf, rectStart, headerRect)
+	d.pdf.SetXY(rectStart.X, rectStart.Y)
+	d.pdf.SetTextColor(0x00, 0x00, 0x00)
+	d.pdf.SetFont("bold", "", 6)
+	d.pdf.CellWithOption(&headerRect, "Bemerkungen",
+		gopdf.CellOption{
+			Align: gopdf.Center | gopdf.Middle,
+		})
+
+	rectStart = d.toGridSystem(d.wap.dayStart, d.bigColumns-1)
+	d.pdf.SetXY(rectStart.X, rectStart.Y)
+	d.pdf.SetFont("regular", "", 6)
+	for _, remark := range d.wap.data.Remarks {
+		txt := " - " + remark
+		_, h, _ := d.pdf.IsFitMultiCell(&colRect, txt)
+		d.pdf.MultiCell(&colRect, txt)
+		rectStart.Y += h
+		colRect.H -= h
+		d.pdf.SetXY(rectStart.X, rectStart.Y)
+	}
+}
+
 func (d *PDFDrawer) setupPage() {
 	opt := gopdf.PageOption{
 		PageSize: d.pageSize,
 	}
-	DAYS := 7
 	d.pdf.AddPageWithOption(opt)
 	// The Big Grid
 	d.pdf.SetStrokeColor(0, 0, 0)
 	d.pdf.SetLineWidth(1)
-	drawGrid(d.pdf, d.p1, d.wapBox, d.hoursPerDay, DAYS)
+	drawGrid(d.pdf, d.p1, d.wapBox, d.hoursPerDay, d.bigColumns)
 	// Marks at 30 minutes
 	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
 	d.pdf.SetLineWidth(.5)
@@ -268,15 +305,14 @@ func (d *PDFDrawer) drawColumnHeader(dayOffset int, ci map[string]columnInfo) {
 		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
 			gopdf.Point{X: 0, Y: -detHeightMin * d.minuteHeight})
 		rect := gopdf.Rect{W: d.colWidth, H: detHeightMin * d.minuteHeight}
-		d.pdf.SetXY(RectStart.X, RectStart.Y)
 		drawRect(d.pdf, RectStart, rect)
 	}
 	for colName, opts := range ci {
 		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
 			gopdf.Point{X: opts.Offset, Y: -detHeightMin * d.minuteHeight})
 		rect := gopdf.Rect{W: opts.W, H: detHeightMin * d.minuteHeight}
-		d.pdf.SetXY(RectStart.X, RectStart.Y)
 		drawRect(d.pdf, RectStart, rect)
+		d.pdf.SetXY(RectStart.X, RectStart.Y)
 		d.pdf.SetTextColor(0x00, 0x00, 0x00)
 		d.pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
 		d.pdf.SetFont("bold", "", 6)
