@@ -320,11 +320,42 @@ days:
   - name: Donnerstag
     columns: ["Det CNO", "Det CESA", "Det Zimm", "Det C"]
     events:
+      - title: AVR
+        category: FD
+        start: "07:15"
+        end: "09:00"
+        appearsIn: ["Det CNO"]
+      - title: Meet
+        category: Lightblue
+        start: "09:00"
+        end: "09:30"
+        appearsIn: ["Det CNO", "Det C"]
       - title: FD
         category: FD
         start: "09:30"
         end: "12:00"
         appearsIn: ["Det CNO"]
+      - title: Einführung
+        category: Lightblue
+        start: "07:15"
+        end: "07:45"
+        appearsIn: ["Det CESA", "Det C"]
+      - title: AVOR
+        category: FD
+        start: "07:45"
+        end: "08:30"
+        appearsIn: ["Det CESA"]
+      - title: Einführung KVP
+        category: FD
+        start: "07:45"
+        end: "08:30"
+        location: KP
+        appearsIn: ["Det C"]
+      - title: INITIO
+        category: Lightblue
+        start: "08:30"
+        end: "09:00"
+        appearsIn: ["Det CESA", "Det C"]
       - title: FD
         category: FD
         start: "09:00"
@@ -355,6 +386,21 @@ days:
         start: "12:45"
         end: "18:00"
         appearsIn: ["Det Zimm", "Det C"]
+      - title: Dienstbesprechung
+        category: Orange
+        location: GK 106
+        responsible: "Det C"
+        start: "18:45"
+        end: "19:10"
+      - title: Tenue Sport erstellen
+        category: Lightgreen
+        start: "19:10"
+        end: "19:20"
+      - title: Sport
+        category: Lightgreen
+        start: "19:20"
+        end: "22:00"
+        location: "MZH"
   - name: Freitag
     columns: ["Det"]
     # test weird overlaps
@@ -371,21 +417,39 @@ days:
         category: FD
       - title: FD
         start: 12:45
-        end: 17:00
+        end: 17:15
         appearsIn: ["Det"]
         category: FD
       - title: PD / ID / Kas Reinigung
         start: 16:00
-        end: 17:00
+        end: 17:15
         appearsIn: ["Det"]
         category: Yellow
+      - title: HV
+        start: 17:15
+        end: 17:30
+      - title: Allgemeiner Urlaub
+        start: 17:30
+        end: 23:30
 
   - name: Samstag
     columns: ["Det 1", "Det 2", "Det 3", "Det 4"]
-    events: []
+    events:
+      - title: Allgemeiner Urlaub
+        start: 00:00
+        end: 23:59
   - name: Sonntag
     columns: ["Det 1", "Det 2", "Det 3", "Det 4"]
-    events: []
+    events:
+      - title: Allgemeiner Urlaub
+        start: 00:00
+        end: 22:30
+      - title: Einrücken
+        start: 22:30
+        end: 23:00
+      - title: ABV
+        start: 23:00
+        end: 23:30
   - name: Montag
     columns: ["Det", "Det C"]
     events:
