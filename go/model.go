@@ -162,6 +162,14 @@ func (w *Wap) processEvents() {
 			log.Printf("WARNING event length %v min too short and will not be properly displayed. The duration should be at least %d min\n", duration.Minutes(), minimumDurationMin)
 		}
 
+		if event.start.Before(w.dayStart) {
+			log.Printf("WARNING start time before the day start %v for event %v", w.dayStart, event)
+		}
+
+		if w.dayEnd.Before(event.end) {
+			log.Printf("WARNING end time before the day end %v for event %v", w.dayEnd, event)
+		}
+
 		// MAYBE: Give it an end if it has none
 		// if NO_END {
 		// 	if i+1 < len(w.events) {
