@@ -392,7 +392,7 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 	ok, _, _ = d.pdf.IsFitMultiCell(&rect, event.Description)
 	if !ok {
 		log.Println("WARNING description does not fit: ", event.Description)
-	} else {
+	} else if event.Description != "" {
 		descriptionRect := gopdf.Rect{
 			W: elem.R.W,
 			H: elem.R.W - heightNeeded,

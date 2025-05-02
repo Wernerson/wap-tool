@@ -35,11 +35,16 @@ categories:
   color: '#ff000080'
 weeks:
 - remarks:
-  - Some remark.
-  - A longer remark that will break on another line.
-  - >
-    Several lines of text, with some "quotes" of various 'types'.
-    End of this block.
+  - Hier ist eine Wochenbemerkung.
+  - "Infra:"
+  - Zu Verfügung Dienstag
+  - "SeminarRM: FKhaus 15b"
+  - Zu Verfügung Dienstag
+  - KD-Box Spl Sand
+  - Zu Verfügung ganze Zeit
+  - KP GK023
+  - Mun Mag
+  - Mat Mag
   - Signed by _______.
   days:
   - columns: []
@@ -473,6 +478,7 @@ weeks:
       description: MZH
   - columns:
     - Det
+    - Det C
     - Beso
     events:
     - title: Antrag/Konzept Det Abend
@@ -530,14 +536,20 @@ weeks:
       - Det
       category: FD
     - title: Kontroll Besuche
-      start: 08:15
-      end: '11:15'
+      start: 07:00
+      end: '12:00'
       appearsIn:
-      - Det
+      - Det C
+      category: FD
+    - title: Kontroll Besuche
+      start: '12:45'
+      end: '16:00'
+      appearsIn:
+      - Det C
       category: FD
     - title: FD
       start: '12:45'
-      end: '17:15'
+      end: '16:00'
       appearsIn:
       - Det
       category: FD
@@ -546,6 +558,7 @@ weeks:
       end: '17:15'
       appearsIn:
       - Det
+      - Det C
       category: Yellow
     - title: HV
       start: '17:15'
