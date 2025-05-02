@@ -86,7 +86,7 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 	botLeft, botMiddle, botRight string,
 ) {
 	headerFontSize := 12.0
-	padding := mmToPx(1.5)
+	padding := mmToPx(4)
 	d.pdf.AddHeader(func() {
 		d.pdf.SetFontSize(headerFontSize)
 		d.pdf.SetY(padding)
@@ -135,20 +135,17 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		wap.Author)
 
 	layout := d.Layout()
-	for i := range wap.Days {
-		weekday := i % 7
-		if weekday == 0 {
-			// start a new week
-			d.setupPage()
-			d.drawRemarks()
+	for week := range wap.Weeks {
+		d.setupPage()
+		d.drawRemarks(week)
+		for day := range 7 {
+			d.drawColumnHeader(week*7 + day)
 		}
-		d.drawColumnHeader(i)
 		// draw events for this day
 		for _, elem := range layout {
-			if elem.dayOffset != i {
-				continue
+			if week*7 <= elem.dayOffset && elem.dayOffset < (week+1)*7 {
+				d.drawEvent(elem)
 			}
-			d.drawEvent(elem)
 		}
 	}
 	log.Println("INFO writing pdf to ", outputPath)
@@ -156,7 +153,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 	return nil
 }
 
-func (d *PDFDrawer) drawRemarks() {
+func (d *PDFDrawer) drawRemarks(weekIdx int) {
 	// Remarks
 	detHeightMin := 90.0
 	rectStart := d.toGridSystem(d.wap.dayStart, d.bigColumns-1)
@@ -183,7 +180,7 @@ func (d *PDFDrawer) drawRemarks() {
 	rectStart = d.toGridSystem(d.wap.dayStart, d.bigColumns-1)
 	d.pdf.SetXY(rectStart.X, rectStart.Y)
 	d.pdf.SetFont("regular", "", 6)
-	for _, remark := range d.wap.Remarks {
+	for _, remark := range d.wap.Remarks[weekIdx] {
 		txt := " - " + remark
 		_, h, _ := d.pdf.IsFitMultiCell(&colRect, txt)
 		d.pdf.MultiCell(&colRect, txt)
@@ -232,22 +229,22 @@ func (d *PDFDrawer) toGridSystem(t time.Time, dayIndex int) gopdf.Point {
 // Draw the column header
 // For example | Montag, 21.04.2025 |
 // For example | Det1 | Det2 | Det3 |
-func (d *PDFDrawer) drawColumnHeader(dayOffset int) {
-	columnLocation := d.assignColumnLocations(d.wap.columns[dayOffset], d.colWidth)
-	day := dayOffset % 7
+func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
+	columnLocation := d.assignColumnLocations(d.wap.columns[totalDayOffset], d.colWidth)
+	dayInWeek := totalDayOffset % 7
 	detHeightMin := 90.0
 	dayHeightMin := 20.0
 	// Box for the week
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
-	RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
+	RectStart := Add(d.toGridSystem(d.wap.dayStart, dayInWeek),
 		gopdf.Point{X: 0, Y: -(detHeightMin + dayHeightMin) * d.minuteHeight})
 	rect := gopdf.Rect{W: d.colWidth, H: dayHeightMin * d.minuteHeight}
 	drawRect(d.pdf, RectStart, rect)
 	d.pdf.SetXY(RectStart.X, RectStart.Y)
 	d.pdf.SetFont("bold", "", 6)
 	d.pdf.SetTextColor(0x00, 0x00, 0x00)
-	dayName := d.wap.dayNames[dayOffset]
+	dayName := d.wap.dayNames[totalDayOffset]
 	d.pdf.CellWithOption(&rect, dayName,
 		gopdf.CellOption{
 			Align: gopdf.Center | gopdf.Middle,
@@ -257,13 +254,13 @@ func (d *PDFDrawer) drawColumnHeader(dayOffset int) {
 	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
 	// empty box if no columns are defined
 	if len(columnLocation) == 0 {
-		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
+		RectStart := Add(d.toGridSystem(d.wap.dayStart, dayInWeek),
 			gopdf.Point{X: 0, Y: -detHeightMin * d.minuteHeight})
 		rect := gopdf.Rect{W: d.colWidth, H: detHeightMin * d.minuteHeight}
 		drawRect(d.pdf, RectStart, rect)
 	}
 	for colName, opts := range columnLocation {
-		RectStart := Add(d.toGridSystem(d.wap.dayStart, day),
+		RectStart := Add(d.toGridSystem(d.wap.dayStart, dayInWeek),
 			gopdf.Point{X: opts.Offset, Y: -detHeightMin * d.minuteHeight})
 		rect := gopdf.Rect{W: opts.W, H: detHeightMin * d.minuteHeight}
 		drawRect(d.pdf, RectStart, rect)

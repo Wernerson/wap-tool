@@ -13,18 +13,22 @@ var MinimumEventDurationMin = 10
 
 // Main type representing a WAP
 type Wap struct {
+	// total number of days
 	Days   int
+	Weeks  int
 	events Events
 	// Styling information
 	categories map[string]RGBColor
-	columns    [][]string
-	firstDay   time.Time
-	dayNames   []string
-	dayStart   time.Time
-	dayEnd     time.Time
+	// Columns for each day
+	columns  [][]string
+	firstDay time.Time
+	dayNames []string
+	dayStart time.Time
+	dayEnd   time.Time
 	// Metadata
 	Unit, Version, Author, Title string
-	Remarks                      []string
+	// Remarks for each week
+	Remarks [][]string
 }
 
 // Represents a valid Event
@@ -78,14 +82,9 @@ func NewWAP(data *WapJson) (w *Wap) {
 	w.categories = make(map[string]RGBColor)
 	// Default color
 	w.categories[""] = DefaultColor
-	w.events = []Event{}
 	w.parseColors(data.Categories)
 	w.dayStart = DayTime(5, 30)
 	w.dayEnd = DayTime(23, 30)
-	w.Days = len(data.Days)
-	w.columns = make([][]string, w.Days)
-	w.dayNames = make([]string, w.Days)
-	w.Remarks = slices.Clone(data.Remarks)
 	firstDayD, err := time.Parse(time.DateOnly, data.Meta.FirstDay)
 	if err != nil {
 		log.Fatal("ERROR failed to parse date. Use the format YYYY-MM-DD: ", err)
@@ -120,8 +119,22 @@ func NewWAP(data *WapJson) (w *Wap) {
 	}
 	w.Author = data.Meta.Author
 	w.Title = data.Meta.Title
-
-	w.parseEvents(data.Days)
+	w.Weeks = len(data.Weeks)
+	for weekIdx, week := range data.Weeks {
+		w.Days += len(week.Days)
+		w.Remarks = append(w.Remarks, week.Remarks)
+		for i := range 7 {
+			correctedTime := w.firstDay.AddDate(0, 0, i)
+			localDay := TranslateWeekDay(correctedTime.Weekday())
+			name := localDay + ", " + correctedTime.Format(time.DateOnly)
+			w.dayNames = append(w.dayNames, name)
+			w.columns = append(w.columns, []string{})
+		}
+		for dayIdx, day := range week.Days {
+			w.columns[weekIdx*7+dayIdx] = day.Columns
+		}
+	}
+	w.parseEvents(data.Weeks)
 	return
 }
 
@@ -141,66 +154,55 @@ func (w *Wap) parseColors(categories []WapJsonCategoriesElem) {
 	}
 }
 
-func (w *Wap) parseEvents(days []WapJsonDaysElem) {
-	for i, day := range days {
-		if day.Name != nil {
-			w.dayNames[i] = *day.Name
-		} else {
-			correctedTime := w.firstDay.AddDate(0, 0, i)
-			w.dayNames[i] = correctedTime.Weekday().String() + ", " + correctedTime.Format(time.DateOnly)
-		}
-		w.columns[i] = day.Columns
-		for _, event := range day.Events {
-			start, err := parseDayTime(event.Start)
-			if err != nil {
-				log.Println("ERROR: failed to parse start time: ", err.Error())
-				continue
-			}
-			end, err := parseDayTime(event.End)
-			if err != nil {
-				log.Println("ERROR: failed to parse end time: ", err.Error())
-				continue
-			}
-			if end.Before(start) {
-				log.Println("WARNING end before start time. Swapping it.")
-				start, end = end, start
-			}
-			description := ""
-			if event.Location != nil {
-				description += *event.Location
-			}
-			if event.Responsible != nil {
-				if description != "" {
-					description += ", "
+func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
+	for weekIdx, week := range weeks {
+		for i, day := range week.Days {
+			for _, event := range day.Events {
+				start, err := parseDayTime(event.Start)
+				if err != nil {
+					log.Println("ERROR: failed to parse start time: ", err.Error())
+					continue
 				}
-				description += *event.Responsible
-			}
-			freshEvent := Event{
-				Start:       start,
-				End:         end,
-				Title:       event.Title,
-				Description: description,
-				DayOffset:   i,
-				AppearsIn:   []string{},
-			}
-			for _, col := range event.AppearsIn {
-				if slices.Contains(day.Columns, col) {
-					freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
-				} else {
-					log.Printf("WARNING ignoring column %v that is not defined for day %d\n", col, i)
+				end, err := parseDayTime(event.End)
+				if err != nil {
+					log.Println("ERROR: failed to parse end time: ", err.Error())
+					continue
 				}
+				if end.Before(start) {
+					log.Println("WARNING end before start time. Swapping it.")
+					start, end = end, start
+				}
+				description := ""
+				if event.Description != nil {
+					description = *event.Description
+				}
+				freshEvent := Event{
+					Start:       start,
+					End:         end,
+					Title:       event.Title,
+					Description: description,
+					DayOffset:   weekIdx*7 + i,
+					AppearsIn:   []string{},
+				}
+				for _, col := range event.AppearsIn {
+					if slices.Contains(day.Columns, col) {
+						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
+					} else {
+						log.Printf("WARNING ignoring column %v that is not defined for day %d\n", col, i)
+					}
+				}
+				if len(event.AppearsIn) == 0 {
+					log.Println("WARNING appearsIn is empty. The event implicitly appears in all columns for this day.", event)
+					freshEvent.AppearsIn = slices.Clone(day.Columns)
+				}
+				if event.Category != nil {
+					freshEvent.Category = *event.Category
+				}
+				if event.Repeats != nil {
+					freshEvent.Repeats = true
+				}
+				w.events = append(w.events, freshEvent)
 			}
-			if len(event.AppearsIn) == 0 {
-				log.Println("WARNING appearsIn is empty. The event implicitly appears in all columns for this day.", event)
-				freshEvent.AppearsIn = slices.Clone(day.Columns)
-			}
-			if event.Category != nil {
-				freshEvent.Category = *event.Category
-			}
-			if event.Repeats != nil {
-				freshEvent.Repeats = true
-			}
-			w.events = append(w.events, freshEvent)
 		}
 	}
 	sort.Sort(w.events)
@@ -242,5 +244,26 @@ func (w *Wap) parseEvents(days []WapJsonDaysElem) {
 			event.Category = ""
 		}
 		// - MAYBE note if there is unallocated time
+	}
+}
+
+func TranslateWeekDay(t time.Weekday) string {
+	switch t {
+	case time.Monday:
+		return "Montag"
+	case time.Tuesday:
+		return "Dienstag"
+	case time.Wednesday:
+		return "Mittwoch"
+	case time.Thursday:
+		return "Donnerstag"
+	case time.Friday:
+		return "Freitag"
+	case time.Saturday:
+		return "Samstag"
+	case time.Sunday:
+		return "Sonntag"
+	default:
+		return "Unknown day"
 	}
 }

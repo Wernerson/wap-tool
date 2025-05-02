@@ -13,25 +13,22 @@ type WapJson struct {
 	// Defines categories for events to display them styled.
 	Categories []WapJsonCategoriesElem `json:"categories,omitempty" yaml:"categories,omitempty" mapstructure:"categories,omitempty"`
 
-	// Days corresponds to the JSON schema field "days".
-	Days []WapJsonDaysElem `json:"days,omitempty" yaml:"days,omitempty" mapstructure:"days,omitempty"`
-
 	// Metadata concerning the WAP.
 	Meta *WapJsonMeta `json:"meta,omitempty" yaml:"meta,omitempty" mapstructure:"meta,omitempty"`
 
-	// Additional remarks.
-	Remarks []string `json:"remarks,omitempty" yaml:"remarks,omitempty" mapstructure:"remarks,omitempty"`
+	// Weeks corresponds to the JSON schema field "weeks".
+	Weeks []WapJsonWeeksElem `json:"weeks,omitempty" yaml:"weeks,omitempty" mapstructure:"weeks,omitempty"`
 }
 
 type WapJsonCategoriesElem struct {
 	// Color to give the category
 	Color string `json:"color" yaml:"color" mapstructure:"color"`
 
+	// Describes for what the category is used. Not to be printed.
+	Comment *string `json:"comment,omitempty" yaml:"comment,omitempty" mapstructure:"comment,omitempty"`
+
 	// Short identifier for the category. To be used as reference from events.
 	Identifier string `json:"identifier" yaml:"identifier" mapstructure:"identifier"`
-
-	// Name of the category
-	Name *string `json:"name,omitempty" yaml:"name,omitempty" mapstructure:"name,omitempty"`
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
@@ -52,110 +49,6 @@ func (j *WapJsonCategoriesElem) UnmarshalJSON(value []byte) error {
 		return err
 	}
 	*j = WapJsonCategoriesElem(plain)
-	return nil
-}
-
-// Each day in the WAP.
-type WapJsonDaysElem struct {
-	// The columns this day is subdivided in. Can be refered by appearsIn for events.
-	Columns []string `json:"columns,omitempty" yaml:"columns,omitempty" mapstructure:"columns,omitempty"`
-
-	// All events that occur on this day.
-	Events []WapJsonDaysElemEventsElem `json:"events,omitempty" yaml:"events,omitempty" mapstructure:"events,omitempty"`
-
-	// Name or title for the day.
-	Name *string `json:"name,omitempty" yaml:"name,omitempty" mapstructure:"name,omitempty"`
-}
-
-// An event.
-type WapJsonDaysElemEventsElem struct {
-	// Columns in which this event should appear.
-	AppearsIn []string `json:"appearsIn,omitempty" yaml:"appearsIn,omitempty" mapstructure:"appearsIn,omitempty"`
-
-	// Identifer of a defined category.
-	Category *string `json:"category,omitempty" yaml:"category,omitempty" mapstructure:"category,omitempty"`
-
-	// End time. In format HH:MM
-	End string `json:"end" yaml:"end" mapstructure:"end"`
-
-	// Description of the event to be displayed as a footnote below the plan.
-	Footnote interface{} `json:"footnote,omitempty" yaml:"footnote,omitempty" mapstructure:"footnote,omitempty"`
-
-	// Location where the event takes place.
-	Location *string `json:"location,omitempty" yaml:"location,omitempty" mapstructure:"location,omitempty"`
-
-	// if the event repeats periodically.
-	Repeats *WapJsonDaysElemEventsElemRepeats `json:"repeats,omitempty" yaml:"repeats,omitempty" mapstructure:"repeats,omitempty"`
-
-	// The person responsible for this event.
-	Responsible *string `json:"responsible,omitempty" yaml:"responsible,omitempty" mapstructure:"responsible,omitempty"`
-
-	// Start time. In format HH:MM
-	Start string `json:"start" yaml:"start" mapstructure:"start"`
-
-	// Title of the event.
-	Title string `json:"title" yaml:"title" mapstructure:"title"`
-}
-
-type WapJsonDaysElemEventsElemRepeats string
-
-const WapJsonDaysElemEventsElemRepeatsDaily WapJsonDaysElemEventsElemRepeats = "daily"
-const WapJsonDaysElemEventsElemRepeatsNo WapJsonDaysElemEventsElemRepeats = "no"
-const WapJsonDaysElemEventsElemRepeatsWeekly WapJsonDaysElemEventsElemRepeats = "weekly"
-
-var enumValues_WapJsonDaysElemEventsElemRepeats = []interface{}{
-	"no",
-	"daily",
-	"weekly",
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *WapJsonDaysElemEventsElemRepeats) UnmarshalJSON(value []byte) error {
-	var v string
-	if err := json.Unmarshal(value, &v); err != nil {
-		return err
-	}
-	var ok bool
-	for _, expected := range enumValues_WapJsonDaysElemEventsElemRepeats {
-		if reflect.DeepEqual(v, expected) {
-			ok = true
-			break
-		}
-	}
-	if !ok {
-		return fmt.Errorf("invalid value (expected one of %#v): %#v", enumValues_WapJsonDaysElemEventsElemRepeats, v)
-	}
-	*j = WapJsonDaysElemEventsElemRepeats(v)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *WapJsonDaysElemEventsElem) UnmarshalJSON(value []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(value, &raw); err != nil {
-		return err
-	}
-	if _, ok := raw["end"]; raw != nil && !ok {
-		return fmt.Errorf("field end in WapJsonDaysElemEventsElem: required")
-	}
-	if _, ok := raw["start"]; raw != nil && !ok {
-		return fmt.Errorf("field start in WapJsonDaysElemEventsElem: required")
-	}
-	if _, ok := raw["title"]; raw != nil && !ok {
-		return fmt.Errorf("field title in WapJsonDaysElemEventsElem: required")
-	}
-	type Plain WapJsonDaysElemEventsElem
-	var plain Plain
-	if err := json.Unmarshal(value, &plain); err != nil {
-		return err
-	}
-	if matched, _ := regexp.MatchString(`^[0-2]\d:[0-5]\d$`, string(plain.End)); !matched {
-		return fmt.Errorf("field %s pattern match: must match %s", "End", `^[0-2]\d:[0-5]\d$`)
-	}
-	if matched, _ := regexp.MatchString(`^[0-2]\d:[0-5]\d$`, string(plain.Start)); !matched {
-		return fmt.Errorf("field %s pattern match: must match %s", "Start", `^[0-2]\d:[0-5]\d$`)
-	}
-	*j = WapJsonDaysElemEventsElem(plain)
 	return nil
 }
 
@@ -228,6 +121,136 @@ func (j *WapJsonMeta) UnmarshalJSON(value []byte) error {
 	return nil
 }
 
+type WapJsonWeeksElem struct {
+	// Days corresponds to the JSON schema field "days".
+	Days []WapJsonWeeksElemDaysElem `json:"days" yaml:"days" mapstructure:"days"`
+
+	// Additional remarks.
+	Remarks []string `json:"remarks,omitempty" yaml:"remarks,omitempty" mapstructure:"remarks,omitempty"`
+}
+
+// Each day in the WAP.
+type WapJsonWeeksElemDaysElem struct {
+	// The columns this day is subdivided in. Can be refered by appearsIn for events.
+	Columns []string `json:"columns,omitempty" yaml:"columns,omitempty" mapstructure:"columns,omitempty"`
+
+	// All events that occur on this day.
+	Events []WapJsonWeeksElemDaysElemEventsElem `json:"events,omitempty" yaml:"events,omitempty" mapstructure:"events,omitempty"`
+}
+
+// An event.
+type WapJsonWeeksElemDaysElemEventsElem struct {
+	// Columns in which this event should appear.
+	AppearsIn []string `json:"appearsIn,omitempty" yaml:"appearsIn,omitempty" mapstructure:"appearsIn,omitempty"`
+
+	// Identifer of a defined category.
+	Category *string `json:"category,omitempty" yaml:"category,omitempty" mapstructure:"category,omitempty"`
+
+	// Additional information such as the responsible person or the location.
+	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+
+	// End time. In format HH:MM
+	End string `json:"end" yaml:"end" mapstructure:"end"`
+
+	// Description of the event to be displayed as a footnote below the plan.
+	Footnote interface{} `json:"footnote,omitempty" yaml:"footnote,omitempty" mapstructure:"footnote,omitempty"`
+
+	// if the event repeats periodically.
+	Repeats *WapJsonWeeksElemDaysElemEventsElemRepeats `json:"repeats,omitempty" yaml:"repeats,omitempty" mapstructure:"repeats,omitempty"`
+
+	// Start time. In format HH:MM
+	Start string `json:"start" yaml:"start" mapstructure:"start"`
+
+	// Title of the event.
+	Title string `json:"title" yaml:"title" mapstructure:"title"`
+}
+
+type WapJsonWeeksElemDaysElemEventsElemRepeats string
+
+const WapJsonWeeksElemDaysElemEventsElemRepeatsDaily WapJsonWeeksElemDaysElemEventsElemRepeats = "daily"
+const WapJsonWeeksElemDaysElemEventsElemRepeatsNo WapJsonWeeksElemDaysElemEventsElemRepeats = "no"
+const WapJsonWeeksElemDaysElemEventsElemRepeatsWeekly WapJsonWeeksElemDaysElemEventsElemRepeats = "weekly"
+
+var enumValues_WapJsonWeeksElemDaysElemEventsElemRepeats = []interface{}{
+	"no",
+	"daily",
+	"weekly",
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *WapJsonWeeksElemDaysElemEventsElemRepeats) UnmarshalJSON(value []byte) error {
+	var v string
+	if err := json.Unmarshal(value, &v); err != nil {
+		return err
+	}
+	var ok bool
+	for _, expected := range enumValues_WapJsonWeeksElemDaysElemEventsElemRepeats {
+		if reflect.DeepEqual(v, expected) {
+			ok = true
+			break
+		}
+	}
+	if !ok {
+		return fmt.Errorf("invalid value (expected one of %#v): %#v", enumValues_WapJsonWeeksElemDaysElemEventsElemRepeats, v)
+	}
+	*j = WapJsonWeeksElemDaysElemEventsElemRepeats(v)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *WapJsonWeeksElemDaysElemEventsElem) UnmarshalJSON(value []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(value, &raw); err != nil {
+		return err
+	}
+	if _, ok := raw["end"]; raw != nil && !ok {
+		return fmt.Errorf("field end in WapJsonWeeksElemDaysElemEventsElem: required")
+	}
+	if _, ok := raw["start"]; raw != nil && !ok {
+		return fmt.Errorf("field start in WapJsonWeeksElemDaysElemEventsElem: required")
+	}
+	if _, ok := raw["title"]; raw != nil && !ok {
+		return fmt.Errorf("field title in WapJsonWeeksElemDaysElemEventsElem: required")
+	}
+	type Plain WapJsonWeeksElemDaysElemEventsElem
+	var plain Plain
+	if err := json.Unmarshal(value, &plain); err != nil {
+		return err
+	}
+	if matched, _ := regexp.MatchString(`^[0-2]\d:[0-5]\d$`, string(plain.End)); !matched {
+		return fmt.Errorf("field %s pattern match: must match %s", "End", `^[0-2]\d:[0-5]\d$`)
+	}
+	if matched, _ := regexp.MatchString(`^[0-2]\d:[0-5]\d$`, string(plain.Start)); !matched {
+		return fmt.Errorf("field %s pattern match: must match %s", "Start", `^[0-2]\d:[0-5]\d$`)
+	}
+	*j = WapJsonWeeksElemDaysElemEventsElem(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *WapJsonWeeksElem) UnmarshalJSON(value []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(value, &raw); err != nil {
+		return err
+	}
+	if _, ok := raw["days"]; raw != nil && !ok {
+		return fmt.Errorf("field days in WapJsonWeeksElem: required")
+	}
+	type Plain WapJsonWeeksElem
+	var plain Plain
+	if err := json.Unmarshal(value, &plain); err != nil {
+		return err
+	}
+	if plain.Days != nil && len(plain.Days) < 1 {
+		return fmt.Errorf("field %s length: must be >= %d", "days", 1)
+	}
+	if len(plain.Days) > 7 {
+		return fmt.Errorf("field %s length: must be <= %d", "days", 7)
+	}
+	*j = WapJsonWeeksElem(plain)
+	return nil
+}
+
 // UnmarshalJSON implements json.Unmarshaler.
 func (j *WapJson) UnmarshalJSON(value []byte) error {
 	type Plain WapJson
@@ -235,8 +258,8 @@ func (j *WapJson) UnmarshalJSON(value []byte) error {
 	if err := json.Unmarshal(value, &plain); err != nil {
 		return err
 	}
-	if plain.Days != nil && len(plain.Days) < 1 {
-		return fmt.Errorf("field %s length: must be >= %d", "days", 1)
+	if plain.Weeks != nil && len(plain.Weeks) < 1 {
+		return fmt.Errorf("field %s length: must be >= %d", "weeks", 1)
 	}
 	*j = WapJson(plain)
 	return nil

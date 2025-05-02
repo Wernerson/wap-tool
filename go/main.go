@@ -26,7 +26,7 @@ func readYaml(inputPath string) (wap *WapJson, err error) {
 
 func main() {
 	// read sample data
-	inputPath := "../data/det6week1.yaml"
+	inputPath := "../data/det6.yaml"
 	log.Println("INFO reading wap definition at ", inputPath)
 	wapData, err := readYaml(inputPath)
 	if err != nil {

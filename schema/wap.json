@@ -46,7 +46,11 @@
           "type": "string"
         }
       },
-      "required": ["author", "title", "firstDay"]
+      "required": [
+        "author",
+        "title",
+        "firstDay"
+      ]
     },
     "categories": {
       "description": "Defines categories for events to display them styled.",
@@ -54,102 +58,118 @@
       "items": {
         "type": "object",
         "properties": {
-            "identifier": {
-              "description": "Short identifier for the category. To be used as reference from events.",
-              "type": "string"
-            },
-            "name": {
-              "description": "Name of the category",
-              "type": "string"
-            },
-            "color": {
-              "description": "Color to give the category",
-              "type": "string"
-            }
+          "identifier": {
+            "description": "Short identifier for the category. To be used as reference from events.",
+            "type": "string"
+          },
+          "comment": {
+            "description": "Describes for what the category is used. Not to be printed.",
+            "type": "string"
+          },
+          "color": {
+            "description": "Color to give the category",
+            "type": "string"
+          }
         },
-        "required": ["identifier", "color"],
+        "required": [
+          "identifier",
+          "color"
+        ],
         "uniqueItems": true
       }
     },
-    "days": {
+    "weeks": {
       "type": "array",
       "minItems": 1,
       "items": {
-        "description": "Each day in the WAP.",
         "type": "object",
         "properties": {
-          "name": {
-            "description": "Name or title for the day.",
-            "type": "string"
-          },
-          "columns": {
-            "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
+          "remarks": {
+            "description": "Additional remarks.",
             "type": "array",
             "items": {
-              "description": "A column name. For example Det1 or Beso.",
               "type": "string"
             }
           },
-          "events": {
-            "description": "All events that occur on this day.",
+          "days": {
             "type": "array",
+            "minItems": 1,
+            "maxItems": 7,
             "items": {
-              "description": "An event.",
+              "description": "Each day in the WAP.",
               "type": "object",
               "properties": {
-                "title": {
-                  "description": "Title of the event.",
-                  "type": "string"
-                },
-                "start": { 
-                  "description": "Start time. In format HH:MM",
-                  "type": "string",
-                  "pattern": "^[0-2]\\d:[0-5]\\d$"
-                },
-                "end": {
-                  "description": "End time. In format HH:MM",
-                  "type": "string",
-                  "pattern": "^[0-2]\\d:[0-5]\\d$"
-                },
-                "responsible": {
-                  "description": "The person responsible for this event.",
-                  "type": "string"
-                },
-                "location": {
-                  "description": "Location where the event takes place.",
-                  "type": "string"
-                },
-                "category": {
-                  "description": "Identifer of a defined category.",
-                  "type": "string"
-                },
-                "appearsIn": {
-                  "description": "Columns in which this event should appear.",
+                "columns": {
+                  "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
                   "type": "array",
                   "items": {
+                    "description": "A column name. For example Det1 or Beso.",
                     "type": "string"
                   }
                 },
-                "repeats": {
-                  "description": "if the event repeats periodically.",
-                  "enum": ["no", "daily", "weekly"]
-                },
-                "footnote": {
-                  "description": "Description of the event to be displayed as a footnote below the plan."
+                "events": {
+                  "description": "All events that occur on this day.",
+                  "type": "array",
+                  "items": {
+                    "description": "An event.",
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "description": "Title of the event.",
+                        "type": "string"
+                      },
+                      "start": {
+                        "description": "Start time. In format HH:MM",
+                        "type": "string",
+                        "pattern": "^[0-2]\\d:[0-5]\\d$"
+                      },
+                      "end": {
+                        "description": "End time. In format HH:MM",
+                        "type": "string",
+                        "pattern": "^[0-2]\\d:[0-5]\\d$"
+                      },
+                      "description": {
+                        "description": "Additional information such as the responsible person or the location.",
+                        "type": "string"
+                      },
+                      "category": {
+                        "description": "Identifer of a defined category.",
+                        "type": "string"
+                      },
+                      "appearsIn": {
+                        "description": "Columns in which this event should appear.",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "repeats": {
+                        "description": "if the event repeats periodically.",
+                        "enum": [
+                          "no",
+                          "daily",
+                          "weekly"
+                        ]
+                      },
+                      "footnote": {
+                        "description": "Description of the event to be displayed as a footnote below the plan."
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "start",
+                      "end"
+                    ]
+                  }
                 }
-              },
-              "required": ["title", "start", "end"]
+              }
             }
           }
-        }
+        },
+        "required": [
+          "days"
+        ]
       }
-    },
-    "remarks": {
-        "description": "Additional remarks.",
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
     }
   }
 }

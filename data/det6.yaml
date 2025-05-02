@@ -1,0 +1,627 @@
+# yaml-language-server: $schema=../schema/wap.json
+meta:
+  author: Hptm H
+  firstDay: 2025-04-21
+  startTime: 06:00
+  endTime: '23:00'
+  unit: Cy Kp 42/3
+  title: Det 6 - WK
+  version: 'Stand: 17.04.2025'
+categories:
+- identifier: Green
+  comment: Allgemeine Grundausbildung und Sport
+  color: '#00b050'
+- identifier: Lightgreen
+  color: '#92d050'
+- identifier: Orange
+  color: '#ff9900'
+- identifier: Vs
+  comment: Verschiebung
+  color: '#00b0f0'
+- identifier: Lightblue
+  comment: Für Einführungen und co.
+  color: '#dbeef4'
+- identifier: FD
+  comment: Fachdienst
+  color: '#eeece1'
+- identifier: Yellow
+  comment: Verpflegung, PD/ID
+  color: '#ffffcc'
+- identifier: KVP
+  comment: Kontinuierliche Verbesserungsprojekte
+  color: '#ff000080'
+weeks:
+- remarks:
+  - Some remark.
+  - "Several lines of text, with some \"quotes\" of various 'types', and also a blank\
+    \ line:\nand some text with\n  extra indentation\non the next line, plus another\
+    \ line at the end.\n"
+  - Signed by Me.
+  days:
+  - columns: []
+  - columns:
+    - Det
+    events:
+    - title: Einrücken Vorbereiten
+      start: 08:00
+      end: 09:30
+      appearsIn:
+      - Det
+      category: Orange
+      description: Det C, FKhaus 15b
+    - title: Einrücken
+      start: 09:30
+      end: '10:00'
+      appearsIn:
+      - Det
+    - title: Zi-Bezug & Zi Ordnung
+      start: '10:00'
+      end: '11:00'
+      appearsIn:
+      - Det
+      category: Orange
+      description: Det C, GK 106 & GK 108
+    - title: Einrückungs & Fahr Rape
+      start: '10:00'
+      end: '11:00'
+      appearsIn:
+      - Det
+      category: Orange
+      description: Einh Four, FKhaus 15b
+    - title: Fassung IAA-Mat
+      start: '10:00'
+      end: '11:00'
+      appearsIn:
+      - Det
+      category: Orange
+      description: Einh Fw, Mat Mag
+    - title: Zimmer Ordnung
+      start: '11:00'
+      end: '11:30'
+      appearsIn:
+      - Det
+      category: Orange
+      description: Det C, GK 106 & 108
+    - title: Vpf Bern
+      start: '12:00'
+      end: '12:45'
+      appearsIn:
+      - Det
+      category: Yellow
+      repeats: daily
+    - title: Feueralarm
+      start: '11:30'
+      end: '11:45'
+      appearsIn:
+      - Det
+      category: Orange
+    - title: Waffe abgeben
+      start: '11:45'
+      end: '12:00'
+      appearsIn:
+      - Det
+      category: Orange
+    - title: AWB / LMS Check
+      category: Green
+      start: '12:45'
+      end: '13:00'
+      appearsIn:
+      - Det
+    - title: Manipulieren
+      category: Green
+      start: '13:00'
+      end: '14:00'
+      appearsIn:
+      - Det
+      description: Det C, Hinter GK
+    - title: TPD Stgw-90
+      category: Green
+      start: '14:00'
+      end: '14:45'
+      appearsIn:
+      - Det
+      description: Det C, PD-Stand
+    - title: PD SM90
+      category: Green
+      start: '14:45'
+      end: '15:15'
+      appearsIn:
+      - Det
+      description: Det C, PD-Stand
+    - title: SAN D
+      category: Green
+      start: '15:15'
+      end: '16:00'
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: LMS IS
+      category: Green
+      start: '16:00'
+      end: '16:30'
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: AWB / LMS Check
+      category: Green
+      start: '16:00'
+      end: '16:30'
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: LMS IS
+      category: Green
+      start: '16:30'
+      end: '17:15'
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: Diensttheorie + KomD
+      category: Orange
+      start: '17:15'
+      end: '18:00'
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: Vpf Bern
+      category: Yellow
+      start: '18:00'
+      end: '18:45'
+      appearsIn:
+      - Det
+      repeats: daily
+    - title: Theorie Eigenschutz und Integrale Sicherheit
+      category: Green
+      start: '18:45'
+      end: '19:30'
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: Kennenlernrunde
+      category: Orange
+      start: '19:30'
+      end: '20:15'
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: Tenue Sport erstellen
+      category: Lightgreen
+      start: '20:15'
+      end: '20:30'
+      appearsIn:
+      - Det
+    - title: Sport
+      category: Green
+      start: '20:30'
+      end: '22:00'
+      appearsIn:
+      - Det
+      description: Outdoor / Kraftraum
+    - title: PD/ID
+      category: Yellow
+      start: '22:00'
+      end: '22:15'
+      appearsIn:
+      - Det
+      repeats: daily
+    - title: ABV
+      start: '22:15'
+      end: '22:30'
+      appearsIn:
+      - Det
+      repeats: daily
+  - columns:
+    - Det
+    - Det C
+    events:
+    - title: Tagwache
+      start: 05:45
+      end: 06:15
+      repeats: daily
+    - title: Vpf Bern
+      category: Yellow
+      start: 06:15
+      end: 07:00
+      repeats: daily
+    - title: AV
+      start: 07:00
+      end: 07:15
+      repeats: daily
+    - title: Verladen Mat Mun
+      start: 07:00
+      end: 07:30
+      category: Lightgreen
+      appearsIn:
+      - Det
+      description: Det C, Mat & Mun Mag
+    - title: Fsg Lunch
+      start: 07:00
+      end: 07:30
+      category: Lightgreen
+      appearsIn:
+      - Det C
+      description: Det C Stv, Timeout
+    - title: Vs SAND
+      category: Vs
+      start: 07:30
+      end: 08:00
+      appearsIn:
+      - Det
+      - Det C
+    - title: Schiessen
+      category: Green
+      start: 08:00
+      end: '12:00'
+      appearsIn:
+      - Det
+      - Det C
+      description: Det C, Spl Sand
+    - title: Vpf Sand
+      category: Yellow
+      start: '12:00'
+      end: '12:45'
+      appearsIn:
+      - Det
+      - Det C
+    - title: Schiessen
+      category: Green
+      start: '12:45'
+      end: '13:45'
+      appearsIn:
+      - Det
+      - Det C
+      description: Det C, Spl Sand
+    - title: Vs BERN
+      category: Vs
+      start: '13:45'
+      end: '14:15'
+      appearsIn:
+      - Det
+      - Det C
+    - title: GPD Stgm / Pist
+      category: Green
+      start: '14:15'
+      end: '15:45'
+      appearsIn:
+      - Det
+      - Det C
+      description: Det C, PD-Stand
+    - title: Reorg
+      category: Green
+      start: '15:45'
+      end: '16:15'
+      appearsIn:
+      - Det
+      - Det C
+    - title: PA Mat Kontrolle
+      category: Green
+      start: '16:15'
+      end: '18:00'
+      appearsIn:
+      - Det
+      - Det C
+      description: Det C, Mannschaftszimmer
+    - title: KVP
+      category: KVP
+      start: '18:45'
+      end: '22:00'
+      appearsIn:
+      - Det
+      - Det C
+      description: Mannschaftszimmer
+  - columns:
+    - Det CNO
+    - Det CESA
+    - Det Zimm
+    - Det C
+    events:
+    - title: AVR
+      category: FD
+      start: 07:15
+      end: 09:00
+      appearsIn:
+      - Det CNO
+    - title: Meet
+      category: Lightblue
+      start: 09:00
+      end: 09:30
+      appearsIn:
+      - Det CNO
+      - Det C
+    - title: FD
+      category: FD
+      start: 09:30
+      end: '12:00'
+      appearsIn:
+      - Det CNO
+    - title: Einführung
+      category: Lightblue
+      start: 07:15
+      end: 07:45
+      appearsIn:
+      - Det CESA
+      - Det C
+    - title: AVOR
+      category: FD
+      start: 07:45
+      end: 08:30
+      appearsIn:
+      - Det CESA
+    - title: Einführung KVP
+      category: FD
+      start: 07:45
+      end: 08:30
+      appearsIn:
+      - Det C
+      description: KP
+    - title: INITIO
+      category: Lightblue
+      start: 08:30
+      end: 09:00
+      appearsIn:
+      - Det CESA
+      - Det C
+    - title: FD
+      category: FD
+      start: 09:00
+      end: '12:00'
+      appearsIn:
+      - Det CESA
+    - title: Vs Zimm
+      category: Vs
+      start: 07:15
+      end: 08:00
+      appearsIn:
+      - Det Zimm
+    - title: FD
+      category: FD
+      start: 08:00
+      end: '12:00'
+      appearsIn:
+      - Det Zimm
+    - title: FD
+      category: FD
+      start: 09:30
+      end: '12:00'
+      appearsIn:
+      - Det C
+    - title: FD
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det CNO
+      - Det CESA
+    - title: Kontrollbesuche bei AdA
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det Zimm
+      - Det C
+    - title: Dienstbesprechung
+      category: Orange
+      start: '18:45'
+      end: '19:10'
+      description: Det C, GK 106
+    - title: Tenue Sport erstellen
+      category: Lightgreen
+      start: '19:10'
+      end: '19:20'
+    - title: Sport
+      category: Lightgreen
+      start: '19:20'
+      end: '22:00'
+      description: MZH
+  - columns:
+    - Det
+    events:
+    - title: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det
+      category: FD
+    - title: Kontroll Besuche
+      start: 08:15
+      end: '11:15'
+      appearsIn:
+      - Det
+      category: FD
+    - title: FD
+      start: '12:45'
+      end: '17:15'
+      appearsIn:
+      - Det
+      category: FD
+    - title: PD / ID / Kas Reinigung
+      start: '16:00'
+      end: '17:15'
+      appearsIn:
+      - Det
+      category: Yellow
+    - title: HV
+      start: '17:15'
+      end: '17:30'
+    - title: Allgemeiner Urlaub
+      start: '17:30'
+      end: '23:30'
+  - columns:
+    - Det 1
+    - Det 2
+    - Det 3
+    - Det 4
+    events:
+    - title: Allgemeiner Urlaub
+      start: 00:00
+      end: '23:59'
+  - columns:
+    - Det 1
+    - Det 2
+    - Det 3
+    - Det 4
+    events:
+    - title: Allgemeiner Urlaub
+      start: 00:00
+      end: '22:30'
+    - title: Einrücken
+      start: '22:30'
+      end: '23:00'
+    - title: ABV
+      start: '23:00'
+      end: '23:30'
+- remarks:
+  - Wilkommen in Woche 2
+  days:
+  - columns:
+    - Det
+    - Det C
+    events:
+    - title: FD
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det
+    - title: FD
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det
+    - title: Kontrollbesuche
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det C
+    - title: Kontrollbesuche
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det C
+    - title: Tenue sport erstellen
+      category: Lightgreen
+      start: '18:45'
+      end: '19:00'
+    - title: Sport
+      category: Lightgreen
+      start: '19:00'
+      end: '20:30'
+  - columns:
+    - Det
+    - Det C
+    events:
+    - title: FD
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det
+    - title: FD
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det
+    - title: Kontrollbesuche
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det C
+    - title: Kontrollbesuche
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det C
+  - columns:
+    - Det
+    - Det C
+    events:
+    - title: FD
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det
+    - title: FD
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det
+    - title: Kontrollbesuche
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det C
+    - title: Kontrollbesuche
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det C
+  - columns:
+    - Det
+    - Det C
+    events:
+    - title: FD
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det
+    - title: FD
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det
+    - title: Kontrollbesuche
+      category: FD
+      start: 07:15
+      end: '12:00'
+      appearsIn:
+      - Det C
+    - title: Kontrollbesuche
+      category: FD
+      start: '12:45'
+      end: '18:00'
+      appearsIn:
+      - Det C
+    - title: Tenue sport erstellen
+      category: Lightgreen
+      start: '18:45'
+      end: '19:00'
+    - title: Sport
+      category: Lightgreen
+      start: '19:00'
+      end: '20:30'
+  - columns: []
+  - columns: []
+  - columns: []
+- remarks:
+  - Wilkommen in Woche 3
+  days:
+  - columns: []
+    events:
+    - title: Test end before start
+      start: 09:00
+      end: 08:00
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: Test short duration
+      start: 09:00
+      end: 09:05
+      appearsIn:
+      - Det
+      description: Det C
+    - title: Test NonExisting category
+      start: 09:30
+      end: 09:45
+      category: NonExisting
