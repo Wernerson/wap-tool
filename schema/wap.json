@@ -107,6 +107,13 @@
                     "type": "string"
                   }
                 },
+                "remarks": {
+                  "type": "array",
+                  "description": "Tagesbemerkungen",
+                  "items": {
+                    "type": "string"
+                  }
+                },
                 "events": {
                   "description": "All events that occur on this day.",
                   "type": "array",
@@ -152,7 +159,8 @@
                         ]
                       },
                       "footnote": {
-                        "description": "Description of the event to be displayed as a footnote below the plan."
+                        "type": "boolean",
+                        "description": "Whether the event appears as a footnote and is described in the daily remarks."
                       }
                     },
                     "required": [

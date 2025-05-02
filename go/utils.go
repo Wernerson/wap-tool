@@ -66,6 +66,10 @@ func DayTime(hour, minute int) time.Time {
 	return time.Date(0, 1, 1, hour, minute, 0, 0, time.UTC)
 }
 
+func MilitaryTime(t time.Time) string {
+	return fmt.Sprintf("%02d%02d", t.Hour(), t.Minute())
+}
+
 func Min(x, y float64) float64 {
 	if x < y {
 		return x

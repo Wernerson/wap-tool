@@ -27,20 +27,28 @@ categories:
 - identifier: Yellow
   comment: Verpflegung, PD/ID
   color: '#ffffcc'
+- identifier: Footnote
+  comment: Fussnoten
+  color: '#e0ef04'
 - identifier: KVP
   comment: Kontinuierliche Verbesserungsprojekte
   color: '#ff000080'
 weeks:
 - remarks:
   - Some remark.
-  - "Several lines of text, with some \"quotes\" of various 'types', and also a blank\
-    \ line:\nand some text with\n  extra indentation\non the next line, plus another\
-    \ line at the end.\n"
-  - Signed by Me.
+  - A longer remark that will break on another line.
+  - >
+    Several lines of text, with some "quotes" of various 'types'.
+    End of this block.
+  - Signed by _______.
   days:
   - columns: []
+    remarks:
+      - Das ist eine Tagesbemerkung
+      - Hier ist eine weitere
   - columns:
     - Det
+    - Beso
     events:
     - title: Einrücken Vorbereiten
       start: 08:00
@@ -75,6 +83,14 @@ weeks:
       - Det
       category: Orange
       description: Einh Fw, Mat Mag
+    - title: Kontrolle AWB Karte
+      start: '10:00'
+      end: '10:30'
+      footnote: true
+      appearsIn:
+      - Beso
+      category: Footnote
+      description: Fkhaus 15, Det C
     - title: Zimmer Ordnung
       start: '11:00'
       end: '11:30'
@@ -121,6 +137,14 @@ weeks:
       appearsIn:
       - Det
       description: Det C, PD-Stand
+    - title: AWB Fsg / Retab
+      start: '14:00'
+      end: '16:00'
+      footnote: true
+      appearsIn:
+      - Beso
+      category: Footnote
+      description: P20, Det C Stv
     - title: PD SM90
       category: Green
       start: '14:45'
@@ -213,6 +237,7 @@ weeks:
   - columns:
     - Det
     - Det C
+    - Beso
     events:
     - title: Tagwache
       start: 05:45
@@ -241,6 +266,30 @@ weeks:
       appearsIn:
       - Det C
       description: Det C Stv, Timeout
+    - title: Mat & Mun Ausgabe
+      start: 07:00
+      end: 07:30
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: MatMag / MunMag, C Planung
+    - title: Mat & Mun Rückgabe
+      start: 14:30
+      end: 15:00
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: MatMag / MunMag, C Planung
+    - title: Waffeninspektion
+      start: 15:00
+      end: 15:45
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: PD-Stand, Lt
     - title: Vs SAND
       category: Vs
       start: 07:30
@@ -314,7 +363,16 @@ weeks:
     - Det CESA
     - Det Zimm
     - Det C
+    - Beso
     events:
+    - title: Kontakt LBA
+      start: 10:00
+      end: 10:30
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: Quoten & Verlust, KP, Det C
     - title: AVR
       category: FD
       start: 07:15
@@ -415,7 +473,56 @@ weeks:
       description: MZH
   - columns:
     - Det
+    - Beso
     events:
+    - title: Antrag/Konzept Det Abend
+      start: 10:00
+      end: 10:30
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: an Pk Kdt, KP, Det C
+    - title: Feedback LB
+      start: 08:00
+      end: 12:00
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: Telefon / for Ort, Det C
+    - title: Fz Rücknahme
+      start: 12:30
+      end: 13:30
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: Wpl Wangen ad Aare, Det C Stv.
+    - title: WPD Fahrzeuge
+      start: 13:00
+      end: 15:00
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: Thun, WPD Chef
+    - title: Mdg PALF
+      start: 15:30
+      end: 16:00
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: KP, Det C
+    - title: Abtrittsmeldung
+      start: 17:00
+      end: 17:30
+      footnote: true
+      category: Footnote
+      appearsIn:
+      - Beso
+      description: an Kp Kdo, KG, Det C
     - title: FD
       start: 07:15
       end: '12:00'
@@ -473,7 +580,9 @@ weeks:
 - remarks:
   - Wilkommen in Woche 2
   days:
-  - columns:
+  - remarks:
+      - Hier gibt es auch wieder Bemerkungen.
+    columns:
     - Det
     - Det C
     events:

@@ -136,6 +136,9 @@ type WapJsonWeeksElemDaysElem struct {
 
 	// All events that occur on this day.
 	Events []WapJsonWeeksElemDaysElemEventsElem `json:"events,omitempty" yaml:"events,omitempty" mapstructure:"events,omitempty"`
+
+	// Tagesbemerkungen
+	Remarks []string `json:"remarks,omitempty" yaml:"remarks,omitempty" mapstructure:"remarks,omitempty"`
 }
 
 // An event.
@@ -152,8 +155,8 @@ type WapJsonWeeksElemDaysElemEventsElem struct {
 	// End time. In format HH:MM
 	End string `json:"end" yaml:"end" mapstructure:"end"`
 
-	// Description of the event to be displayed as a footnote below the plan.
-	Footnote interface{} `json:"footnote,omitempty" yaml:"footnote,omitempty" mapstructure:"footnote,omitempty"`
+	// Whether the event appears as a footnote and is described in the daily remarks.
+	Footnote *bool `json:"footnote,omitempty" yaml:"footnote,omitempty" mapstructure:"footnote,omitempty"`
 
 	// if the event repeats periodically.
 	Repeats *WapJsonWeeksElemDaysElemEventsElemRepeats `json:"repeats,omitempty" yaml:"repeats,omitempty" mapstructure:"repeats,omitempty"`

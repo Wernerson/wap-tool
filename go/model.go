@@ -12,6 +12,10 @@ var DefaultColor = RGBColor{0xf0, 0xf0, 0xf0}
 var MinimumEventDurationMin = 10
 
 // Main type representing a WAP
+// Days < Weeks * 7
+// len(Remarks) == Weeks
+// len(DailyRemarks) == Weeks * 7
+// len(columns) == Weeks * 7
 type Wap struct {
 	// total number of days
 	Days   int
@@ -29,6 +33,8 @@ type Wap struct {
 	Unit, Version, Author, Title string
 	// Remarks for each week
 	Remarks [][]string
+	// Remarks for each day
+	DailyRemarks [][]string
 }
 
 // Represents a valid Event
@@ -47,6 +53,7 @@ type Event struct {
 	Category    string
 	Title       string
 	Description string
+	Footnote    bool
 }
 
 type Events []Event
@@ -129,9 +136,11 @@ func NewWAP(data *WapJson) (w *Wap) {
 			name := localDay + ", " + correctedTime.Format(time.DateOnly)
 			w.dayNames = append(w.dayNames, name)
 			w.columns = append(w.columns, []string{})
+			w.DailyRemarks = append(w.DailyRemarks, []string{})
 		}
 		for dayIdx, day := range week.Days {
 			w.columns[weekIdx*7+dayIdx] = day.Columns
+			w.DailyRemarks[weekIdx*7+dayIdx] = day.Remarks
 		}
 	}
 	w.parseEvents(data.Weeks)
@@ -200,6 +209,9 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 				}
 				if event.Repeats != nil {
 					freshEvent.Repeats = true
+				}
+				if event.Footnote != nil {
+					freshEvent.Footnote = *event.Footnote
 				}
 				w.events = append(w.events, freshEvent)
 			}
