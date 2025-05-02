@@ -104,38 +104,47 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 ) {
 	padding := mmToPx(4)
 	d.pdf.AddHeader(func() {
-		d.pdf.SetFontSize(d.largeFontSize)
+		err := d.pdf.SetFontSize(d.largeFontSize)
+		check(err)
 		d.pdf.SetY(padding)
 		d.pdf.SetX(padding)
-		d.pdf.CellWithOption(nil, topLeft, gopdf.CellOption{Align: gopdf.Left})
+		err = d.pdf.CellWithOption(nil, topLeft, gopdf.CellOption{Align: gopdf.Left})
+		check(err)
 		tmW, err := d.pdf.MeasureTextWidth(topMiddle)
 		check(err)
 		d.pdf.SetX(d.pageSize.W/2 - tmW/2)
-		d.pdf.CellWithOption(nil, topMiddle, gopdf.CellOption{Align: gopdf.Center})
+		err = d.pdf.CellWithOption(nil, topMiddle, gopdf.CellOption{Align: gopdf.Center})
+		check(err)
 		trW, err := d.pdf.MeasureTextWidth(topRight)
 		check(err)
 		d.pdf.SetX(d.pageSize.W - trW - padding)
-		d.pdf.CellWithOption(nil, topRight, gopdf.CellOption{Align: gopdf.Right})
+		err = d.pdf.CellWithOption(nil, topRight, gopdf.CellOption{Align: gopdf.Right})
+		check(err)
 	})
 	d.pdf.AddFooter(func() {
-		d.pdf.SetFontSize(d.largeFontSize)
+		err := d.pdf.SetFontSize(d.largeFontSize)
+		check(err)
 		d.pdf.SetY(d.pageSize.H - padding - d.largeFontSize)
 		d.pdf.SetX(padding)
-		d.pdf.CellWithOption(nil, botLeft, gopdf.CellOption{Align: gopdf.Left})
+		err = d.pdf.CellWithOption(nil, botLeft, gopdf.CellOption{Align: gopdf.Left})
+		check(err)
 		bmW, err := d.pdf.MeasureTextWidth(botMiddle)
 		check(err)
 		d.pdf.SetX(d.pageSize.W/2 - bmW/2)
-		d.pdf.CellWithOption(nil, botMiddle, gopdf.CellOption{Align: gopdf.Center})
+		err = d.pdf.CellWithOption(nil, botMiddle, gopdf.CellOption{Align: gopdf.Center})
+		check(err)
 		brW, err := d.pdf.MeasureTextWidth(botRight)
 		check(err)
 		d.pdf.SetX(d.pageSize.W - brW - padding)
-		d.pdf.CellWithOption(nil, botRight, gopdf.CellOption{Align: gopdf.Right})
+		err = d.pdf.CellWithOption(nil, botRight, gopdf.CellOption{Align: gopdf.Right})
+		check(err)
 	})
 }
 
-func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
+func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 	d.wap = wap
-	d.setupDocument()
+	err := d.setupDocument()
+	check(err)
 	producer := "WAP-tool " + VERSION
 	d.pdf.SetInfo(gopdf.PdfInfo{
 		Author:   wap.Author,
@@ -186,8 +195,9 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) (err error) {
 		}
 	}
 	log.Println("INFO writing pdf to ", outputPath)
-	d.pdf.WritePdf(outputPath)
-	return nil
+	if err := d.pdf.WritePdf(outputPath); err != nil {
+		log.Fatal("ERROR failed to write pdf output: ", err.Error())
+	}
 }
 
 func (d *PDFDrawer) drawDailyRemarks(dayIdx int, remarks []string) {
@@ -204,7 +214,8 @@ var numBeginningRe = regexp.MustCompile("^[0-9]+")
 
 func (d *PDFDrawer) drawMultiLineText(text []string, point gopdf.Point, rect gopdf.Rect) {
 	d.pdf.SetXY(point.X, point.Y)
-	d.pdf.SetFont("regular", "", d.smallFontSize)
+	err := d.pdf.SetFont("regular", "", d.smallFontSize)
+	check(err)
 	for _, txt := range text {
 		// hack: Create anchors for foonote links.
 		// we abuse that the footnote lines start the footnote counter
@@ -212,7 +223,8 @@ func (d *PDFDrawer) drawMultiLineText(text []string, point gopdf.Point, rect gop
 			d.pdf.SetAnchor("fn:" + match)
 		}
 		_, h, _ := d.pdf.IsFitMultiCell(&rect, txt)
-		d.pdf.MultiCellWithOption(&rect, txt, gopdf.CellOption{BreakOption: d.breakOption})
+		err := d.pdf.MultiCellWithOption(&rect, txt, gopdf.CellOption{BreakOption: d.breakOption})
+		check(err)
 		point.Y += h
 		rect.H -= h
 		d.pdf.SetXY(point.X, point.Y)
@@ -237,12 +249,13 @@ func (d *PDFDrawer) drawWeeklyRemarks(weekIdx int) {
 	drawRect(d.pdf, rectStart, headerRect)
 	d.pdf.SetXY(rectStart.X, rectStart.Y)
 	d.pdf.SetTextColor(0x00, 0x00, 0x00)
-	d.pdf.SetFont("bold", "", d.smallFontSize)
-	d.pdf.CellWithOption(&headerRect, "Bemerkungen",
+	err := d.pdf.SetFont("bold", "", d.smallFontSize)
+	check(err)
+	err = d.pdf.CellWithOption(&headerRect, "Bemerkungen",
 		gopdf.CellOption{
 			Align: gopdf.Center | gopdf.Middle,
 		})
-
+	check(err)
 	rectStart = d.toGridSystem(d.wap.dayStart, d.bigColumns-1)
 	d.drawMultiLineText(d.wap.Remarks[weekIdx], rectStart, colRect)
 }
@@ -266,14 +279,16 @@ func (d *PDFDrawer) setupPage() {
 	drawHorizontalLines(d.pdf, d.p1, d.wapBox, d.hoursPerDay*4)
 
 	// Add time scale (mark all hours)
-	d.pdf.SetFontSize(8)
+	err := d.pdf.SetFontSize(8)
+	check(err)
 	d.pdf.SetFillColor(0x00, 0x00, 0x00)
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	for hour := d.wap.dayStart.Hour(); hour <= d.wap.dayEnd.Hour(); hour += 1 {
 		p := Add(d.toGridSystem(DayTime(hour, 0), 0), gopdf.Point{X: -20, Y: -d.smallFontSize})
 		d.pdf.SetXY(p.X, p.Y)
 		// convert to military time format
-		d.pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
+		err := d.pdf.Cell(nil, fmt.Sprintf("%02d00", hour))
+		check(err)
 	}
 }
 
@@ -299,14 +314,15 @@ func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
 	rect := gopdf.Rect{W: d.colWidth, H: dayHeightMin * d.minuteHeight}
 	drawRect(d.pdf, RectStart, rect)
 	d.pdf.SetXY(RectStart.X, RectStart.Y)
-	d.pdf.SetFont("bold", "", d.smallFontSize)
+	err := d.pdf.SetFont("bold", "", d.smallFontSize)
+	check(err)
 	d.pdf.SetTextColor(0x00, 0x00, 0x00)
 	dayName := d.wap.dayNames[totalDayOffset]
-	d.pdf.CellWithOption(&rect, dayName,
+	err = d.pdf.CellWithOption(&rect, dayName,
 		gopdf.CellOption{
 			Align: gopdf.Center | gopdf.Middle,
 		})
-
+	check(err)
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xf0, 0xf0, 0xf0)
 	// empty box if no columns are defined
@@ -324,11 +340,13 @@ func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
 		d.pdf.SetXY(RectStart.X, RectStart.Y)
 		d.pdf.SetTextColor(0x00, 0x00, 0x00)
 		d.pdf.Rotate(90.0, RectStart.X+rect.W/2, RectStart.Y+rect.H/2)
-		d.pdf.SetFont("bold", "", d.smallFontSize)
-		d.pdf.CellWithOption(&rect, colName,
+		err := d.pdf.SetFont("bold", "", d.smallFontSize)
+		check(err)
+		err = d.pdf.CellWithOption(&rect, colName,
 			gopdf.CellOption{
 				Align: gopdf.Center | gopdf.Middle,
 			})
+		check(err)
 		d.pdf.RotateReset()
 	}
 }
@@ -351,7 +369,8 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 	}
 	// Dynamically decrease font-size until it fits
 	for ; titleFontSize >= 3; titleFontSize -= 1 {
-		d.pdf.SetFont("bold", "", titleFontSize)
+		err := d.pdf.SetFont("bold", "", titleFontSize)
+		check(err)
 		ok, _, _ := d.pdf.IsFitMultiCell(&rect, title)
 		if ok {
 			break
@@ -368,8 +387,8 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 		})
 	check(err)
 	d.pdf.SetXY(elem.P.X, elem.P.Y+heightNeeded)
-
-	d.pdf.SetFont("regular", "", d.smallFontSize)
+	err = d.pdf.SetFont("regular", "", d.smallFontSize)
+	check(err)
 	ok, _, _ = d.pdf.IsFitMultiCell(&rect, event.Description)
 	if !ok {
 		log.Println("WARNING description does not fit: ", event.Description)
@@ -378,11 +397,12 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 			W: elem.R.W,
 			H: elem.R.W - heightNeeded,
 		}
-		d.pdf.MultiCellWithOption(&descriptionRect, event.Description,
+		err := d.pdf.MultiCellWithOption(&descriptionRect, event.Description,
 			gopdf.CellOption{
 				Align:       gopdf.Center,
 				BreakOption: d.breakOption,
 			})
+		check(err)
 	}
 	if elem.Event.Footnote {
 		d.pdf.AddInternalLink(linkTo, elem.P.X, elem.P.Y, elem.R.H, elem.R.W)

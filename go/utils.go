@@ -41,7 +41,7 @@ func (c RGBColor) Compare(other RGBColor) int {
 // parseColor takes a hexadecimal color string (e.g., "#RRGGBB") and converts it into an RGBColor struct.
 func parseColor(s string) (c RGBColor, err error) {
 	if len(s) < 7 {
-		return RGBColor{}, fmt.Errorf("Use the format #RRGGBB for colors. Invalid color string: %s", s)
+		return RGBColor{}, fmt.Errorf("ERROR Use the format #RRGGBB for colors. Invalid color string: %s", s)
 	}
 	rUint, err := strconv.ParseUint(s[1:3], 16, 8)
 	if err != nil {
