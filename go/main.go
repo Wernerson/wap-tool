@@ -31,7 +31,7 @@ func main() {
 	}
 
 	var inputPath string
-	var outputPath string = "/dev/stdout"
+	var outputPath = "/dev/stdout"
 
 	args := os.Args[1:]
 	for i := 0; i < len(args); i++ {

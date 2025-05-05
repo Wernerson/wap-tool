@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -211,8 +210,6 @@ func (d *PDFDrawer) drawDailyRemarks(dayIdx int, remarks []string) {
 	// drawRect(d.pdf, rectStart, remarksRect)
 	d.drawMultiLineText(remarks, rectStart, remarksRect)
 }
-
-var numBeginningRe = regexp.MustCompile("^[0-9]+")
 
 func (d *PDFDrawer) drawMultiLineText(text []string, point gopdf.Point, rect gopdf.Rect) {
 	d.pdf.SetXY(point.X, point.Y)

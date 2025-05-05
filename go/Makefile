@@ -24,6 +24,10 @@ docker: build
 image-tar: docker
 	docker save $(IMAGE_NAME) | gzip > $(TAR_NAME)
 
+.PHONY: lint
+lint:
+	golangci-lint run ./...
+
 # Clean up all generated files
 .PHONY: clean
 clean:
