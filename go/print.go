@@ -41,6 +41,7 @@ type PDFDrawer struct {
 	colWidth      float64
 	smallFontSize float64
 	largeFontSize float64
+	padding       float64
 }
 
 func NewPDFDrawer() *PDFDrawer {
@@ -53,8 +54,9 @@ func NewPDFDrawer() *PDFDrawer {
 			Separator:      "-",
 		},
 		bigColumns:    8,
-		smallFontSize: 5,
+		smallFontSize: 4,
 		largeFontSize: 8,
+		padding:       2,
 	}
 
 }
@@ -78,7 +80,7 @@ func (d *PDFDrawer) setupDocument() (err error) {
 	if err != nil {
 		return err
 	}
-	err = d.pdf.SetFont("regular", "", d.largeFontSize)
+	err = d.pdf.SetFont("regular", "", d.smallFontSize)
 	if err != nil {
 		return err
 	}
@@ -122,9 +124,9 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 		check(err)
 	})
 	d.pdf.AddFooter(func() {
-		err := d.pdf.SetFontSize(d.largeFontSize)
+		err := d.pdf.SetFontSize(d.smallFontSize)
 		check(err)
-		d.pdf.SetY(d.pageSize.H - padding - d.largeFontSize)
+		d.pdf.SetY(d.pageSize.H - padding - d.smallFontSize)
 		d.pdf.SetX(padding)
 		err = d.pdf.CellWithOption(nil, botLeft, gopdf.CellOption{Align: gopdf.Left})
 		check(err)
@@ -202,11 +204,13 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 
 func (d *PDFDrawer) drawDailyRemarks(dayIdx int, remarks []string) {
 	rectStart := d.toGridSystem(d.wap.dayEnd, dayIdx)
-	remarksHeight := 200.0
-	remarksRect := gopdf.Rect{W: d.colWidth, H: remarksHeight * d.minuteHeight}
+	rectStart.X += d.padding
+	rectStart.Y += d.padding
+	remarksHeight := 300.0
+	remarksRect := gopdf.Rect{W: d.colWidth - 2*d.padding, H: remarksHeight*d.minuteHeight - d.padding}
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xff, 0xff, 0xff)
-	drawRect(d.pdf, rectStart, remarksRect)
+	// drawRect(d.pdf, rectStart, remarksRect)
 	d.drawMultiLineText(remarks, rectStart, remarksRect)
 }
 
@@ -257,6 +261,10 @@ func (d *PDFDrawer) drawWeeklyRemarks(weekIdx int) {
 		})
 	check(err)
 	rectStart = d.toGridSystem(d.wap.dayStart, d.bigColumns-1)
+	rectStart.X += d.padding
+	rectStart.Y += d.padding
+	colRect.H -= 2 * d.padding
+	colRect.W -= 2 * d.padding
 	d.drawMultiLineText(d.wap.Remarks[weekIdx], rectStart, colRect)
 }
 
@@ -368,7 +376,7 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 		H: Min(elem.R.H, float64(titleFontSize)*2),
 	}
 	// Dynamically decrease font-size until it fits
-	for ; titleFontSize >= 3; titleFontSize -= 1 {
+	for ; titleFontSize >= 2; titleFontSize -= 1 {
 		err := d.pdf.SetFont("bold", "", titleFontSize)
 		check(err)
 		ok, _, _ := d.pdf.IsFitMultiCell(&rect, title)
@@ -387,7 +395,7 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 		})
 	check(err)
 	d.pdf.SetXY(elem.P.X, elem.P.Y+heightNeeded)
-	err = d.pdf.SetFont("regular", "", d.smallFontSize)
+	err = d.pdf.SetFont("regular", "", Min(d.smallFontSize, titleFontSize))
 	check(err)
 	ok, _, _ = d.pdf.IsFitMultiCell(&rect, event.Description)
 	if !ok {
