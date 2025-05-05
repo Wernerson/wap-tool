@@ -365,30 +365,26 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 		d.pdf.SetFillColor(c.R, c.G, c.B)
 	}
 	drawRect(d.pdf, elem.P, elem.R)
-	d.pdf.SetXY(elem.P.X, elem.P.Y)
-	d.pdf.SetTextColor(0x00, 0x00, 0x00)
 	title := event.Title
 	titleFontSize := d.smallFontSize
-	// Limit the size for the title
-	// to avoid making it too large
 	rect := gopdf.Rect{
 		W: elem.R.W,
-		H: Min(elem.R.H, float64(titleFontSize)*2),
+		H: elem.R.H,
 	}
-	// Dynamically decrease font-size until it fits
-	for ; titleFontSize >= 2; titleFontSize -= 1 {
-		err := d.pdf.SetFont("bold", "", titleFontSize)
-		check(err)
-		ok, _, _ := d.pdf.IsFitMultiCell(&rect, title)
-		if ok {
-			break
-		}
+	// No padding for small events (like Tagwache/AV)
+	if rect.H >= 16 {
+		elem.P.Y += d.padding
+		rect.H -= d.padding
 	}
+	d.pdf.SetXY(elem.P.X, elem.P.Y)
+	d.pdf.SetTextColor(0x00, 0x00, 0x00)
+	err := d.pdf.SetFont("bold", "", titleFontSize)
+	check(err)
 	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
 	if !ok {
 		log.Println("WARNING", "title does not fit in rectangle:", event.Title)
 	}
-	err := d.pdf.MultiCellWithOption(&rect, title,
+	err = d.pdf.MultiCellWithOption(&rect, title,
 		gopdf.CellOption{
 			Align:       gopdf.Center,
 			BreakOption: d.breakOption,
@@ -397,10 +393,11 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 	d.pdf.SetXY(elem.P.X, elem.P.Y+heightNeeded)
 	err = d.pdf.SetFont("regular", "", Min(d.smallFontSize, titleFontSize))
 	check(err)
-	ok, _, _ = d.pdf.IsFitMultiCell(&rect, event.Description)
-	if !ok {
-		log.Println("WARNING description does not fit: ", event.Description)
-	} else if event.Description != "" {
+	// TODO check properly whether description fits
+	// this does not account for breakOption
+	// we get does not fit event though there would be enough space on the next line
+	// ok, _, _ = d.pdf.IsFitMultiCellWithNewline(&rect, event.Description)
+	if event.Description != "" {
 		descriptionRect := gopdf.Rect{
 			W: elem.R.W,
 			H: elem.R.W - heightNeeded,
