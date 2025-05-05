@@ -1,7 +1,11 @@
+
 stages:
   - lint
 
 golangci_lint:
+  tags:
+    - shared
+    - debian
   stage: lint
   image: golangci/golangci-lint:latest
   script:
