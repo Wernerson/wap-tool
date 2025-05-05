@@ -168,7 +168,7 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 		for day := range 7 {
 			totalDayIdx := week*7 + day
 			d.drawColumnHeader(week*7 + day)
-			/// we model the current footnote convetion:
+			// we model the current footnote convention:
 			// for each day the footnote counter resets
 			// Monday it starts with 10, Tuesday 20, ...
 			footnoteCounter := (day + 1) * 10
@@ -178,18 +178,16 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 				if elem.dayOffset == totalDayIdx {
 					originalEvent := elem.Event
 					// Handle footnotes
-					linkTo := ""
 					if originalEvent.Footnote {
 						footNoteSource := *originalEvent
 						footNoteSource.Title = strconv.Itoa(footnoteCounter)
 						footNoteSource.Description = ""
 						elem.Event = &footNoteSource
 						ts := MilitaryTime(originalEvent.Start)
-						linkTo = fmt.Sprintf("fn:%d", footnoteCounter)
 						remarks = append(remarks, fmt.Sprintf("%d  %s %s, %s", footnoteCounter, ts, originalEvent.Title, originalEvent.Description))
 						footnoteCounter += 1
 					}
-					d.drawEvent(elem, linkTo)
+					d.drawEvent(elem)
 				}
 			}
 			remarks = append(remarks, d.wap.DailyRemarks[totalDayIdx]...)
@@ -221,11 +219,6 @@ func (d *PDFDrawer) drawMultiLineText(text []string, point gopdf.Point, rect gop
 	err := d.pdf.SetFont("regular", "", d.smallFontSize)
 	check(err)
 	for _, txt := range text {
-		// hack: Create anchors for foonote links.
-		// we abuse that the footnote lines start the footnote counter
-		if match := numBeginningRe.FindString(txt); match != "" {
-			d.pdf.SetAnchor("fn:" + match)
-		}
 		_, h, _ := d.pdf.IsFitMultiCell(&rect, txt)
 		err := d.pdf.MultiCellWithOption(&rect, txt, gopdf.CellOption{BreakOption: d.breakOption})
 		check(err)
@@ -359,7 +352,7 @@ func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
 	}
 }
 
-func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
+func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	event := elem.Event
 	if c, ok := d.wap.categories[event.Category]; ok {
 		d.pdf.SetFillColor(c.R, c.G, c.B)
@@ -408,9 +401,6 @@ func (d *PDFDrawer) drawEvent(elem EventPosition, linkTo string) {
 				BreakOption: d.breakOption,
 			})
 		check(err)
-	}
-	if elem.Event.Footnote {
-		d.pdf.AddInternalLink(linkTo, elem.P.X, elem.P.Y, elem.R.H, elem.R.W)
 	}
 }
 
