@@ -216,12 +216,23 @@ func (d *PDFDrawer) drawMultiLineText(text []string, point gopdf.Point, rect gop
 	err := d.pdf.SetFont("regular", "", d.smallFontSize)
 	check(err)
 	for _, txt := range text {
-		_, h, _ := d.pdf.IsFitMultiCell(&rect, txt)
-		err := d.pdf.MultiCellWithOption(&rect, txt, gopdf.CellOption{BreakOption: d.breakOption})
-		check(err)
-		point.Y += h
-		rect.H -= h
-		d.pdf.SetXY(point.X, point.Y)
+		if txt == "" {
+			point.Y += d.smallFontSize
+			rect.H -= d.smallFontSize
+			d.pdf.SetXY(point.X, point.Y)
+			continue
+		}
+		for s := range strings.SplitSeq(txt, "\n") {
+			if s == "" {
+				continue
+			}
+			_, h, _ := d.pdf.IsFitMultiCell(&rect, s)
+			err := d.pdf.MultiCellWithOption(&rect, s, gopdf.CellOption{BreakOption: d.breakOption})
+			check(err)
+			point.Y += h
+			rect.H -= h
+			d.pdf.SetXY(point.X, point.Y)
+		}
 	}
 }
 
@@ -232,7 +243,7 @@ func (d *PDFDrawer) drawWeeklyRemarks(weekIdx int) {
 	headerRect := gopdf.Rect{W: d.colWidth, H: detHeightMin * d.minuteHeight}
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xff, 0xff, 0xff)
-	minutes := d.wap.dayEnd.Sub(d.wap.dayStart).Minutes() + 200
+	minutes := d.wap.dayEnd.Sub(d.wap.dayStart).Minutes()
 	colRect := gopdf.Rect{W: d.colWidth, H: minutes * d.minuteHeight}
 	drawRect(d.pdf, rectStart, colRect)
 
@@ -255,7 +266,19 @@ func (d *PDFDrawer) drawWeeklyRemarks(weekIdx int) {
 	rectStart.Y += d.padding
 	colRect.H -= 2 * d.padding
 	colRect.W -= 2 * d.padding
+	for i, r := range d.wap.Remarks[weekIdx] {
+		if r != "" {
+			d.wap.Remarks[weekIdx][i] = "- " + r
+		}
+	}
 	d.drawMultiLineText(d.wap.Remarks[weekIdx], rectStart, colRect)
+
+	// Add a signature block
+	signatureStart := d.toGridSystem(d.wap.dayEnd, d.bigColumns-1)
+	signatureRect := gopdf.Rect{W: d.colWidth, H: 150 * d.minuteHeight}
+	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
+	d.pdf.SetFillColor(0xff, 0xff, 0xff)
+	drawRect(d.pdf, signatureStart, signatureRect)
 }
 
 func (d *PDFDrawer) setupPage() {

@@ -35,26 +35,24 @@ categories:
   color: '#ff000080'
 weeks:
 - remarks:
-  - Infra
-  - >
-    KP: GK 023
-    Mun Mag
-    Mat Mag: 15b 009
-  - >
-    Manschafts Rm: GK 106
-    Manschafts Rm: GK 108
-    Of Zimmer: GK 126
-    Of Zimmer: GK 151
-  - >
-    Montag:
-    ThS: GK 021 (ganzer Tag)
-  - >
-    Dienstag:
-    KD-Box Spl Sand (ganzer Tag)
-  - >
-    Mittwoch:
-    Kraftraum: GK U17/U18 (Abend)
-
+  # With | we get newlines, not with >
+  - "Infra:"
+  - "KP: GK 023"
+  - "Mun Mag"
+  - "Mat Mag: 15b 009"
+  - "Manschafts Rm: GK 106"
+  - "Manschafts Rm: GK 108"
+  - "Of Zimmer: GK 126"
+  - "Of Zimmer: GK 151"
+  - "" # To get a blank line
+  - "Montag:"
+  - "ThS: GK 021 (ganzer Tag)"
+  - ""
+  - "Dienstag:"
+  - "KD-Box Spl Sand (ganzer Tag)"
+  - ""
+  - "Mittwoch:"
+  - "Kraftraum: GK U17/U18 (Abend)"
 
   days:
   - columns:
