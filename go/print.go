@@ -104,6 +104,7 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 	botLeft, botMiddle, botRight string,
 ) {
 	padding := mmToPx(4)
+	weekCounter := 1
 	d.pdf.AddHeader(func() {
 		err := d.pdf.SetFontSize(d.largeFontSize)
 		check(err)
@@ -111,10 +112,12 @@ func (d *PDFDrawer) drawHeaderAndFooter(
 		d.pdf.SetX(padding)
 		err = d.pdf.CellWithOption(nil, topLeft, gopdf.CellOption{Align: gopdf.Left})
 		check(err)
-		tmW, err := d.pdf.MeasureTextWidth(topMiddle)
+		topMiddleCopy := fmt.Sprintf("%s - Woche %d", topMiddle, weekCounter)
+		weekCounter++
+		tmW, err := d.pdf.MeasureTextWidth(topMiddleCopy)
 		check(err)
 		d.pdf.SetX(d.pageSize.W/2 - tmW/2)
-		err = d.pdf.CellWithOption(nil, topMiddle, gopdf.CellOption{Align: gopdf.Center})
+		err = d.pdf.CellWithOption(nil, topMiddleCopy, gopdf.CellOption{Align: gopdf.Center})
 		check(err)
 		trW, err := d.pdf.MeasureTextWidth(topRight)
 		check(err)
