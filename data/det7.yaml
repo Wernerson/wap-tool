@@ -161,6 +161,9 @@ weeks:
       appearsIn:
       - Det
       - Det C
+      - Det CNO
+      - Det CESA
+      - Det Zimm
       repeats: daily
     - title: Diensttheorie
       category: Orange
@@ -202,6 +205,9 @@ weeks:
       appearsIn:
       - Det
       - Det C
+      - Det CNO
+      - Det CESA
+      - Det Zimm
       repeats: daily
   - columns:
     - Det
@@ -361,7 +367,9 @@ weeks:
       appearsIn:
       - Det
   - columns:
-    - Det
+    - Det CNO
+    - Det CESA
+    - Det Zimm
     - Det C
     - Beso
     events:
@@ -379,14 +387,73 @@ weeks:
       appearsIn:
       - Det
       - Det C
+      - Det CNO
+      - Det CESA
+      - Det Zimm
       repeats: daily
-
-    - title: LB first contact
+    - title: AVOR
+      category: FD
+      start: 07:30
+      end: 09:00
+      appearsIn:
+      - Det CNO
+    - title: Meet
+      category: Lightblue
+      start: 09:00
+      end: 09:30
+      appearsIn:
+      - Det CNO
+      - Det C
+    - title: FD
+      category: FD
+      start: 09:30
+      end: '12:00'
+      appearsIn:
+      - Det CNO
+    - title: Einführung
       category: Lightblue
       start: 07:30
       end: 08:00
       appearsIn:
-      - Det
+      - Det CESA
+      - Det C
+    - title: AVOR
+      category: FD
+      start: 08:00
+      end: 08:30
+      appearsIn:
+      - Det CESA
+    # - title: Einführung KVP
+    #   category: FD
+    #   start: 07:45
+    #   end: 08:30
+    #   appearsIn:
+    #   - Det C
+    #   description: KP
+    - title: INITIO
+      category: Lightblue
+      start: 08:30
+      end: 09:00
+      appearsIn:
+      - Det CESA
+      - Det C
+    - title: FD
+      category: FD
+      start: 09:00
+      end: '12:00'
+      appearsIn:
+      - Det CESA
+    - title: FD
+      category: FD
+      start: 07:30
+      end: '12:00'
+      appearsIn:
+      - Det Zimm
+    - title: FD
+      category: FD
+      start: 09:30
+      end: '12:00'
+      appearsIn:
       - Det C
     - title: CFC Hardware Ausgabe
       start: 08:00
@@ -410,13 +477,6 @@ weeks:
       end: '12:00'
       appearsIn:
       - Det
-    - title: Kontrollbesuche
-      category: FD
-      start: 08:00
-      end: '12:00'
-      appearsIn:
-      - Det C
-      repeats: daily
     - title: Vpf BERN
       category: Yellow
       start: 12:00
@@ -425,12 +485,17 @@ weeks:
       appearsIn:
         - Det
         - Det C
+        - Det CNO
+        - Det CESA
+        - Det Zimm
     - title: FD
       category: FD
       start: '12:45'
       end: '18:00'
       appearsIn:
-      - Det
+      - Det CNO
+      - Det CESA
+      - Det Zimm
     - title: Kontrollbesuche bei AdA
       category: FD
       start: '12:45'
@@ -442,20 +507,39 @@ weeks:
       start: '18:45'
       end: '20:00'
       description: Det C / Lt C, Pd-Stand
+      appearsIn:
+      - Det CNO
+      - Det CESA
+      - Det Zimm
+      - Det C
     - title: Tenue Sport erstellen
       category: Lightgreen
       start: '20:00'
       end: '20:15'
+      appearsIn:
+      - Det CNO
+      - Det CESA
+      - Det Zimm
+      - Det C
     - title: Sport
       category: Green
       start: '20:15'
       end: '21:30'
       description: Selbständiges Programm, GK U17/U18
+      appearsIn:
+      - Det CNO
+      - Det CESA
+      - Det Zimm
+      - Det C
     - title: PD/ID
       category: Yellow
       start: '21:30'
       end: '22:00'
-
+      appearsIn:
+      - Det CNO
+      - Det CESA
+      - Det Zimm
+      - Det C
   - columns:
     - Det
     - Det C
@@ -522,6 +606,9 @@ weeks:
       start: '18:30'
       end: '23:00'
       description: Bis 2310 ABV
+      appearsIn:
+      - Det
+      - Det C
     - title: ABV
       start: 23:00
       end: 23:10
@@ -617,7 +704,18 @@ weeks:
       start: '23:00'
       end: '23:30'
 - remarks:
-  - Woche 2
+  - "Infra:"
+  - "KP: GK 023"
+  - "Mun Mag"
+  - "Mat Mag: 15b 009"
+  - ""
+  - "Manschafts Rm: GK 106"
+  - "Manschafts Rm: GK 108"
+  - "Of Zimmer: GK 126"
+  - "Of Zimmer: GK 151"
+  - ""
+  - "Mittwoch:"
+  - "Kraftraum: GK U17/U18 (Abend)"
   days:
   - columns:
     - Det
@@ -820,7 +918,18 @@ weeks:
       start: '23:00'
       end: '23:30'
 - remarks:
-  - Woche 3
+  - "Infra:"
+  - "KP: GK 023"
+  - "Mun Mag"
+  - "Mat Mag: 15b 009"
+  - ""
+  - "Manschafts Rm: GK 106"
+  - "Manschafts Rm: GK 108"
+  - "Of Zimmer: GK 126"
+  - "Of Zimmer: GK 151"
+  - ""
+  - "Mittwoch:"
+  - "ThS: GK 021 (ganzer Tag)"
   days:
   - columns:
     - Det
