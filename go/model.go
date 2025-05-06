@@ -16,6 +16,7 @@ var MinimumEventDurationMin = 10
 // len(Remarks) == Weeks
 // len(DailyRemarks) == Weeks * 7
 // len(columns) == Weeks * 7
+// dayStart and dayEnd have minutes (00, 15, 30, 45)
 type Wap struct {
 	// total number of days
 	Days   int
@@ -102,7 +103,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 			log.Println(err)
 			log.Println("WARNING not defined when the day start. Falling back to default.")
 		} else {
-			w.dayStart = t1
+			w.dayStart = RoundToQuarterHour(t1)
 		}
 	}
 	if data.Meta.EndTime != nil {
@@ -111,7 +112,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 			log.Println(err)
 			log.Println("WARNING not defined when the day ends. Falling back to default.")
 		} else {
-			w.dayEnd = t2
+			w.dayEnd = RoundToQuarterHour(t2)
 		}
 	}
 

@@ -35,7 +35,6 @@ type PDFDrawer struct {
 	p1            gopdf.Point
 	wapBox        gopdf.Rect
 	bigColumns    int
-	hoursPerDay   int
 	minuteHeight  float64
 	colWidth      float64
 	smallFontSize float64
@@ -93,7 +92,6 @@ func (d *PDFDrawer) setupDocument() (err error) {
 	d.p1 = gopdf.Point{X: PL, Y: PL}
 	d.wapBox = gopdf.Rect{W: d.pageSize.W - PL - PR, H: d.pageSize.H - PT - PB}
 	duration := d.wap.dayEnd.Sub(d.wap.dayStart)
-	d.hoursPerDay = int(duration.Hours())
 	d.colWidth = d.wapBox.W / float64(d.bigColumns)
 	d.minuteHeight = d.wapBox.H / duration.Minutes()
 	return nil
@@ -292,22 +290,32 @@ func (d *PDFDrawer) setupPage() {
 	// The Big Grid
 	d.pdf.SetStrokeColor(0, 0, 0)
 	d.pdf.SetLineWidth(1)
-	drawGrid(d.pdf, d.p1, d.wapBox, d.hoursPerDay, d.bigColumns)
-	// Marks at 30 minutes
-	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
-	d.pdf.SetLineWidth(.5)
-	drawHorizontalLines(d.pdf, d.p1, d.wapBox, d.hoursPerDay*2)
-	// Marks at 15 minutes
+	o1 := (60.0 - float64(d.wap.dayStart.Minute())) * d.minuteHeight
+	o2 := float64(d.wap.dayEnd.Minute()) * d.minuteHeight
+	hourBox := d.wapBox
+	hourBox.H -= o1 + o2
+	hourPoint := d.p1
+	hourPoint.Y += o1
+	// round up to the next full hour
+	tStart := d.wap.dayStart.Truncate(time.Hour)
+	if tStart.Before(d.wap.dayStart) {
+		tStart = tStart.Add(time.Hour)
+	}
+	// round dayEnd down to the next full hour
+	tEnd := d.wap.dayEnd.Truncate(time.Hour)
+	fullHours := tEnd.Sub(tStart).Hours()
+	drawGrid(d.pdf, hourPoint, hourBox, int(fullHours), d.bigColumns)
 	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
 	d.pdf.SetLineWidth(.2)
-	drawHorizontalLines(d.pdf, d.p1, d.wapBox, d.hoursPerDay*4)
+	quarters := (d.wap.dayEnd.Sub(d.wap.dayStart)).Minutes() / 15.0
+	drawHorizontalLines(d.pdf, d.p1, d.wapBox, int(quarters))
 
 	// Add time scale (mark all hours)
 	err := d.pdf.SetFontSize(8)
 	check(err)
 	d.pdf.SetFillColor(0x00, 0x00, 0x00)
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
-	for hour := d.wap.dayStart.Hour(); hour <= d.wap.dayEnd.Hour(); hour += 1 {
+	for hour := tStart.Hour(); hour <= tEnd.Hour(); hour += 1 {
 		p := Add(d.toGridSystem(DayTime(hour, 0), 0), gopdf.Point{X: -20, Y: -d.smallFontSize})
 		d.pdf.SetXY(p.X, p.Y)
 		// convert to military time format

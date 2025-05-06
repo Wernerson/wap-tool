@@ -59,3 +59,28 @@ func TestTimeParsing(t *testing.T) {
 		})
 	}
 }
+func TestRoundToQuarterHour(t *testing.T) {
+	tests := []struct {
+		input    time.Time
+		expected time.Time
+	}{
+		{DayTime(10, 0), DayTime(10, 0)},
+		{DayTime(10, 7), DayTime(10, 0)},
+		{DayTime(10, 8), DayTime(10, 15)},
+		{DayTime(10, 22), DayTime(10, 15)},
+		{DayTime(10, 23), DayTime(10, 30)},
+		{DayTime(10, 37), DayTime(10, 30)},
+		{DayTime(10, 38), DayTime(10, 45)},
+		{DayTime(10, 52), DayTime(10, 45)},
+		{DayTime(10, 53), DayTime(11, 0)},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.input.Format("15:04"), func(t *testing.T) {
+			result := RoundToQuarterHour(tt.input)
+			if !result.Equal(tt.expected) {
+				t.Errorf("RoundToQuarterHour(%v) = %v, expected %v", tt.input, result, tt.expected)
+			}
+		})
+	}
+}

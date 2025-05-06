@@ -70,6 +70,15 @@ func MilitaryTime(t time.Time) string {
 	return fmt.Sprintf("%02d%02d", t.Hour(), t.Minute())
 }
 
+func RoundToQuarterHour(t time.Time) time.Time {
+	minutes := t.Minute()
+	roundedMinutes := ((minutes + 7) / 15) * 15
+	if roundedMinutes == 60 {
+		return t.Add(time.Hour).Truncate(time.Hour)
+	}
+	return t.Truncate(time.Hour).Add(time.Duration(roundedMinutes) * time.Minute)
+}
+
 func Min(x, y float64) float64 {
 	if x < y {
 		return x
