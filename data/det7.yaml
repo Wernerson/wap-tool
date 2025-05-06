@@ -35,6 +35,7 @@ categories:
   color: '#ff000080'
 weeks:
 - remarks:
+  - Infra
   - >
     KP: GK 023
     Mun Mag
@@ -161,6 +162,7 @@ weeks:
       end: '18:45'
       appearsIn:
       - Det
+      - Det C
       repeats: daily
     - title: Diensttheorie
       category: Orange
@@ -197,10 +199,12 @@ weeks:
       appearsIn:
       - Det
     - title: ABV
-      start: '22:00'
-      end: '22:15'
+      start: '22:15'
+      end: '22:30'
       appearsIn:
       - Det
+      - Det C
+      repeats: daily
   - columns:
     - Det
     - Beso
@@ -209,14 +213,22 @@ weeks:
       start: 06:00
       end: 06:15
       repeats: daily
+      appearsIn:
+        - Det
+        - Det C
     - title: Vpf Bern
       category: Yellow
       start: 06:15
       end: 07:00
       repeats: daily
+      appearsIn:
+        - Det
+        - Det C
     - title: AV
       start: 06:45
       end: 07:00
+      appearsIn:
+        - Det
     - title: Verladen Mat Mun
       start: 07:00
       end: 07:30
@@ -350,9 +362,6 @@ weeks:
       end: '22:00'
       appearsIn:
       - Det
-    - title: ABV
-      start: '22:00'
-      end: '22:15'
   - columns:
     - Det
     - Det C
@@ -363,9 +372,17 @@ weeks:
       start: 06:15
       end: 07:00
       repeats: daily
+      appearsIn:
+        - Det
+        - Det C
     - title: AV
       start: 07:00
       end: 07:30
+      appearsIn:
+      - Det
+      - Det C
+      repeats: daily
+
     - title: LB first contact
       category: Lightblue
       start: 07:30
@@ -401,11 +418,15 @@ weeks:
       end: '12:00'
       appearsIn:
       - Det C
+      repeats: daily
     - title: Vpf BERN
       category: Yellow
       start: 12:00
       end: '12:45'
       repeats: daily
+      appearsIn:
+        - Det
+        - Det C
     - title: FD
       category: FD
       start: '12:45'
@@ -436,19 +457,12 @@ weeks:
       category: Yellow
       start: '21:30'
       end: '22:00'
-    - title: ABV
-      start: '22:00'
-      end: '22:15'
 
   - columns:
     - Det
     - Det C
     - Beso
     events:
-    - title: AV
-      start: 07:00
-      end: 07:30
-      repeats: daily
     - title: Besprechung mit LB
       start: 09:00
       end: 14:00
@@ -471,30 +485,28 @@ weeks:
       appearsIn:
       - Det
       category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
+      repeats: daily
     - title: Kontrollbesuche
       start: 07:30
       end: '12:00'
       appearsIn:
       - Det C
       category: FD
+      repeats: daily
     - title: Kontrollbesuche
       start: '12:45'
-      end: '17:00'
+      end: '18:00'
       appearsIn:
       - Det C
       category: FD
+      repeats: daily
     - title: FD
       start: '12:45'
-      end: '17:00'
+      end: '18:00'
       appearsIn:
       - Det
       category: FD
+      repeats: daily
     - title: PD / ID / Kas Reinigung
       start: '17:00'
       end: '18:00'
@@ -505,6 +517,9 @@ weeks:
     - title: HV
       start: '18:00'
       end: '18:30'
+      appearsIn:
+      - Det
+      - Det C
     - title: FAK Ausgang
       start: '18:30'
       end: '23:00'
@@ -549,36 +564,6 @@ weeks:
       appearsIn:
       - Beso
       description: Det C
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '16:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: FD
-      start: '12:45'
-      end: '16:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: Dienstbesprechung
       start: '16:00'
       end: '16:45'
@@ -613,6 +598,7 @@ weeks:
     - Det 3
     - Det 4
     events:
+    # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
       start: 06:00
       end: '23:00'
@@ -622,6 +608,7 @@ weeks:
     - Det 3
     - Det 4
     events:
+    # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
       start: 06:00
       end: '22:30'
@@ -639,40 +626,6 @@ weeks:
     - Det C
     - Beso
     events:
-    - title: AV
-      start: 07:00
-      end: 07:30
-      repeats: daily
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: Z z Vf Det C
       start: '18:45'
       end: '22:15'
@@ -680,44 +633,11 @@ weeks:
       - Det
       - Det C
       description: Raum noch zu bestimmen
-    - title: ABV
-      start: 22:15
-      end: 22:30
   - columns:
     - Det
     - Det C
     - Beso
     events:
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: Tenue Sport erstellen
       start: '18:45'
       end: '19:00'
@@ -747,9 +667,6 @@ weeks:
       - Det
       - Det C
       category: FD
-    - title: ABV
-      start: 22:15
-      end: 22:30
     - title: Kp Rap
       start: 20:00
       end: 21:00
@@ -763,36 +680,6 @@ weeks:
     - Det C
     - Beso
     events:
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: Tenue Sport erstellen
       start: '18:45'
       end: '19:00'
@@ -815,44 +702,11 @@ weeks:
       - Det
       - Det C
       category: Yellow
-    - title: ABV
-      start: 22:15
-      end: 22:30
   - columns:
     - Det
     - Det C
     - Beso
     events:
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '17:30'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: FD
-      start: '12:45'
-      end: '17:30'
-      appearsIn:
-      - Det
-      category: FD
     - title: PD/ID Kasernen Reinigung
       start: '17:30'
       end: '18:15'
@@ -863,6 +717,9 @@ weeks:
     - title: HV
       start: '18:15'
       end: '18:30'
+      appearsIn:
+      - Det
+      - Det C
     - title: FAK Ausgang
       start: '18:30'
       end: '23:10'
@@ -887,36 +744,6 @@ weeks:
     - Det C
     - Beso
     events:
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '16:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: FD
-      start: '12:45'
-      end: '16:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: Dienstbesprechung
       start: '16:00'
       end: '16:30'
@@ -974,6 +801,7 @@ weeks:
     - Det 3
     - Det 4
     events:
+    # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
       start: 06:00
       end: '23:00'
@@ -983,6 +811,7 @@ weeks:
     - Det 3
     - Det 4
     events:
+    # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
       start: 00:00
       end: '22:30'
@@ -1000,40 +829,6 @@ weeks:
     - Det C
     - Beso
     events:
-    - title: AV
-      start: 07:00
-      end: 07:30
-      repeats: daily
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: ID
       start: '18:00'
       end: '19:00'
@@ -1057,23 +852,12 @@ weeks:
     - title: ABV
       start: 22:30
       end: 22:45
+      appearsIn: [Det, Det C]
   - columns:
     - Det
     - Det C
     - Beso
     events:
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: Avor Einrücken
       start: 07:30
       end: '09:00'
@@ -1093,12 +877,6 @@ weeks:
       appearsIn:
       - Det C
       category: Lightblue
-    - title: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det
-      category: FD
     - title: Dienstbesprechung
       start: '18:45'
       end: '19:45'
@@ -1129,9 +907,6 @@ weeks:
       - Det
       - Det C
       category: Yellow
-    - title: ABV
-      start: 22:15
-      end: 22:30
     - title: Besprechung mit LB
       start: 09:00
       end: 15:00
@@ -1145,24 +920,6 @@ weeks:
     - Det C
     - Beso
     events:
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: FD
-      start: 07:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
     - title: Abgabe IAA
       start: '12:45'
       end: '13:30'
@@ -1188,12 +945,16 @@ weeks:
       category: Yellow
     - title: Entlassungsadmin
       start: '15:30'
-      end: '19:00'
+      end: '17:00'
       appearsIn:
       - Det
       - Det C
       category: Orange
       description: GK 021, Kp Kdo
+    # filler to overwrite repeating events
+    - title: _
+      start: '17:00'
+      end: '23:00'
     - title: Erstellung PALF
       start: 08:30
       end: 09:00

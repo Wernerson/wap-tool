@@ -106,8 +106,6 @@ weeks:
     - title: Vpf Bern
       start: '12:00'
       end: '12:45'
-      appearsIn:
-      - Det
       category: Yellow
       repeats: daily
     - title: Feueralarm
@@ -196,8 +194,6 @@ weeks:
       category: Yellow
       start: '18:00'
       end: '18:45'
-      appearsIn:
-      - Det
       repeats: daily
     - title: Theorie Eigenschutz und Integrale Sicherheit
       category: Green
@@ -230,14 +226,10 @@ weeks:
       category: Yellow
       start: '22:00'
       end: '22:15'
-      appearsIn:
-      - Det
       repeats: daily
     - title: ABV
       start: '22:15'
       end: '22:30'
-      appearsIn:
-      - Det
       repeats: daily
   - columns:
     - Det
