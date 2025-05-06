@@ -43,7 +43,6 @@ type Wap struct {
 // w is the parent Wap this event is part of.
 // - start.Before(end)
 // - 0 <= dayOffset && dayOffset < w.Days
-// - set(appearsIn) subset w.Days[dayOffset]
 // - w.categories[Category]
 type Event struct {
 	Start, End  time.Time
@@ -193,16 +192,8 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 					DayOffset:   weekIdx*7 + i,
 					AppearsIn:   []string{},
 				}
-				for _, col := range event.AppearsIn {
-					if slices.Contains(day.Columns, col) {
-						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
-					} else {
-						log.Printf("WARNING ignoring column %v that is not defined for day %d\n", col, i)
-					}
-				}
 				if len(event.AppearsIn) == 0 {
 					log.Println("WARNING appearsIn is empty. The event implicitly appears in all columns for this day.", event)
-					freshEvent.AppearsIn = slices.Clone(day.Columns)
 				}
 				if event.Category != nil {
 					freshEvent.Category = *event.Category
@@ -212,6 +203,16 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 				}
 				if event.Footnote != nil {
 					freshEvent.Footnote = *event.Footnote
+				}
+				for _, col := range event.AppearsIn {
+					if slices.Contains(day.Columns, col) {
+						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
+					} else {
+						if !freshEvent.Repeats {
+							log.Printf("WARNING ignoring column %v that is not defined for day %d\n", col, i)
+						}
+						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
+					}
 				}
 				w.events = append(w.events, freshEvent)
 			}

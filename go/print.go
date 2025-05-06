@@ -463,7 +463,8 @@ type EventPosition struct {
 
 // Computes a layout for each event
 func (d *PDFDrawer) Layout() (res []EventPosition) {
-	// Initialize
+	// Initialize event positions with starting point and rectangles
+	pre := []EventPosition{}
 	for _, event := range d.wap.events {
 		// sanitize the event before printing (only local here)
 		if event.Start.Before(d.wap.dayStart) {
@@ -479,22 +480,22 @@ func (d *PDFDrawer) Layout() (res []EventPosition) {
 		height := minutes * d.minuteHeight
 		RectStart := d.toGridSystem(event.Start, event.DayOffset%7)
 
-		res = append(res, EventPosition{
+		pre = append(pre, EventPosition{
 			dayOffset: event.DayOffset,
 			P:         RectStart,
 			R:         gopdf.Rect{W: d.colWidth, H: height},
 			Event:     &event})
 	}
-	// First pass
-	for i, ev := range res {
+	// First pass: preprocess overlapping events
+	for i, ev := range pre {
 		if ev.Event.Repeats {
 			continue
 		}
-		// - Check for overlap
 		// Assumption: this can only happen for events in a single columns
 		if len(ev.Event.AppearsIn) != 1 {
 			continue
 		}
+		col := ev.Event.AppearsIn[0]
 		// For example events ev1 and ev2 that overlap in time will have
 		//	-----
 		// | ev1 |-----|
@@ -503,8 +504,9 @@ func (d *PDFDrawer) Layout() (res []EventPosition) {
 		// ev1.parallelCols = ev2.parallelCols = 1	(the number of other events in this column)
 		// ev1.parallelIdx = 1 and ev2.parallelIdx = 2
 		overlapping := ev.parallelIdx
-		for j := i + 1; j < len(res); j += 1 {
-			next := res[j]
+		// Search forward in time until we found all overlapping
+		for j := i + 1; j < len(pre); j += 1 {
+			next := pre[j]
 			if next.Event.DayOffset != ev.Event.DayOffset {
 				break
 			}
@@ -514,100 +516,100 @@ func (d *PDFDrawer) Layout() (res []EventPosition) {
 			if next.Event.Repeats {
 				continue
 			}
-			if o := overlap(next.Event.AppearsIn, ev.Event.AppearsIn); len(o) > 0 {
-				log.Printf("WARNING overlapping events in columns %v %v %v\n", o, ev, next)
-				res[j].parallelIdx++
+			if slices.Contains(next.Event.AppearsIn, col) {
+				if len(next.Event.AppearsIn) != 1 {
+					log.Printf("WARNING overlapping events supported only in single columns, but got %v and %v", col, next.Event.AppearsIn)
+					continue
+				}
+				pre[j].parallelIdx++
 				overlapping++
 			}
 		}
-		res[i].parallelCols = overlapping
+		pre[i].parallelCols = overlapping
+	}
+	// if an event appears in multiple consecutive columns they can be merged
+	// for ev1 that appears in columns A and B:
+	// Merge the event over the columns:
+	// | A | B |
+	// |  ev1  |
+	// if the columns are not adjacent, the event is printed in multiple ones
+	// for ev1 that appears in columns A and C:
+	// Copy the event:
+	// | A   | B   | C   |
+	// | ev1 | ... | ev2 |
+	mergeAndCopy := func(elem EventPosition) (out []EventPosition) {
+		event := elem.Event
+		columnLocation := d.assignColumnLocations(d.wap.columns[elem.dayOffset], d.colWidth)
+		// Consider the event to appear in all columns implicitly
+		cols := event.AppearsIn
+		if len(cols) == 0 {
+			cols = slices.Clone(d.wap.columns[elem.dayOffset])
+		}
+		widthAccumulator := 0.0
+		originalX := elem.P.X
+		active := false // true if we are expanding a column
+		for _, c := range d.wap.columns[elem.dayOffset] {
+			if slices.Contains(cols, c) {
+				widthAccumulator += columnLocation[c].W
+				if !active {
+					elem.P.X = originalX + columnLocation[c].Offset
+				}
+				active = true
+			} else if active {
+				elem.R.W = widthAccumulator
+				out = append(out, elem)
+				widthAccumulator = 0.0
+				active = false
+			}
+		}
+		if active {
+			elem.R.W = widthAccumulator
+			out = append(out, elem)
+		}
+		return
 	}
 	// Second pass
-	newPositions := []EventPosition{}
-	for _, elem := range res {
+	for _, elem := range pre {
 		event := elem.Event
 		columnLocation := d.assignColumnLocations(d.wap.columns[event.DayOffset], d.colWidth)
+		// Case 1: repeating events
 		if event.Repeats {
+			// Add all future instance of the repeating event
+			// Later added events can drawn over them
 			for day := range d.wap.Days {
 				if event.DayOffset <= day {
-					// TODO recalculate the width
-					elem.R.W = d.colWidth
-					elem.dayOffset = day
 					elem.P = d.toGridSystem(event.Start, day%7)
-					newPositions = append(newPositions, elem)
+					elem.dayOffset = day
+					res = append(res, mergeAndCopy(elem)...)
 				}
 			}
 			continue
 		}
+		// Case 2: overlapping events
 		if elem.parallelCols > 0 {
 			// Example:
 			// |   Det         |
 			// | ev1 | ev2 |ev3|
-			width := d.colWidth
-			for _, c := range event.AppearsIn {
-				width = columnLocation[c].W
-			}
+			// We assumed len(elem.AppearsIn) = 1
+			col := event.AppearsIn[0]
+			width := columnLocation[col].W
 			eventWidth := width / float64(elem.parallelCols+1)
-			offset := float64(elem.parallelIdx) * eventWidth
-
-			elem.P.X += offset
-			elem.R.W = eventWidth
-
+			// Outer offset (e.g. for the column Det)
 			for _, c := range d.wap.columns[event.DayOffset] {
-				if !slices.Contains(event.AppearsIn, c) {
+				if col != c {
 					elem.P.X += columnLocation[c].W
 				} else {
 					break
 				}
 			}
-			newPositions = append(newPositions, elem)
+			// Inner offset (e.g. for ev2 the width of ev1 column)
+			elem.P.X += float64(elem.parallelIdx) * eventWidth
+			elem.R.W = eventWidth
+			res = append(res, elem)
 			continue
 		}
-
-		// if an event appears in multiple consecutive columns they can be merged
-		// for ev1 that appears in columns A and B:
-		// | A | B |
-		// |  ev1  |
-		// if the columns are not adjacent, the event is printed in multiple ones
-		// for ev1 that appears in columns A and C:
-		// | A   | B   | C   |
-		// | ev1 | ... | ev2 |
-		mergeAndSplit := func(elem EventPosition) {
-			event := elem.Event
-			widthAccumulator := 0.0
-			originalX := elem.P.X
-			active := false // true if we are expanding a column
-			for _, c := range d.wap.columns[event.DayOffset] {
-				if slices.Contains(event.AppearsIn, c) {
-					widthAccumulator += columnLocation[c].W
-					if !active {
-						elem.P.X = originalX + columnLocation[c].Offset
-					}
-					active = true
-				} else if active {
-					elem.R.W = widthAccumulator
-					newPositions = append(newPositions, elem)
-					widthAccumulator = 0.0
-					active = false
-				}
-			}
-			if active {
-				elem.R.W = widthAccumulator
-				newPositions = append(newPositions, elem)
-			}
-		}
-		mergeAndSplit(elem)
-	}
-	return newPositions
-}
-
-func overlap(xs []string, ys []string) (res []string) {
-	for _, x := range xs {
-		for _, y := range ys {
-			if x == y {
-				res = append(res, x)
-			}
-		}
+		// Case 3: any other event
+		res = append(res, mergeAndCopy(elem)...)
 	}
 	return
 }
