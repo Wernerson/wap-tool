@@ -524,13 +524,14 @@ func (d *PDFDrawer) Layout() (res []EventPosition) {
 	}
 	// Second pass
 	newPositions := []EventPosition{}
-	for i, elem := range res {
+	for _, elem := range res {
 		event := elem.Event
 		columnLocation := d.assignColumnLocations(d.wap.columns[event.DayOffset], d.colWidth)
 		if event.Repeats {
-			res[i].R.W = d.colWidth
 			for day := range d.wap.Days {
 				if event.DayOffset <= day {
+					// TODO recalculate the width
+					elem.R.W = d.colWidth
 					elem.dayOffset = day
 					elem.P = d.toGridSystem(event.Start, day%7)
 					newPositions = append(newPositions, elem)
@@ -562,8 +563,7 @@ func (d *PDFDrawer) Layout() (res []EventPosition) {
 			newPositions = append(newPositions, elem)
 			continue
 		}
-		eventWidth := 0.0
-		offset := 0.0
+
 		// if an event appears in multiple consecutive columns they can be merged
 		// for ev1 that appears in columns A and B:
 		// | A | B |
@@ -572,30 +572,31 @@ func (d *PDFDrawer) Layout() (res []EventPosition) {
 		// for ev1 that appears in columns A and C:
 		// | A   | B   | C   |
 		// | ev1 | ... | ev2 |
-		active := false // true if we are expanding a column
-		// TODO ugly cloning: the original event also still exists!
-		for _, c := range d.wap.columns[event.DayOffset] {
-			if slices.Contains(event.AppearsIn, c) {
-				eventWidth += columnLocation[c].W
-				if !active {
+		mergeAndSplit := func(elem EventPosition) {
+			event := elem.Event
+			widthAccumulator := 0.0
+			originalX := elem.P.X
+			active := false // true if we are expanding a column
+			for _, c := range d.wap.columns[event.DayOffset] {
+				if slices.Contains(event.AppearsIn, c) {
+					widthAccumulator += columnLocation[c].W
+					if !active {
+						elem.P.X = originalX + columnLocation[c].Offset
+					}
 					active = true
-					offset = columnLocation[c].Offset
+				} else if active {
+					elem.R.W = widthAccumulator
+					newPositions = append(newPositions, elem)
+					widthAccumulator = 0.0
+					active = false
 				}
-			} else if active {
-				active = false
-				clone := res[i]
-				clone.P.X += offset
-				clone.R.W = eventWidth
-				newPositions = append(newPositions, clone)
-				eventWidth = 0.0
+			}
+			if active {
+				elem.R.W = widthAccumulator
+				newPositions = append(newPositions, elem)
 			}
 		}
-		if active {
-			clone := res[i]
-			clone.P.X += offset
-			clone.R.W = eventWidth
-			newPositions = append(newPositions, clone)
-		}
+		mergeAndSplit(elem)
 	}
 	return newPositions
 }
