@@ -609,7 +609,8 @@ weeks:
       - Det C
     - title: ABV
       start: 23:00
-      end: 23:10
+      end: 23:20
+      appearsIn: [Det, Det C]
   - columns:
     - Det
     - Det C
@@ -683,8 +684,8 @@ weeks:
     events:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
-      start: 06:00
-      end: '23:00'
+      start: 01:00
+      end: '23:30'
   - columns:
     - Det 1
     - Det 2
@@ -693,7 +694,7 @@ weeks:
     events:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
-      start: 06:00
+      start: 01:00
       end: '22:30'
     - title: Einrücken
       start: '22:30'
@@ -897,8 +898,8 @@ weeks:
     events:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
-      start: 06:00
-      end: '23:00'
+      start: 01:00
+      end: '23:30'
   - columns:
     - Det 1
     - Det 2
@@ -908,7 +909,7 @@ weeks:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
       start: 00:00
-      end: '22:30'
+      end: '23:30'
     - title: Einrücken
       start: '22:30'
       end: '23:00'
