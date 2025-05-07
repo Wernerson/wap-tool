@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=../schema/wap.json
+meta: # define metadata
+  author: Autor
+  firstDay: 2025-04-20
+  startTime: '05:30'
+  endTime: '23:00'
+  unit: 'Kp 42/3'
+  title: Det X
+  version: 'Stand: 19.04.2025'
+categories:
+- identifier: Orange
+  color: '#ff9900'
+weeks:
+- remarks:
+  - Hier ist eine Wochenbemerkung.
+  days:
+  - remarks:
+      - Das ist eine Tagesbemerkung
+      - Hier ist eine weitere
+    columns: # split the day in these columns
+    - Det
+    - Beso
+    events:
+    - title: Zi-Bezug & Zi Ordnung
+      start: '10:00' # must give a start time
+      end: '11:00' # as well as an end time
+      appearsIn: # in which columns, defined above, the event appears
+      - Det
+      category: Orange # references cateogiry defined above
+      description: Det C, GK 106 & GK 108
+    - title: Einrückungs & Fahr Rape
+      start: '10:00'
+      end: '11:00'
+      appearsIn:
+      - Det
+      category: Orange
+      description: Einh Four  # optionally a description can be given
+    - title: Kontrolle AWB Karte
+      start: '10:00'
+      end: '10:30'
+      footnote: true # Footnotes are printed below the day
+      appearsIn:
+      - Beso
+      description: Fkhaus 15, Det C
+    - title: Fassung IAA-Mat
+      start: '11:00'
+      end: '12:00'
+      appearsIn:
+      - Det
+      category: Orange
+      description: Einh Fw, Mat Mag
