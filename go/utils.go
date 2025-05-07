@@ -78,11 +78,3 @@ func RoundToQuarterHour(t time.Time) time.Time {
 	}
 	return t.Truncate(time.Hour).Add(time.Duration(roundedMinutes) * time.Minute)
 }
-
-func Min(x, y float64) float64 {
-	if x < y {
-		return x
-	} else {
-		return y
-	}
-}

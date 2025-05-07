@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math"
 	"slices"
 	"strconv"
 	"strings"
@@ -415,7 +416,7 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 		})
 	check(err)
 	d.pdf.SetXY(elem.P.X, elem.P.Y+heightNeeded)
-	err = d.pdf.SetFont("regular", "", Min(d.smallFontSize, titleFontSize))
+	err = d.pdf.SetFont("regular", "", math.Min(d.smallFontSize, titleFontSize))
 	check(err)
 	// TODO check properly whether description fits
 	// this does not account for breakOption
