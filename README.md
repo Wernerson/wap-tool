@@ -3,10 +3,18 @@
 Automate the generation of WAPs (Wochenarbeitsplan).
 
 ## Quickstart
-TODO: how to obtain the image/script/data
-
 Goal: edit a WAP as yaml and print it.
-We create a minimal example:
+
+Requires docker installed.
+
+1. Download the wap tool archive and `run-docker.sh` from the sharepoint `KVP Stufe KP > WAP tool > Dist`
+2. Load the docker image 
+ ```sh
+gunzip -c wap-tool.tar.gz | docker load
+# verify it is loaded
+docker run wap-tool:latest --help
+```
+3. We create a minimal example data (`data/minimal.yaml`):
 ``` yaml
 meta: # define metadata
   author: Autor
@@ -59,29 +67,28 @@ weeks:
       category: Orange
       description: Einh Fw, Mat Mag
 ```
-We save it to `data/minimal.yaml`.
-Running
+4. Run with docker to get a pdf (`examples/minimal.pdf`)
 ``` sh
-./run-docker.sh data/minimal.yaml examples/minimal.pdf
+./run-docker.sh data/minimal.yaml minimal.pdf
+xdg-open minimal.pdf
 ```
-Produces the file `examples/minimal.pdf`.
-We see the events we defined ![](examples/snip.png)
+We should see the events we defined ![](examples/snip.png)
 
-You might have obtained a template to get started or can use the folder `data/` for inspiration.
+Now to create a realistic wap you may have a template to get started or you can use the folder `data/` for inspiration.
 
 ## Docs
 The [schema](schema/wap.json) remains the source of truth for the model.
 We describe the most important fields.
 - `meta` about the WAP.
-- `categories` used for styling.
+- `categories` used for styling. Currently only background color is supported.
 - `weeks`
-    - `remarks`
+    - `remarks`: printed in right column
     - `days` 
-        - `remarks`
-        - `columns`
-        - `days`
-            - `events`
-- TODO footnotes
+        - `remarks`: printed below the day
+        - `columns`: split the day in columns
+        - `events`
+          - Events can be made repeating (`repeating: daily`), e.g., for ABV or regular FD. The event will be displayed for every following day.
+          - Footnotes (`footnote: true`) are refereced are displayed by their number and described below the day.
 
 The [vscode-yaml](https://github.com/redhat-developer/vscode-yaml) extension is recommended.
 Autocompletion is available and validations are available.
@@ -101,7 +108,7 @@ Or, by associating the schema definition with a glob pattern in your `settings.j
 ```
 ## Project
 ### Background
-Most WKs share the similar format.
+Most WKs share a similar format.
 By editing a template, a new WAP should be easily defined.
 
 Currently, WAPs are mostly edited in Excel.

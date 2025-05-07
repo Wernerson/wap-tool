@@ -30,13 +30,13 @@ make docker
 ```
 
 ### Distribution
+We distribute the application as a docker image.
 The image can be shared with the following commands:
-``` sh
-make docker-image
-# On the other machine
-gunzip -c wap-tool.tar.gz | docker load
-```
-<!-- TODO put on sharepoint? -->
+
+1. `make docker-image`
+2. Upload to sharepoint `KVP Stufe KP > WAP tool > Dist`
+3. It can be loaded by `gunzip -c wap-tool.tar.gz | docker load`
+
 
 ## Overview
 ```
