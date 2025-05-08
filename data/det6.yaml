@@ -47,7 +47,7 @@ weeks:
   - Mat Mag
   - Signed by _______.
   days:
-  - columns: []
+  - columns: [Det]
     remarks:
       - Das ist eine Tagesbemerkung
       - Hier ist eine weitere

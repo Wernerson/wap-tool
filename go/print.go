@@ -291,10 +291,17 @@ func (d *PDFDrawer) setupPage() {
 		PageSize: d.pageSize,
 	}
 	d.pdf.AddPageWithOption(opt)
+	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
+	d.pdf.SetLineWidth(.2)
+	quarters := (d.wap.dayEnd.Sub(d.wap.dayStart)).Minutes() / 15.0
+	drawHorizontalLines(d.pdf, d.p1, d.wapBox, int(quarters))
 	// The Big Grid
 	d.pdf.SetStrokeColor(0, 0, 0)
-	d.pdf.SetLineWidth(1)
+	d.pdf.SetLineWidth(.5)
 	o1 := (60.0 - float64(d.wap.dayStart.Minute())) * d.minuteHeight
+	if d.wap.dayStart.Minute() == 0 {
+		o1 = 0.0
+	}
 	o2 := float64(d.wap.dayEnd.Minute()) * d.minuteHeight
 	hourBox := d.wapBox
 	hourBox.H -= o1 + o2
@@ -309,10 +316,6 @@ func (d *PDFDrawer) setupPage() {
 	tEnd := d.wap.dayEnd.Truncate(time.Hour)
 	fullHours := tEnd.Sub(tStart).Hours()
 	drawGrid(d.pdf, hourPoint, hourBox, int(fullHours), d.bigColumns)
-	d.pdf.SetStrokeColor(0x80, 0x80, 0x80)
-	d.pdf.SetLineWidth(.2)
-	quarters := (d.wap.dayEnd.Sub(d.wap.dayStart)).Minutes() / 15.0
-	drawHorizontalLines(d.pdf, d.p1, d.wapBox, int(quarters))
 
 	// Add time scale (mark all hours)
 	err := d.pdf.SetFontSize(8)
