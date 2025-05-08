@@ -75,9 +75,11 @@ weeks:
 ./run-docker.sh data/minimal.yaml minimal.pdf
 xdg-open minimal.pdf
 ```
-We should see the events we defined ![](examples/snip.png)
+We should see the events we defined
+<img src="examples/snip.png" alt="drawing" width="200"/>
 
 Now to create a realistic wap you may have a template to get started or you can use the folder `data/` for inspiration.
+Note the warnings printed if your data is malformed.
 
 ## Docs
 The [schema](schema/wap.json) remains the source of truth for the model.
@@ -90,9 +92,33 @@ We describe the most important fields.
         - `remarks`: printed below the day
         - `columns`: split the day in columns
         - `events`
-          - Events can be made repeating (`repeating: daily`), e.g., for ABV or regular FD. The event will be displayed for every following day.
-          - Footnotes (`footnote: true`) are refereced are displayed by their number and described below the day.
 
+Events can be made repeating (`repeating: daily`), e.g., for ABV or regular FD. The event will be displayed for every following day.
+Note that the columns may be different for other days.
+So you might want to add extra columns to `appearsIn` of the repeating event.
+Regular events take precedence and are printed over repeating events if they are defined later.
+
+Events extend over adjacent columns, or are split otherwise. In the example below
+- Tagwache is merged over the four dets
+- Einführung and INITIO has `appersIn: [Det CESA, Det C]` so it is split
+
+<img src="examples/mittwoch.png" alt="drawing" width="200"/>
+
+Footnotes are events with `footnote: true`.
+They are displayed by their number and described below the day.
+
+Events can overlap in time.
+Then, a column is split further into subcolumns.
+This is supported only for events that appear in a single column.
+Example:
+<img src="examples/column-split.png" alt="drawing" width="200"/>
+
+What is not (yet) supported:
+- No text markup. Event titles are bold, otherwise all text is printed plain.
+  For the remarks column this could be desirable.
+- No special styling: For example in the excel WAPs, open ended events are usually displayed with waves at the bottom.
+
+### Tool Support
 The [vscode-yaml](https://github.com/redhat-developer/vscode-yaml) extension is recommended.
 Autocompletion is available and validations are available.
 For example, dates are checked to be in the right format.
@@ -154,4 +180,4 @@ While we target the use in our company first, it could be reused in other places
 3. Generate *Tagesbefehle*. Use the same or similar format to generate detailed plans for a single day.
 
 ## Development
-For the Go backend, see [go/README.md](./go/README.md)
+For the Go backend, see [go/DEV.md](./go/DEV.md)
