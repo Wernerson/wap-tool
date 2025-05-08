@@ -103,6 +103,7 @@
                   "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
                   "type": "array",
                   "uniqueItems": true,
+                  "minItems": 1,
                   "items": {
                     "description": "A column name. For example Det1 or Beso.",
                     "type": "string"

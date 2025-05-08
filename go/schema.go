@@ -231,6 +231,20 @@ func (j *WapJsonWeeksElemDaysElemEventsElem) UnmarshalJSON(value []byte) error {
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
+func (j *WapJsonWeeksElemDaysElem) UnmarshalJSON(value []byte) error {
+	type Plain WapJsonWeeksElemDaysElem
+	var plain Plain
+	if err := json.Unmarshal(value, &plain); err != nil {
+		return err
+	}
+	if plain.Columns != nil && len(plain.Columns) < 1 {
+		return fmt.Errorf("field %s length: must be >= %d", "columns", 1)
+	}
+	*j = WapJsonWeeksElemDaysElem(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
 func (j *WapJsonWeeksElem) UnmarshalJSON(value []byte) error {
 	var raw map[string]interface{}
 	if err := json.Unmarshal(value, &raw); err != nil {

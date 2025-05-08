@@ -136,6 +136,9 @@ func NewWAP(data *WapJson) (w *Wap) {
 			name := localDay + ", " + correctedTime.Format(time.DateOnly)
 			w.dayNames = append(w.dayNames, name)
 			w.columns = append(w.columns, []string{})
+			if len(w.columns) == 0 {
+				log.Printf("WARNING no columns defined on %s\n", name)
+			}
 			w.DailyRemarks = append(w.DailyRemarks, []string{})
 		}
 		for dayIdx, day := range week.Days {
