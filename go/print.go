@@ -203,13 +203,13 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 
 func (d *PDFDrawer) drawDailyRemarks(dayIdx int, remarks []string) {
 	rectStart := d.toGridSystem(d.wap.dayEnd, dayIdx)
-	rectStart.X += d.padding
-	rectStart.Y += d.padding
 	remarksHeight := 300.0
-	remarksRect := gopdf.Rect{W: d.colWidth - 2*d.padding, H: remarksHeight*d.minuteHeight - d.padding}
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xff, 0xff, 0xff)
-	// drawRect(d.pdf, rectStart, remarksRect)
+	drawRect(d.pdf, rectStart, gopdf.Rect{W: d.colWidth, H: remarksHeight * d.minuteHeight})
+	rectStart.X += d.padding
+	rectStart.Y += d.padding
+	remarksRect := gopdf.Rect{W: d.colWidth - 2*d.padding, H: remarksHeight*d.minuteHeight - d.padding}
 	d.drawMultiLineText(remarks, rectStart, remarksRect)
 }
 
