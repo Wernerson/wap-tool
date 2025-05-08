@@ -1,7 +1,8 @@
 # Binary and image names
 APP_NAME := wap-tool
 IMAGE_NAME := $(APP_NAME)
-TAR_NAME := $(IMAGE_NAME).tar.gz
+IMAGE_TAR := docker-$(APP_NAME).tar
+TAR_NAME := $(APP_NAME).tar.gz
 
 # Build the Go binary
 .PHONY: build
@@ -20,9 +21,10 @@ docker: build
 	docker build -t $(IMAGE_NAME) .
 
 # Save Docker image to tar.gz for distribution
-.PHONY: image-tar
-image-tar: docker
-	docker save $(IMAGE_NAME) | gzip > $(TAR_NAME)
+.PHONY: dist
+dist: build docker
+	docker save $(IMAGE_NAME) > $(IMAGE_TAR)
+	tar -czf $(APP_NAME).tar.gz $(IMAGE_TAR) ../README.md ../run-docker.sh ../data
 
 .PHONY: lint
 lint:
@@ -31,5 +33,5 @@ lint:
 # Clean up all generated files
 .PHONY: clean
 clean:
-	rm -f $(APP_NAME) $(TAR_NAME)
+	rm -f $(APP_NAME) $(TAR_NAME) $(IMAGE_TAR)
 

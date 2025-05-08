@@ -1,4 +1,4 @@
-This README describes the Go backend for printing PDFs from WAP yamls.
+This file describes the Go backend for printing PDFs from WAP yamls.
 For general information, please consult the main [REAMDE](../README.md)
 ## Building and Running
 A Go installation is required and [go-jsonschema](https://github.com/omissis/go-jsonschema) as a build dependency to sync the json-schmema.
@@ -33,9 +33,9 @@ make docker
 We distribute the application as a docker image.
 The image can be shared with the following commands:
 
-1. `make docker-image`
-2. Upload to sharepoint `KVP Stufe KP > WAP tool > Dist`
-3. It can be loaded by `gunzip -c wap-tool.tar.gz | docker load`
+1. `make dist`
+2. Upload archive `wap-tool.tar.gz` to sharepoint `KVP Stufe KP > WAP tool > Dist`
+(TODO: version it?)
 
 
 ## Overview

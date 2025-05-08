@@ -5,12 +5,15 @@ Automate the generation of WAPs (Wochenarbeitsplan).
 ## Quickstart
 Goal: edit a WAP as yaml and print it.
 
-Requires docker installed.
+Requires docker and tar installed.
 
-1. Download the wap tool archive and `run-docker.sh` from the sharepoint `KVP Stufe KP > WAP tool > Dist`
+1. Download the wap tool archive `wap-tool.tar.gz` from the sharepoint `KVP Stufe KP > WAP tool > Dist`. Decompress:
+ ``` sh
+tar xzf wap-tool.tar.gz
+```
 2. Load the docker image 
- ```sh
-gunzip -c wap-tool.tar.gz | docker load
+``` sh
+docker image load -i docker-wap-tool.tar
 # verify it is loaded
 docker run wap-tool:latest --help
 ```
