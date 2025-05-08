@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=../schema/wap.json
+meta:
+  author: wapper
+  firstDay: 2025-04-21
+  startTime: 06:00
+  endTime: '23:00'
+  unit: Cy Kp 42/3
+  title: Det 6 - WK
+  version: 'Stand: 17.04.2025'
+categories:
+- identifier: Green
+  comment: Allgemeine Grundausbildung und Sport
+  color: '#00b050'
+- identifier: Lightgreen
+  color: '#92d050'
+- identifier: Orange
+  color: '#ff9900'
+- identifier: Vs
+  comment: Verschiebung
+  color: '#00b0f0'
+- identifier: Lightblue
+  comment: Für Einführungen und co.
+  color: '#dbeef4'
+- identifier: FD
+  comment: Fachdienst
+  color: '#eeece1'
+- identifier: Yellow
+  comment: Verpflegung, PD/ID
+  color: '#ffffcc'
+- identifier: Footnote
+  comment: Fussnoten
+  color: '#e0ef04'
+- identifier: KVP
+  comment: Kontinuierliche Verbesserungsprojekte
+  color: '#ff000080'
+weeks:
+- remarks:
+  - A remark.
+  days:
+  - columns: []
+    events:
+    - title: Test end before start
+      start: 09:00
+      end: 08:00
+      appearsIn:
+      - Det
+      description: Det C, FKhaus 15b
+    - title: Test short duration
+      start: 09:00
+      end: 09:05
+      appearsIn:
+      - Det
+      description: Det C
+    - title: Test NonExisting category
+      start: 09:30
+      end: 09:45
+      category: NonExisting
+  - columns: [C1, C2, C3]
+    events:
+    # Overlapping events with multiple columns (not supported)
+    - title: T0
+      start: 09:00
+      end: 12:00
+      appearsIn: [C1]
+    - title: T1
+      start: 09:00
+      end: 10:00
+      appearsIn: [C1, C2]
+    - title: T2
+      start: 09:00
+      end: 10:00
+      appearsIn: [C2, C3]
+    - title: T3
+      start: 09:30
+      end: 09:45
+      appearsIn: [C2]
+    - title: Dont write titles that are very long
+      start: 12:00
+      end: 12:45
+      appearsIn: [C2]
+    - title: Late Event
+      start: 23:00
+      end: 23:45
+      appearsIn: [C2]

@@ -413,7 +413,7 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	check(err)
 	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
 	if !ok {
-		log.Println("WARNING", "title does not fit in rectangle:", event.Title)
+		log.Println("WARNING", "title does not fit in rectangle for event: ", event)
 	}
 	err = d.pdf.MultiCellWithOption(&rect, title,
 		gopdf.CellOption{
@@ -559,7 +559,7 @@ func (d *PDFDrawer) Layout() (res []EventPosition) {
 			}
 			if slices.Contains(next.Event.AppearsIn, col) {
 				if len(next.Event.AppearsIn) != 1 {
-					log.Printf("WARNING overlapping events supported only in single columns, but got %v and %v", col, next.Event.AppearsIn)
+					log.Printf("WARNING overlapping events %v and %v. \nSupported only in single columns, but got %v and %v", col, ev, next.Event, next.Event.AppearsIn)
 					continue
 				}
 				pre[j].parallelIdx++

@@ -13,7 +13,7 @@ build:
 # Run the binary locally with a test file
 .PHONY: run
 run: build
-	./$(APP_NAME) ../data/det6.yaml
+	./$(APP_NAME) ../data/test.yaml -o /tmp/wap-test.pdf
 
 # Build the Docker image
 .PHONY: docker

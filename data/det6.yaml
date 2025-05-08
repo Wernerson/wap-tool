@@ -715,27 +715,3 @@ weeks:
       category: Lightgreen
       start: '19:00'
       end: '20:30'
-  - columns: []
-  - columns: []
-  - columns: []
-- remarks:
-  - Wilkommen in Woche 3
-  days:
-  - columns: []
-    events:
-    - title: Test end before start
-      start: 09:00
-      end: 08:00
-      appearsIn:
-      - Det
-      description: Det C, FKhaus 15b
-    - title: Test short duration
-      start: 09:00
-      end: 09:05
-      appearsIn:
-      - Det
-      description: Det C
-    - title: Test NonExisting category
-      start: 09:30
-      end: 09:45
-      category: NonExisting

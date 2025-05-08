@@ -81,7 +81,7 @@ func (e Events) Less(i, j int) bool {
 func (e Event) String() string {
 	t1 := e.Start.Format("15:04")
 	t2 := e.End.Format("15:04")
-	return fmt.Sprintf("Event(#%d %v-%v %v)", e.DayOffset, t1, t2, e.Title)
+	return fmt.Sprintf("Event(day #%d %v-%v %v)", e.DayOffset+1, t1, t2, e.Title)
 }
 
 func NewWAP(data *WapJson) (w *Wap) {
@@ -101,7 +101,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 		t1, err := parseDayTime(*data.Meta.StartTime)
 		if err != nil {
 			log.Println(err)
-			log.Println("WARNING not defined when the day start. Falling back to default.")
+			log.Printf("WARNING not defined when the day starts. Falling back to default: %s\n", MilitaryTime(w.dayStart))
 		} else {
 			w.dayStart = RoundToQuarterHour(t1)
 		}
@@ -110,7 +110,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 		t2, err := parseDayTime(*data.Meta.EndTime)
 		if err != nil {
 			log.Println(err)
-			log.Println("WARNING not defined when the day ends. Falling back to default.")
+			log.Printf("WARNING not defined when the day ends. Falling back to default: %s\n", MilitaryTime(w.dayEnd))
 		} else {
 			w.dayEnd = RoundToQuarterHour(t2)
 		}
@@ -159,7 +159,7 @@ func (w *Wap) parseColors(categories []WapJsonCategoriesElem) {
 	for _, cat := range categories {
 		c, err := parseColor(cat.Color)
 		if err != nil {
-			log.Println("WARNING falling back to default colors: ", err.Error())
+			log.Println("WARNING falling back to default color. Failed to parse: ", err.Error())
 			c = DefaultColor
 		}
 		w.categories[cat.Identifier] = c
@@ -180,10 +180,6 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 					log.Println("ERROR: failed to parse end time: ", err.Error())
 					continue
 				}
-				if end.Before(start) {
-					log.Println("WARNING end before start time. Swapping it.")
-					start, end = end, start
-				}
 				description := ""
 				if event.Description != nil {
 					description = *event.Description
@@ -196,8 +192,12 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 					DayOffset:   weekIdx*7 + i,
 					AppearsIn:   []string{},
 				}
+				if end.Before(start) {
+					log.Printf("WARNING end before start time for %v. Swapping it.\n", freshEvent)
+					freshEvent.Start, freshEvent.End = freshEvent.End, freshEvent.Start
+				}
 				if len(event.AppearsIn) == 0 {
-					log.Println("WARNING appearsIn is empty. The event implicitly appears in all columns for this day.", event)
+					log.Printf("WARNING appearsIn is empty. The %v implicitly appears in all columns for this day.\n", freshEvent)
 				}
 				if event.Category != nil {
 					freshEvent.Category = *event.Category
@@ -213,7 +213,7 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
 					} else {
 						if !freshEvent.Repeats {
-							log.Printf("WARNING ignoring column %v that is not defined for day %d\n", col, i)
+							log.Printf("WARNING ignoring column %v that is not defined for day %d: %v \n", col, i, w.columns[i])
 						}
 						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
 					}
@@ -226,21 +226,17 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 
 	// Validate
 	for _, event := range w.events {
-		// - Check it has a valid duration
 		duration := event.End.Sub(event.Start)
-		if duration < 0 {
-			log.Printf("WARNING event ends before it starts: %v\n", event)
-		}
 		if duration.Minutes() < float64(MinimumEventDurationMin) {
-			log.Printf("WARNING event length %v min too short and will not be properly displayed. The duration should be at least %d min\n", duration.Minutes(), MinimumEventDurationMin)
+			log.Printf("WARNING %v length %v min too short and will not be properly displayed. Recommended duration %d min\n", event, duration.Minutes(), MinimumEventDurationMin)
 		}
 
 		if event.Start.Before(w.dayStart) {
-			log.Printf("WARNING start time before the day start %v for event %v", w.dayStart, event)
+			log.Printf("WARNING start time before the day start %v for event %v", MilitaryTime(w.dayStart), event)
 		}
 
 		if w.dayEnd.Before(event.End) {
-			log.Printf("WARNING end time before the day end %v for event %v", w.dayEnd, event)
+			log.Printf("WARNING end time before the day end %v for event %v", MilitaryTime(w.dayEnd), event)
 		}
 
 		// MAYBE: Give it an end if it has none
