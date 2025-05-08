@@ -677,20 +677,16 @@ weeks:
         - Det C
       description: Bis so 2330 ABV
   - columns:
-    - Det 1
-    - Det 2
-    - Det 3
-    - Det 4
+    - Det
+    - Det C
     events:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
       start: 01:00
       end: '23:30'
   - columns:
-    - Det 1
-    - Det 2
-    - Det 3
-    - Det 4
+    - Det
+    - Det C
     events:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
@@ -891,20 +887,16 @@ weeks:
       category: Footnote
       description: Det C
   - columns:
-    - Det 1
-    - Det 2
-    - Det 3
-    - Det 4
+    - Det
+    - Det c
     events:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
       start: 01:00
       end: '23:30'
   - columns:
-    - Det 1
-    - Det 2
-    - Det 3
-    - Det 4
+    - Det
+    - Det C
     events:
     # Hack: paint over repeating events
     - title: Allgemeiner Urlaub
@@ -1051,15 +1043,22 @@ weeks:
       category: Yellow
     - title: Entlassungsadmin
       start: '15:30'
-      end: '17:00'
+      end: '17:30'
       appearsIn:
       - Det
       - Det C
       category: Orange
       description: GK 021, Kp Kdo
+    - title: Entlassung
+      start: '17:30'
+      end: '18:30'
+      appearsIn:
+      - Det
+      - Det C
+      category: Orange
     # filler to overwrite repeating events
     - title: :)
-      start: '17:00'
+      start: '18:30'
       end: '23:00'
     - title: Erstellung PALF
       start: 08:30
