@@ -1057,9 +1057,9 @@ weeks:
       - Det C
       category: Orange
     # filler to overwrite repeating events
-    - title: :)
+    - title: " "
       start: '18:30'
-      end: '23:00'
+      end: '23:30'
     - title: Erstellung PALF
       start: 08:30
       end: 09:00
@@ -1092,3 +1092,16 @@ weeks:
       category: Footnote
       appearsIn:
         - Beso
+
+  - columns: [Det]
+    events:
+      - title: Auffahrtswochenende
+        start: '05:30'
+        end: '23:30'
+        repeats: daily
+  - columns: [Det]
+    events: []
+  - columns: [Det]
+    events: []
+  - columns: [Det]
+    events: []

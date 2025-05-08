@@ -28,11 +28,6 @@
           "type": "string",
           "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$"
         },
-        "lastDay": {
-          "description": "The last day of the WAP. Given in format YYYY-MM-DD",
-          "type": "string",
-          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$"
-        },
         "unit": {
           "description": "The unit the WAP is for",
           "type": "string"

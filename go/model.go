@@ -133,7 +133,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 		for i := range 7 {
 			correctedTime := w.firstDay.AddDate(0, 0, i)
 			localDay := TranslateWeekDay(correctedTime.Weekday())
-			name := localDay + ", " + correctedTime.Format(time.DateOnly)
+			name := localDay + ", " + SwissDate(correctedTime)
 			w.dayNames = append(w.dayNames, name)
 			w.columns = append(w.columns, []string{})
 			if len(w.columns) == 0 {

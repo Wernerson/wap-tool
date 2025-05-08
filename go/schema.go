@@ -63,9 +63,6 @@ type WapJsonMeta struct {
 	// The first day of the WAP. Given in format YYYY-MM-DD
 	FirstDay string `json:"firstDay" yaml:"firstDay" mapstructure:"firstDay"`
 
-	// The last day of the WAP. Given in format YYYY-MM-DD
-	LastDay *string `json:"lastDay,omitempty" yaml:"lastDay,omitempty" mapstructure:"lastDay,omitempty"`
-
 	// The earliest time displayed in the WAP. Given in format HH-MM
 	StartTime *string `json:"startTime,omitempty" yaml:"startTime,omitempty" mapstructure:"startTime,omitempty"`
 
@@ -106,11 +103,6 @@ func (j *WapJsonMeta) UnmarshalJSON(value []byte) error {
 	}
 	if matched, _ := regexp.MatchString(`^\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\d|3[01])$`, string(plain.FirstDay)); !matched {
 		return fmt.Errorf("field %s pattern match: must match %s", "FirstDay", `^\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\d|3[01])$`)
-	}
-	if plain.LastDay != nil {
-		if matched, _ := regexp.MatchString(`^\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\d|3[01])$`, string(*plain.LastDay)); !matched {
-			return fmt.Errorf("field %s pattern match: must match %s", "LastDay", `^\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\d|3[01])$`)
-		}
 	}
 	if plain.StartTime != nil {
 		if matched, _ := regexp.MatchString(`^[0-2]\d:[0-5]\d$`, string(*plain.StartTime)); !matched {

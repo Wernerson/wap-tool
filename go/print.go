@@ -25,14 +25,18 @@ func mmToPx(mm float64) float64 {
 }
 
 type WAPDrawer interface {
-	Draw(wap *Wap, output_path string)
+	Draw(wap *Wap, outputPath string)
 }
 
 type PDFDrawer struct {
-	pdf           *gopdf.GoPdf
-	wap           *Wap
-	pageSize      *gopdf.Rect
-	breakOption   *gopdf.BreakOption
+	pdf         *gopdf.GoPdf
+	wap         *Wap
+	pageSize    *gopdf.Rect
+	breakOption *gopdf.BreakOption
+	// Points are offset from the top-left of the page
+	// p1 ------+
+	//  | wapBox|
+	//  + ------+
 	p1            gopdf.Point
 	wapBox        gopdf.Rect
 	bigColumns    int
@@ -52,7 +56,7 @@ func NewPDFDrawer() *PDFDrawer {
 			BreakIndicator: ' ',
 			Separator:      "-",
 		},
-		bigColumns:    8,
+		bigColumns:    8, // weekly remarks is a column too
 		smallFontSize: 4,
 		largeFontSize: 8,
 		padding:       2,
@@ -83,7 +87,6 @@ func (d *PDFDrawer) setupDocument() (err error) {
 	if err != nil {
 		return err
 	}
-
 	// Padding left, top, right, and bottom from the page to the WAP Grid
 	PL := mmToPx(20)
 	PT := mmToPx(15)
@@ -177,15 +180,15 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 			// draw events for this day
 			for _, elem := range layout {
 				if elem.dayOffset == totalDayIdx {
-					originalEvent := elem.Event
+					event := elem.Event
 					// Handle footnotes
-					if originalEvent.Footnote {
-						footNoteSource := *originalEvent
+					if event.Footnote {
+						footNoteSource := *event
 						footNoteSource.Title = strconv.Itoa(footnoteCounter)
 						footNoteSource.Description = ""
 						elem.Event = &footNoteSource
-						ts := MilitaryTime(originalEvent.Start)
-						remarks = append(remarks, fmt.Sprintf("%d  %s %s, %s", footnoteCounter, ts, originalEvent.Title, originalEvent.Description))
+						ts := MilitaryTime(event.Start)
+						remarks = append(remarks, fmt.Sprintf("%d  %s %s, %s", footnoteCounter, ts, event.Title, event.Description))
 						footnoteCounter += 1
 					}
 					d.drawEvent(elem)

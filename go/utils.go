@@ -70,6 +70,12 @@ func MilitaryTime(t time.Time) string {
 	return fmt.Sprintf("%02d%02d", t.Hour(), t.Minute())
 }
 
+// 2024-04-23 -> 23.04.2024
+// Format DD.MM.YYYY
+func SwissDate(t time.Time) string {
+	return fmt.Sprintf("%02d.%02d.%d", t.Day(), t.Month(), t.Year())
+}
+
 func RoundToQuarterHour(t time.Time) time.Time {
 	minutes := t.Minute()
 	roundedMinutes := ((minutes + 7) / 15) * 15
