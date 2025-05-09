@@ -470,12 +470,6 @@ weeks:
             appearsIn:
               - Beso
             description: Kontakt LBA, Verlust, KP, Det C
-          - title: FD
-            category: FD
-            start: "08:00"
-            end: "12:00"
-            appearsIn:
-              - Det
           - title: Vpf BERN
             category: Yellow
             start: "12:00"
