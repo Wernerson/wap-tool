@@ -29,7 +29,7 @@ For example:
 ```
 
 - The `Makefile` provides additonial targets for convenience.
-- Gitlab CI is setup for linting and setup.
+- Gitlab CI is setup for linting and testing.
 
 ## Docker
 
@@ -47,7 +47,6 @@ The image can be shared with the following commands:
 
 1. `make dist`
 2. Upload archive `wap-tool.tar.gz` to sharepoint `KVP Stufe KP > WAP tool > Dist`
-(TODO: version it?)
 
 ## Overview
 
@@ -69,3 +68,16 @@ A PDF is generated using the `gopdf` library.
 - `appearsIn` is empty -> will be printed for all columns
 - `Beso` column.  The Beso column is printed smaller to make it look decent when footnotes are printed in it. But it is otherwise a normal column: other events can appear in it, and footnotes can also appear in other columns.
 - ...
+
+## Next Steps
+Some ideas to start working and improve the project:
+- organization&code
+  - Split the code into packages. Currently, everything is in the `main` package. Adhere to standard Go package layouts.
+  - Decouple Layouting from printing logic.
+  - Improve testing. Currently, only some utilities are tested.
+  - Improve the release workflow, consider a tool like [goreleaser](https://goreleaser.com/)
+  - Refactor the pdf printing utilities to simplify adding and changing.
+- printing&styling
+  - Formatting: remarks are plain text. Possibly allow for a markup like format to use at least bold / headlines. Instead of printing a bulleted list, the schema could require a single text block (you can use `|` in the yaml).
+  - Add more styling options. Currently, categories only give colors. [#16](https://gitlab.milab.ch/algo01/wap-tool/-/issues/16)
+  - Ideally Center title and descriptions in the middle of events. Think about avoiding overflowing text (scale the font size until it fits).

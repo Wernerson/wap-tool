@@ -84,3 +84,24 @@ func RoundToQuarterHour(t time.Time) time.Time {
 	}
 	return t.Truncate(time.Hour).Add(time.Duration(roundedMinutes) * time.Minute)
 }
+
+func TranslateWeekDay(t time.Weekday) string {
+	switch t {
+	case time.Monday:
+		return "Montag"
+	case time.Tuesday:
+		return "Dienstag"
+	case time.Wednesday:
+		return "Mittwoch"
+	case time.Thursday:
+		return "Donnerstag"
+	case time.Friday:
+		return "Freitag"
+	case time.Saturday:
+		return "Samstag"
+	case time.Sunday:
+		return "Sonntag"
+	default:
+		return "Unknown day"
+	}
+}
