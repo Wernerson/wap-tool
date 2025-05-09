@@ -205,7 +205,7 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 					freshEvent.Start, freshEvent.End = freshEvent.End, freshEvent.Start
 				}
 				if len(event.AppearsIn) == 0 {
-					log.Printf("WARNING appearsIn is empty. The %v implicitly appears in all columns for this day.\n", freshEvent)
+					log.Printf("INFO appearsIn is empty. The %v implicitly appears in all columns for this day.\n", freshEvent)
 				}
 				if event.Category != nil {
 					freshEvent.Category = *event.Category
@@ -221,7 +221,7 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
 					} else {
 						if !freshEvent.Repeats {
-							log.Printf("WARNING ignoring column %v that is not defined for day %d: %v \n", col, i, w.columns[i])
+							log.Printf("WARNING ignoring column '%s' in event '%s' that is not defined for week %d day %d: %v \n", col, event.Title, weekIdx+1, i+1, w.columns[i])
 						}
 						freshEvent.AppearsIn = append(freshEvent.AppearsIn, col)
 					}
