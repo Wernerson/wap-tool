@@ -34,7 +34,7 @@ categories:
     comment: Kontinuierliche Verbesserungsprojekte
     color: "#ff000080"
 weeks:
-  - remarks:
+  - remarks: # week 1
       # With | we get newlines, not with >
       - "Infra:"
       - "KP: GK 023"
@@ -55,7 +55,7 @@ weeks:
       - "Kraftraum: GK U17/U18 (Abend)"
 
     days:
-      - columns:
+      - columns: # monday
           - Det
           - Beso
         events:
@@ -209,7 +209,7 @@ weeks:
               - Det CESA
               - Det Zimm
             repeats: daily
-      - columns:
+      - columns: # tuesday
           - Det
           - Beso
         events:
@@ -372,7 +372,7 @@ weeks:
             end: "22:00"
             appearsIn:
               - Det
-      - columns:
+      - columns: # wednesday
           - Det CNO
           - Det CESA
           - Det Zimm
@@ -538,7 +538,7 @@ weeks:
               - Det CESA
               - Det Zimm
               - Det C
-      - columns:
+      - columns: # thursday
           - Det
           - Det C
           - Beso
@@ -611,7 +611,7 @@ weeks:
             start: 23:00
             end: 23:20
             appearsIn: [Det, Det C]
-      - columns:
+      - columns: # friday
           - Det
           - Det C
           - Beso
@@ -676,7 +676,7 @@ weeks:
               - Det
               - Det C
             description: Bis so 2330 ABV
-      - columns:
+      - columns: # saturday
           - Det
           - Det C
         events:
@@ -684,7 +684,7 @@ weeks:
           - title: Allgemeiner Urlaub
             start: 01:00
             end: "23:30"
-      - columns:
+      - columns: # sunday
           - Det
           - Det C
         events:
@@ -698,7 +698,7 @@ weeks:
           - title: ABV
             start: "23:00"
             end: "23:30"
-  - remarks:
+  - remarks: # week 2
       - "Infra:"
       - "KP: GK 023"
       - "Mun Mag"
@@ -712,7 +712,7 @@ weeks:
       - "Mittwoch:"
       - "Kraftraum: GK U17/U18 (Abend)"
     days:
-      - columns:
+      - columns: # monday
           - Det
           - Det C
           - Beso
@@ -724,7 +724,7 @@ weeks:
               - Det
               - Det C
             description: Raum noch zu bestimmen
-      - columns:
+      - columns: # tuesday
           - Det
           - Det C
           - Beso
@@ -766,7 +766,7 @@ weeks:
             category: KVP
             appearsIn:
               - Beso
-      - columns:
+      - columns: # wednesday
           - Det
           - Det C
           - Beso
@@ -793,7 +793,7 @@ weeks:
               - Det
               - Det C
             category: Yellow
-      - columns:
+      - columns: # thursday
           - Det
           - Det C
           - Beso
@@ -830,7 +830,7 @@ weeks:
               - Beso
             category: Footnote
             description: Det C
-      - columns:
+      - columns: # friday
           - Det
           - Det C
           - Beso
@@ -886,7 +886,7 @@ weeks:
               - Beso
             category: Footnote
             description: Det C
-      - columns:
+      - columns: # saturday
           - Det
           - Det c
         events:
@@ -894,7 +894,7 @@ weeks:
           - title: Allgemeiner Urlaub
             start: 01:00
             end: "23:30"
-      - columns:
+      - columns: # sunday
           - Det
           - Det C
         events:
@@ -908,7 +908,7 @@ weeks:
           - title: ABV
             start: "23:00"
             end: "23:30"
-  - remarks:
+  - remarks: # week 3
       - "Infra:"
       - "KP: GK 023"
       - "Mun Mag"
@@ -922,7 +922,7 @@ weeks:
       - "Mittwoch:"
       - "ThS: GK 021 (ganzer Tag)"
     days:
-      - columns:
+      - columns: # monday
           - Det
           - Det C
           - Beso
@@ -951,7 +951,7 @@ weeks:
             start: 22:30
             end: 22:45
             appearsIn: [Det, Det C]
-      - columns:
+      - columns: # tuesday
           - Det
           - Det C
           - Beso
@@ -1013,7 +1013,7 @@ weeks:
             category: Footnote
             appearsIn:
               - Beso
-      - columns:
+      - columns: # wednesday
           - Det
           - Det C
           - Beso
@@ -1093,15 +1093,19 @@ weeks:
             appearsIn:
               - Beso
 
-      - columns: [Det]
+      - columns: # thursday
+          - Det
         events:
           - title: Auffahrtswochenende
             start: "05:30"
             end: "23:30"
             repeats: daily
-      - columns: [Det]
+      - columns: # friday
+          - Det
         events: []
-      - columns: [Det]
+      - columns: # saturday
+          - Det
         events: []
-      - columns: [Det]
+      - columns: # sunday
+          - Det
         events: []
