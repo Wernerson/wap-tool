@@ -3,1105 +3,1105 @@ meta:
   author: Hptm H
   firstDay: 2025-05-12
   startTime: 05:45
-  endTime: '23:30'
+  endTime: "23:30"
   unit: Cy Kp 42/3
   title: Det 7
-  version: 'Stand: 13.02.2025'
+  version: "Stand: 13.02.2025"
 categories:
-- identifier: Green
-  comment: Allgemeine Grundausbildung und Sport
-  color: '#00b050'
-- identifier: Lightgreen
-  color: '#92d050'
-- identifier: Orange
-  color: '#ff9900'
-- identifier: Blue
-  comment: Verschiebung
-  color: '#00b0f0'
-- identifier: Lightblue
-  comment: Für Einführungen und co.
-  color: '#dbeef4'
-- identifier: FD
-  comment: Fachdienst
-  color: '#eeece1'
-- identifier: Yellow
-  comment: Verpflegung, PD/ID
-  color: '#ffffcc'
-- identifier: Footnote
-  comment: Fussnoten
-  color: '#e0ef04'
-- identifier: KVP
-  comment: Kontinuierliche Verbesserungsprojekte
-  color: '#ff000080'
+  - identifier: Green
+    comment: Allgemeine Grundausbildung und Sport
+    color: "#00b050"
+  - identifier: Lightgreen
+    color: "#92d050"
+  - identifier: Orange
+    color: "#ff9900"
+  - identifier: Blue
+    comment: Verschiebung
+    color: "#00b0f0"
+  - identifier: Lightblue
+    comment: Für Einführungen und co.
+    color: "#dbeef4"
+  - identifier: FD
+    comment: Fachdienst
+    color: "#eeece1"
+  - identifier: Yellow
+    comment: Verpflegung, PD/ID
+    color: "#ffffcc"
+  - identifier: Footnote
+    comment: Fussnoten
+    color: "#e0ef04"
+  - identifier: KVP
+    comment: Kontinuierliche Verbesserungsprojekte
+    color: "#ff000080"
 weeks:
-- remarks:
-  # With | we get newlines, not with >
-  - "Infra:"
-  - "KP: GK 023"
-  - "Mun Mag"
-  - "Mat Mag: 15b 009"
-  - "Manschafts Rm: GK 106"
-  - "Manschafts Rm: GK 108"
-  - "Of Zimmer: GK 126"
-  - "Of Zimmer: GK 151"
-  - "" # To get a blank line
-  - "Montag:"
-  - "ThS: GK 021 (ganzer Tag)"
-  - ""
-  - "Dienstag:"
-  - "KD-Box Spl Sand (ganzer Tag)"
-  - ""
-  - "Mittwoch:"
-  - "Kraftraum: GK U17/U18 (Abend)"
+  - remarks:
+      # With | we get newlines, not with >
+      - "Infra:"
+      - "KP: GK 023"
+      - "Mun Mag"
+      - "Mat Mag: 15b 009"
+      - "Manschafts Rm: GK 106"
+      - "Manschafts Rm: GK 108"
+      - "Of Zimmer: GK 126"
+      - "Of Zimmer: GK 151"
+      - "" # To get a blank line
+      - "Montag:"
+      - "ThS: GK 021 (ganzer Tag)"
+      - ""
+      - "Dienstag:"
+      - "KD-Box Spl Sand (ganzer Tag)"
+      - ""
+      - "Mittwoch:"
+      - "Kraftraum: GK U17/U18 (Abend)"
 
-  days:
-  - columns:
-    - Det
-    - Beso
-    events:
-    - title: Einrücken
-      start: 09:30
-      end: '09:45'
-      appearsIn:
-      - Det
-    - title: Einrückungsadmin & VT Repetitorium
-      start: '09:45'
-      end: '10:45'
-      appearsIn:
-      - Det
-      category: Orange
-      description: Det C, GK 021
-    - title: Fassung IAA-Mat
-      start: '10:45'
-      end: '11:15'
-      appearsIn:
-      - Det
-      category: Orange
-      description: Det C, Mat Mag
-    - title: U Feurio
-      start: '11:00'
-      end: '11:15'
-      category: Footnote
-      footnote: true
-      appearsIn:
-      - Beso
-      description: (Feueralarm), Det C
-    - title: Zi-Bezug
-      start: '11:15'
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: Orange
-      description: Det C, GK 106 & GK 108
-    - title: Gemeinsames Mittagessen
-      start: '12:00'
-      end: '12:45'
-      appearsIn:
-      - Det
-      category: Yellow
-    - title: Vorstellungsrunde
-      category: Orange
-      start: '12:45'
-      end: '13:15'
-      appearsIn:
-      - Det
-      description: Det C, GK 021
-    - title: LMS Check
-      category: Footnote
-      start: '13:00'
-      end: '13:15'
-      footnote: true
-      appearsIn:
-      - Beso
-      description: Det C
-    - title: SAN D
-      category: Green
-      start: '13:15'
-      end: '14:15'
-      appearsIn:
-      - Det
-      description: Det C, GK 021
-    - title: GPD SM 90
-      category: Green
-      start: '14:15'
-      end: '15:15'
-      appearsIn:
-      - Det
-      description: Det C, GK 021
-    - title: Stgm 90 Manipulieren
-      category: Green
-      start: '15:15'
-      end: '16:00'
-      appearsIn:
-      - Det
-      description: Det C, Neben FK
-    - title: Tenue Sport erstellen
-      category: Lightgreen
-      start: '16:00'
-      end: '16:15'
-      appearsIn:
-      - Det
-    - title: Sport
-      category: Green
-      start: '16:15'
-      end: '17:30'
-      appearsIn:
-      - Det
-      description: Joggen, Det C, Aarenroute
-    - title: ID
-      category: Yellow
-      start: '17:30'
-      end: '18:00'
-      appearsIn:
-      - Det
-    - title: Vpf Bern
-      category: Yellow
-      start: '18:00'
-      end: '18:45'
-      appearsIn:
-      - Det
-      - Det C
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-      repeats: daily
-    - title: Diensttheorie
-      category: Orange
-      start: '18:45'
-      end: '19:15'
-      appearsIn:
-      - Det
-      description: Det C, GK 021
-    - title: Theorie Eigenschutz und Integrale Sicherheit
-      category: Green
-      start: '19:15'
-      end: '20:00'
-      appearsIn:
-      - Det
-      description: Det C, GK 021
-    - title: LMS IS
-      category: Green
-      start: '20:00'
-      end: '21:00'
-      appearsIn:
-      - Det
-      description: Det C, GK 021
-    - title: AWB Check
-      category: Green
-      start: '21:00'
-      end: '21:30'
-      appearsIn:
-      - Det
-      description: Det C, GK 021
-    - title: PD/ID
-      category: Yellow
-      start: '21:30'
-      end: '22:00'
-      appearsIn:
-      - Det
-    - title: ABV
-      start: '22:15'
-      end: '22:30'
-      appearsIn:
-      - Det
-      - Det C
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-      repeats: daily
-  - columns:
-    - Det
-    - Beso
-    events:
-    - title: Tagwache
-      start: 05:45
-      end: 06:15
-      repeats: daily
-      appearsIn:
-        - Det
-        - Det C
-        - Det CNO
-        - Det CESA
-        - Det Zimm
-    - title: Vpf Bern
-      category: Yellow
-      start: 06:15
-      end: 07:00
-      repeats: daily
-      appearsIn:
-        - Det
-        - Det C
-        - Det CNO
-        - Det CESA
-        - Det Zimm
-    - title: AV
-      start: 06:45
-      end: 07:00
-      appearsIn:
-        - Det
-    - title: Verladen Mat Mun
-      start: 07:00
-      end: 07:30
-      category: Lightgreen
-      appearsIn:
-      - Det
-      description: Det C, Mat & Mun Mag
-    - title: Fsg Lunch
-      start: 07:00
-      end: 07:30
-      category: Lightgreen
-      appearsIn:
-      - Det
-      description: Det C Stv, Timeout
-    - title: Mat & Mun Ausgabe
-      start: 07:00
-      end: 07:30
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: MatMag / MunMag, C Planung
-    - title: Fsg Schlüssel PD-Stand, Det C
-      start: 13:30
-      end: 13:45
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: MatMag / MunMag, C Planung
-    - title: Mat & Mun Rückgabe
-      start: 13:45
-      end: 14:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: MatMag / MunMag, C Planung
-    - title: AWB Fsg, Ra Stelle Bern, Det C
-      start: 14:00
-      end: 15:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-    - title: Rückgabe Schlüssel
-      start: 14:45
-      end: 15:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: PD-Stand, Det C
-    - title:  Vs COMINT
-      start: 19:00
-      end: 21:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: det nach ZiWa, Det C
-    - title:  Meldung PA Mat
-      start: 21:30
-      end: 22:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Einh Fw, Det C
-    - title: Vs SAND
-      category: Blue
-      start: 07:30
-      end: 08:00
-      appearsIn:
-      - Det
-    - title: Schiessen
-      category: Green
-      start: 08:00
-      end: '12:00'
-      appearsIn:
-      - Det
-      description: Det C, Spl Sand
-    - title: Vpf Sand
-      category: Yellow
-      start: '12:00'
-      end: '12:45'
-      appearsIn:
-      - Det
-    - title: Vs BERN
-      category: Blue
-      start: '12:45'
-      end: '13:15'
-      appearsIn:
-      - Det
-    - title: Reorg
-      category: Green
-      start: '13:15'
-      end: '14:00'
-      appearsIn:
-      - Det
-    - title: PD Waffe
-      category: Green
-      start: '14:00'
-      end: '15:00'
-      appearsIn:
-      - Det
-      description: Det C, PD-Stand
-    - title: KVP
-      category: KVP
-      start: '15:00'
-      end: '18:00'
-      appearsIn:
-      - Det
-      description: Capture the Flag, Det C, Raum noch zu bestimmen
-    - title: PA Mat Kontrolle
-      category: Green
-      start: '18:45'
-      end: '20:30'
-      appearsIn:
-      - Det
-      description: Einh Fw, GK 106 & 108
-    - title: PD/ID
-      category: Yellow
-      start: '20:30'
-      end: '21:00'
-      appearsIn:
-      - Det
-    - title: Z z VF AdA
-      category: FD
-      start: '21:00'
-      end: '22:00'
-      appearsIn:
-      - Det
-  - columns:
-    - Det CNO
-    - Det CESA
-    - Det Zimm
-    - Det C
-    - Beso
-    events:
-    - title: AV
-      start: 07:00
-      end: 07:30
-      appearsIn:
-      - Det
-      - Det C
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-      repeats: daily
-    - title: AVOR
-      category: FD
-      start: 07:30
-      end: 09:00
-      appearsIn:
-      - Det CNO
-    - title: Meet
-      category: Lightblue
-      start: 09:00
-      end: 09:30
-      appearsIn:
-      - Det CNO
-      - Det C
-    - title: FD
-      category: FD
-      start: 09:30
-      end: '12:00'
-      appearsIn:
-      - Det CNO
-    - title: Einführung
-      category: Lightblue
-      start: 07:30
-      end: 08:00
-      appearsIn:
-      - Det CESA
-      - Det C
-    - title: AVOR
-      category: FD
-      start: 08:00
-      end: 08:30
-      appearsIn:
-      - Det CESA
-    # - title: Einführung KVP
-    #   category: FD
-    #   start: 07:45
-    #   end: 08:30
-    #   appearsIn:
-    #   - Det C
-    #   description: KP
-    - title: INITIO
-      category: Lightblue
-      start: 08:30
-      end: 09:00
-      appearsIn:
-      - Det CESA
-      - Det C
-    - title: FD
-      category: FD
-      start: 09:00
-      end: '12:00'
-      appearsIn:
-      - Det CESA
-    - title: FD
-      category: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det Zimm
-    - title: FD
-      category: FD
-      start: 09:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-    - title: CFC Hardware Ausgabe
-      start: 08:00
-      end: 12:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Onboarding-Prozess & PC Setup, Det C
-    - title: Kontakt LBA
-      start: 12:45
-      end: 13:15
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Kontakt LBA, Verlust, KP, Det C
-    - title: FD
-      category: FD
-      start: 08:00
-      end: '12:00'
-      appearsIn:
-      - Det
-    - title: Vpf BERN
-      category: Yellow
-      start: 12:00
-      end: '12:45'
-      repeats: daily
-      appearsIn:
-        - Det
-        - Det C
-        - Det CNO
-        - Det CESA
-        - Det Zimm
-    - title: FD
-      category: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-    - title: Kontrollbesuche bei AdA
-      category: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det C
-    - title: Waffen Inspektion
-      category: Green
-      start: '18:45'
-      end: '20:00'
-      description: Det C / Lt C, Pd-Stand
-      appearsIn:
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-      - Det C
-    - title: Tenue Sport erstellen
-      category: Lightgreen
-      start: '20:00'
-      end: '20:15'
-      appearsIn:
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-      - Det C
-    - title: Sport
-      category: Green
-      start: '20:15'
-      end: '21:30'
-      description: Selbständiges Programm, GK U17/U18
-      appearsIn:
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-      - Det C
-    - title: PD/ID
-      category: Yellow
-      start: '21:30'
-      end: '22:00'
-      appearsIn:
-      - Det CNO
-      - Det CESA
-      - Det Zimm
-      - Det C
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Besprechung mit LB
-      start: 09:00
-      end: 14:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Det C
-    - title: WPD Durchführung
-      start: 12:45
-      end: 13:15
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: ALC Thun, Det C
-    - title: FD
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det
-      category: FD
-      repeats: daily
-    - title: Kontrollbesuche
-      start: 07:30
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: FD
-      repeats: daily
-    - title: Kontrollbesuche
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det C
-      category: FD
-      repeats: daily
-    - title: FD
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det
-      category: FD
-      repeats: daily
-    - title: PD / ID / Kas Reinigung
-      start: '17:00'
-      end: '18:00'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: HV
-      start: '18:00'
-      end: '18:30'
-      appearsIn:
-      - Det
-      - Det C
-    - title: FAK Ausgang
-      start: '18:30'
-      end: '23:00'
-      description: Bis 2310 ABV
-      appearsIn:
-      - Det
-      - Det C
-    - title: ABV
-      start: 23:00
-      end: 23:20
-      appearsIn: [Det, Det C]
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Fsg Lunch NaE
-      start: 12:00
-      end: 12:30
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Det C
-    - title: Antrag/Konzept Det Abend an KP Kdt
-      start: 14:00
-      end: 14:30
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Det C
-    - title: Abtrittsmeldung an Pk Kdo
-      start: 17:45
-      end: 18:15
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Det C
-    - title: Spätestens PALF abgegeben
-      start: 19:30
-      end: 20:00
-      footnote: true
-      category: Footnote
-      appearsIn:
-      - Beso
-      description: Det C
-    - title: Dienstbesprechung
-      start: '16:00'
-      end: '16:45'
-      category: Orange
-      appearsIn:
-      - Det
-      - Det C
-      description: Det C, GK 106&108
-    - title: PD / ID / Kas Reinigung
-      start: '16:30'
-      end: '17:45'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: HV
-      start: '17:45'
-      end: '18:00'
-      appearsIn:
-        - Det
-        - Det C
-    - title: Allgemeiner Urlaub
-      start: '18:00'
-      end: '23:30'
-      appearsIn:
-        - Det
-        - Det C
-      description: Bis so 2330 ABV
-  - columns:
-    - Det
-    - Det C
-    events:
-    # Hack: paint over repeating events
-    - title: Allgemeiner Urlaub
-      start: 01:00
-      end: '23:30'
-  - columns:
-    - Det
-    - Det C
-    events:
-    # Hack: paint over repeating events
-    - title: Allgemeiner Urlaub
-      start: 01:00
-      end: '22:30'
-    - title: Einrücken
-      start: '22:30'
-      end: '23:00'
-    - title: ABV
-      start: '23:00'
-      end: '23:30'
-- remarks:
-  - "Infra:"
-  - "KP: GK 023"
-  - "Mun Mag"
-  - "Mat Mag: 15b 009"
-  - ""
-  - "Manschafts Rm: GK 106"
-  - "Manschafts Rm: GK 108"
-  - "Of Zimmer: GK 126"
-  - "Of Zimmer: GK 151"
-  - ""
-  - "Mittwoch:"
-  - "Kraftraum: GK U17/U18 (Abend)"
-  days:
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Z z Vf Det C
-      start: '18:45'
-      end: '22:15'
-      appearsIn:
-      - Det
-      - Det C
-      description: Raum noch zu bestimmen
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Tenue Sport erstellen
-      start: '18:45'
-      end: '19:00'
-      appearsIn:
-      - Det
-      - Det C
-      category: Lightgreen
-    - title: Sport
-      start: '19:00'
-      end: '20:15'
-      description: Selbständiges Programm Gk U17/U18
-      appearsIn:
-      - Det
-      - Det C
-      category: Green
-    - title: PD/ID
-      start: '20:15'
-      end: '20:30'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: Z z Vf AdA
-      start: '20:30'
-      end: '22:15'
-      appearsIn:
-      - Det
-      - Det C
-      category: FD
-    - title: Kp Rap
-      start: 20:00
-      end: 21:00
-      footnote: True
-      description: Teams, Det C
-      category: KVP
-      appearsIn:
-        - Beso
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Tenue Sport erstellen
-      start: '18:45'
-      end: '19:00'
-      appearsIn:
-      - Det
-      - Det C
-      category: Lightgreen
-    - title: Sport
-      start: '19:00'
-      end: '21:45'
-      description: FTA 5, Det C, MZH/draussen
-      appearsIn:
-      - Det
-      - Det C
-      category: Green
-    - title: PD/ID
-      start: '21:45'
-      end: '22:15'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: PD/ID Kasernen Reinigung
-      start: '17:30'
-      end: '18:15'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: HV
-      start: '18:15'
-      end: '18:30'
-      appearsIn:
-      - Det
-      - Det C
-    - title: FAK Ausgang
-      start: '18:30'
-      end: '23:10'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-      description: bis 2310 ABV
-    - title: ABV
-      start: 23:00
-      end: 23:15
-    - title: Besprechung mit LB
-      start: '09:00'
-      end: '16:00'
-      footnote: true
-      appearsIn:
-        - Beso
-      category: Footnote
-      description: Det C
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Dienstbesprechung
-      start: '16:00'
-      end: '16:30'
-      appearsIn:
-      - Det
-      - Det C
-      category: Orange
-    - title: PD/ID Kasernen Reinigung
-      start: '16:30'
-      end: '18:00'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: HV
-      start: '18:00'
-      end: '18:30'
-    - title: Allgemeiner Urlaub
-      start: '18:30'
-      end: '23:10'
-      appearsIn:
-      - Det
-      - Det C
-      description: bis So 2330 ABV
-    - title: ABV
-      start: 23:00
-      end: 23:15
-    - title: Fsg Lunch Na E
-      start: '12:00'
-      end: '12:30'
-      footnote: True
-      appearsIn:
-        - Beso
-      category: Footnote
-      description: Det C
-    - title: Abtrittsmeldung an Kp Kdo
-      start: '18:00'
-      end: '18:30'
-      footnote: True
-      appearsIn:
-        - Beso
-      category: Footnote
-      description: Det C
-    - title: Spätestens PALF abgegeben
-      start: '19:30'
-      end: '20:00'
-      footnote: True
-      appearsIn:
-        - Beso
-      category: Footnote
-      description: Det C
-  - columns:
-    - Det
-    - Det c
-    events:
-    # Hack: paint over repeating events
-    - title: Allgemeiner Urlaub
-      start: 01:00
-      end: '23:30'
-  - columns:
-    - Det
-    - Det C
-    events:
-    # Hack: paint over repeating events
-    - title: Allgemeiner Urlaub
-      start: 00:00
-      end: '23:30'
-    - title: Einrücken
-      start: '22:30'
-      end: '23:00'
-    - title: ABV
-      start: '23:00'
-      end: '23:30'
-- remarks:
-  - "Infra:"
-  - "KP: GK 023"
-  - "Mun Mag"
-  - "Mat Mag: 15b 009"
-  - ""
-  - "Manschafts Rm: GK 106"
-  - "Manschafts Rm: GK 108"
-  - "Of Zimmer: GK 126"
-  - "Of Zimmer: GK 151"
-  - ""
-  - "Mittwoch:"
-  - "ThS: GK 021 (ganzer Tag)"
-  days:
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: ID
-      start: '18:00'
-      end: '19:00'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: Det Abend
-      start: '18:45'
-      end: '22:00'
-      appearsIn:
-      - Det
-      - Det C
-    - title: ID
-      start: '22:00'
-      end: '22:30'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: ABV
-      start: 22:30
-      end: 22:45
-      appearsIn: [Det, Det C]
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Avor Einrücken
-      start: 07:30
-      end: '09:00'
-      appearsIn:
-      - Det C
-      category: FD
-    - title: Einführungsadmin
-      start: 09:00
-      end: '12:00'
-      appearsIn:
-      - Det C
-      category: Orange
-      description: Det C, Kp
-    - title: Einführung neuer Det C
-      start: '12:45'
-      end: '18:00'
-      appearsIn:
-      - Det C
-      category: Lightblue
-    - title: Dienstbesprechung
-      start: '18:45'
-      end: '19:45'
-      appearsIn:
-      - Det
-      - Det C
-      category: Orange
-      description: "Det C, GK 106 & 108"
-    - title: Tenue Sport erstellen
-      start: '19:45'
-      end: '20:00'
-      appearsIn:
-      - Det
-      - Det C
-      category: Lightgreen
-    - title: Sport
-      start: '20:00'
-      end: '21:30'
-      description: Jogen, Det C, Aarenroute
-      appearsIn:
-      - Det
-      - Det C
-      category: Green
-    - title: PD/ID
-      start: '21:30'
-      end: '22:15'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: Besprechung mit LB
-      start: 09:00
-      end: 15:00
-      footnote: True
-      description: Det C
-      category: Footnote
-      appearsIn:
-        - Beso
-  - columns:
-    - Det
-    - Det C
-    - Beso
-    events:
-    - title: Abgabe IAA
-      start: '12:45'
-      end: '13:30'
-      appearsIn:
-      - Det
-      - Det C
-      category: Green
-      description: Einh Fw, Mat Mag
-    - title: WPD
-      start: '13:30'
-      end: '14:15'
-      appearsIn:
-      - Det
-      - Det C
-      category: Green
-      description: Det C Stv, Bern
-    - title: PD / ID / Kas Reinigung
-      start: '14:15'
-      end: '15:30'
-      appearsIn:
-      - Det
-      - Det C
-      category: Yellow
-    - title: Entlassungsadmin
-      start: '15:30'
-      end: '17:30'
-      appearsIn:
-      - Det
-      - Det C
-      category: Orange
-      description: GK 021, Kp Kdo
-    - title: Entlassung
-      start: '17:30'
-      end: '18:30'
-      appearsIn:
-      - Det
-      - Det C
-      category: Orange
-    # filler to overwrite repeating events
-    - title: " "
-      start: '18:30'
-      end: '23:30'
-    - title: Erstellung PALF
-      start: 08:30
-      end: 09:00
-      footnote: True
-      description: Det C
-      category: Footnote
-      appearsIn:
-        - Beso
-    - title: Rückgabe CFC Mat
-      start: 11:00
-      end: 12:00
-      footnote: True
-      description: Det C
-      category: Footnote
-      appearsIn:
-        - Beso
-    - title: Fsg Lunch NaE
-      start: 12:00
-      end: 12:30
-      footnote: True
-      description: Det C
-      category: Footnote
-      appearsIn:
-        - Beso
-    - title: Mat Depot Pers Packung
-      start: 13:30
-      end: 14:00
-      footnote: True
-      description: GK 021, Det C
-      category: Footnote
-      appearsIn:
-        - Beso
+    days:
+      - columns:
+          - Det
+          - Beso
+        events:
+          - title: Einrücken
+            start: 09:30
+            end: "09:45"
+            appearsIn:
+              - Det
+          - title: Einrückungsadmin & VT Repetitorium
+            start: "09:45"
+            end: "10:45"
+            appearsIn:
+              - Det
+            category: Orange
+            description: Det C, GK 021
+          - title: Fassung IAA-Mat
+            start: "10:45"
+            end: "11:15"
+            appearsIn:
+              - Det
+            category: Orange
+            description: Det C, Mat Mag
+          - title: U Feurio
+            start: "11:00"
+            end: "11:15"
+            category: Footnote
+            footnote: true
+            appearsIn:
+              - Beso
+            description: (Feueralarm), Det C
+          - title: Zi-Bezug
+            start: "11:15"
+            end: "12:00"
+            appearsIn:
+              - Det
+            category: Orange
+            description: Det C, GK 106 & GK 108
+          - title: Gemeinsames Mittagessen
+            start: "12:00"
+            end: "12:45"
+            appearsIn:
+              - Det
+            category: Yellow
+          - title: Vorstellungsrunde
+            category: Orange
+            start: "12:45"
+            end: "13:15"
+            appearsIn:
+              - Det
+            description: Det C, GK 021
+          - title: LMS Check
+            category: Footnote
+            start: "13:00"
+            end: "13:15"
+            footnote: true
+            appearsIn:
+              - Beso
+            description: Det C
+          - title: SAN D
+            category: Green
+            start: "13:15"
+            end: "14:15"
+            appearsIn:
+              - Det
+            description: Det C, GK 021
+          - title: GPD SM 90
+            category: Green
+            start: "14:15"
+            end: "15:15"
+            appearsIn:
+              - Det
+            description: Det C, GK 021
+          - title: Stgm 90 Manipulieren
+            category: Green
+            start: "15:15"
+            end: "16:00"
+            appearsIn:
+              - Det
+            description: Det C, Neben FK
+          - title: Tenue Sport erstellen
+            category: Lightgreen
+            start: "16:00"
+            end: "16:15"
+            appearsIn:
+              - Det
+          - title: Sport
+            category: Green
+            start: "16:15"
+            end: "17:30"
+            appearsIn:
+              - Det
+            description: Joggen, Det C, Aarenroute
+          - title: ID
+            category: Yellow
+            start: "17:30"
+            end: "18:00"
+            appearsIn:
+              - Det
+          - title: Vpf Bern
+            category: Yellow
+            start: "18:00"
+            end: "18:45"
+            appearsIn:
+              - Det
+              - Det C
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+            repeats: daily
+          - title: Diensttheorie
+            category: Orange
+            start: "18:45"
+            end: "19:15"
+            appearsIn:
+              - Det
+            description: Det C, GK 021
+          - title: Theorie Eigenschutz und Integrale Sicherheit
+            category: Green
+            start: "19:15"
+            end: "20:00"
+            appearsIn:
+              - Det
+            description: Det C, GK 021
+          - title: LMS IS
+            category: Green
+            start: "20:00"
+            end: "21:00"
+            appearsIn:
+              - Det
+            description: Det C, GK 021
+          - title: AWB Check
+            category: Green
+            start: "21:00"
+            end: "21:30"
+            appearsIn:
+              - Det
+            description: Det C, GK 021
+          - title: PD/ID
+            category: Yellow
+            start: "21:30"
+            end: "22:00"
+            appearsIn:
+              - Det
+          - title: ABV
+            start: "22:15"
+            end: "22:30"
+            appearsIn:
+              - Det
+              - Det C
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+            repeats: daily
+      - columns:
+          - Det
+          - Beso
+        events:
+          - title: Tagwache
+            start: 05:45
+            end: 06:15
+            repeats: daily
+            appearsIn:
+              - Det
+              - Det C
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+          - title: Vpf Bern
+            category: Yellow
+            start: 06:15
+            end: 07:00
+            repeats: daily
+            appearsIn:
+              - Det
+              - Det C
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+          - title: AV
+            start: 06:45
+            end: 07:00
+            appearsIn:
+              - Det
+          - title: Verladen Mat Mun
+            start: 07:00
+            end: 07:30
+            category: Lightgreen
+            appearsIn:
+              - Det
+            description: Det C, Mat & Mun Mag
+          - title: Fsg Lunch
+            start: 07:00
+            end: 07:30
+            category: Lightgreen
+            appearsIn:
+              - Det
+            description: Det C Stv, Timeout
+          - title: Mat & Mun Ausgabe
+            start: 07:00
+            end: 07:30
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: MatMag / MunMag, C Planung
+          - title: Fsg Schlüssel PD-Stand, Det C
+            start: 13:30
+            end: 13:45
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: MatMag / MunMag, C Planung
+          - title: Mat & Mun Rückgabe
+            start: 13:45
+            end: 14:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: MatMag / MunMag, C Planung
+          - title: AWB Fsg, Ra Stelle Bern, Det C
+            start: 14:00
+            end: 15:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+          - title: Rückgabe Schlüssel
+            start: 14:45
+            end: 15:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: PD-Stand, Det C
+          - title: Vs COMINT
+            start: 19:00
+            end: 21:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: det nach ZiWa, Det C
+          - title: Meldung PA Mat
+            start: 21:30
+            end: 22:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Einh Fw, Det C
+          - title: Vs SAND
+            category: Blue
+            start: 07:30
+            end: 08:00
+            appearsIn:
+              - Det
+          - title: Schiessen
+            category: Green
+            start: 08:00
+            end: "12:00"
+            appearsIn:
+              - Det
+            description: Det C, Spl Sand
+          - title: Vpf Sand
+            category: Yellow
+            start: "12:00"
+            end: "12:45"
+            appearsIn:
+              - Det
+          - title: Vs BERN
+            category: Blue
+            start: "12:45"
+            end: "13:15"
+            appearsIn:
+              - Det
+          - title: Reorg
+            category: Green
+            start: "13:15"
+            end: "14:00"
+            appearsIn:
+              - Det
+          - title: PD Waffe
+            category: Green
+            start: "14:00"
+            end: "15:00"
+            appearsIn:
+              - Det
+            description: Det C, PD-Stand
+          - title: KVP
+            category: KVP
+            start: "15:00"
+            end: "18:00"
+            appearsIn:
+              - Det
+            description: Capture the Flag, Det C, Raum noch zu bestimmen
+          - title: PA Mat Kontrolle
+            category: Green
+            start: "18:45"
+            end: "20:30"
+            appearsIn:
+              - Det
+            description: Einh Fw, GK 106 & 108
+          - title: PD/ID
+            category: Yellow
+            start: "20:30"
+            end: "21:00"
+            appearsIn:
+              - Det
+          - title: Z z VF AdA
+            category: FD
+            start: "21:00"
+            end: "22:00"
+            appearsIn:
+              - Det
+      - columns:
+          - Det CNO
+          - Det CESA
+          - Det Zimm
+          - Det C
+          - Beso
+        events:
+          - title: AV
+            start: 07:00
+            end: 07:30
+            appearsIn:
+              - Det
+              - Det C
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+            repeats: daily
+          - title: AVOR
+            category: FD
+            start: 07:30
+            end: 09:00
+            appearsIn:
+              - Det CNO
+          - title: Meet
+            category: Lightblue
+            start: 09:00
+            end: 09:30
+            appearsIn:
+              - Det CNO
+              - Det C
+          - title: FD
+            category: FD
+            start: 09:30
+            end: "12:00"
+            appearsIn:
+              - Det CNO
+          - title: Einführung
+            category: Lightblue
+            start: 07:30
+            end: 08:00
+            appearsIn:
+              - Det CESA
+              - Det C
+          - title: AVOR
+            category: FD
+            start: 08:00
+            end: 08:30
+            appearsIn:
+              - Det CESA
+          # - title: Einführung KVP
+          #   category: FD
+          #   start: 07:45
+          #   end: 08:30
+          #   appearsIn:
+          #   - Det C
+          #   description: KP
+          - title: INITIO
+            category: Lightblue
+            start: 08:30
+            end: 09:00
+            appearsIn:
+              - Det CESA
+              - Det C
+          - title: FD
+            category: FD
+            start: 09:00
+            end: "12:00"
+            appearsIn:
+              - Det CESA
+          - title: FD
+            category: FD
+            start: 07:30
+            end: "12:00"
+            appearsIn:
+              - Det Zimm
+          - title: FD
+            category: FD
+            start: 09:30
+            end: "12:00"
+            appearsIn:
+              - Det C
+          - title: CFC Hardware Ausgabe
+            start: 08:00
+            end: 12:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Onboarding-Prozess & PC Setup, Det C
+          - title: Kontakt LBA
+            start: 12:45
+            end: 13:15
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Kontakt LBA, Verlust, KP, Det C
+          - title: FD
+            category: FD
+            start: 08:00
+            end: "12:00"
+            appearsIn:
+              - Det
+          - title: Vpf BERN
+            category: Yellow
+            start: 12:00
+            end: "12:45"
+            repeats: daily
+            appearsIn:
+              - Det
+              - Det C
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+          - title: FD
+            category: FD
+            start: "12:45"
+            end: "18:00"
+            appearsIn:
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+          - title: Kontrollbesuche bei AdA
+            category: FD
+            start: "12:45"
+            end: "18:00"
+            appearsIn:
+              - Det C
+          - title: Waffen Inspektion
+            category: Green
+            start: "18:45"
+            end: "20:00"
+            description: Det C / Lt C, Pd-Stand
+            appearsIn:
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+              - Det C
+          - title: Tenue Sport erstellen
+            category: Lightgreen
+            start: "20:00"
+            end: "20:15"
+            appearsIn:
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+              - Det C
+          - title: Sport
+            category: Green
+            start: "20:15"
+            end: "21:30"
+            description: Selbständiges Programm, GK U17/U18
+            appearsIn:
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+              - Det C
+          - title: PD/ID
+            category: Yellow
+            start: "21:30"
+            end: "22:00"
+            appearsIn:
+              - Det CNO
+              - Det CESA
+              - Det Zimm
+              - Det C
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Besprechung mit LB
+            start: 09:00
+            end: 14:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Det C
+          - title: WPD Durchführung
+            start: 12:45
+            end: 13:15
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: ALC Thun, Det C
+          - title: FD
+            start: 07:30
+            end: "12:00"
+            appearsIn:
+              - Det
+            category: FD
+            repeats: daily
+          - title: Kontrollbesuche
+            start: 07:30
+            end: "12:00"
+            appearsIn:
+              - Det C
+            category: FD
+            repeats: daily
+          - title: Kontrollbesuche
+            start: "12:45"
+            end: "18:00"
+            appearsIn:
+              - Det C
+            category: FD
+            repeats: daily
+          - title: FD
+            start: "12:45"
+            end: "18:00"
+            appearsIn:
+              - Det
+            category: FD
+            repeats: daily
+          - title: PD / ID / Kas Reinigung
+            start: "17:00"
+            end: "18:00"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: HV
+            start: "18:00"
+            end: "18:30"
+            appearsIn:
+              - Det
+              - Det C
+          - title: FAK Ausgang
+            start: "18:30"
+            end: "23:00"
+            description: Bis 2310 ABV
+            appearsIn:
+              - Det
+              - Det C
+          - title: ABV
+            start: 23:00
+            end: 23:20
+            appearsIn: [Det, Det C]
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Fsg Lunch NaE
+            start: 12:00
+            end: 12:30
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Det C
+          - title: Antrag/Konzept Det Abend an KP Kdt
+            start: 14:00
+            end: 14:30
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Det C
+          - title: Abtrittsmeldung an Pk Kdo
+            start: 17:45
+            end: 18:15
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Det C
+          - title: Spätestens PALF abgegeben
+            start: 19:30
+            end: 20:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Det C
+          - title: Dienstbesprechung
+            start: "16:00"
+            end: "16:45"
+            category: Orange
+            appearsIn:
+              - Det
+              - Det C
+            description: Det C, GK 106&108
+          - title: PD / ID / Kas Reinigung
+            start: "16:30"
+            end: "17:45"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: HV
+            start: "17:45"
+            end: "18:00"
+            appearsIn:
+              - Det
+              - Det C
+          - title: Allgemeiner Urlaub
+            start: "18:00"
+            end: "23:30"
+            appearsIn:
+              - Det
+              - Det C
+            description: Bis so 2330 ABV
+      - columns:
+          - Det
+          - Det C
+        events:
+          # Hack: paint over repeating events
+          - title: Allgemeiner Urlaub
+            start: 01:00
+            end: "23:30"
+      - columns:
+          - Det
+          - Det C
+        events:
+          # Hack: paint over repeating events
+          - title: Allgemeiner Urlaub
+            start: 01:00
+            end: "22:30"
+          - title: Einrücken
+            start: "22:30"
+            end: "23:00"
+          - title: ABV
+            start: "23:00"
+            end: "23:30"
+  - remarks:
+      - "Infra:"
+      - "KP: GK 023"
+      - "Mun Mag"
+      - "Mat Mag: 15b 009"
+      - ""
+      - "Manschafts Rm: GK 106"
+      - "Manschafts Rm: GK 108"
+      - "Of Zimmer: GK 126"
+      - "Of Zimmer: GK 151"
+      - ""
+      - "Mittwoch:"
+      - "Kraftraum: GK U17/U18 (Abend)"
+    days:
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Z z Vf Det C
+            start: "18:45"
+            end: "22:15"
+            appearsIn:
+              - Det
+              - Det C
+            description: Raum noch zu bestimmen
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Tenue Sport erstellen
+            start: "18:45"
+            end: "19:00"
+            appearsIn:
+              - Det
+              - Det C
+            category: Lightgreen
+          - title: Sport
+            start: "19:00"
+            end: "20:15"
+            description: Selbständiges Programm Gk U17/U18
+            appearsIn:
+              - Det
+              - Det C
+            category: Green
+          - title: PD/ID
+            start: "20:15"
+            end: "20:30"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: Z z Vf AdA
+            start: "20:30"
+            end: "22:15"
+            appearsIn:
+              - Det
+              - Det C
+            category: FD
+          - title: Kp Rap
+            start: 20:00
+            end: 21:00
+            footnote: True
+            description: Teams, Det C
+            category: KVP
+            appearsIn:
+              - Beso
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Tenue Sport erstellen
+            start: "18:45"
+            end: "19:00"
+            appearsIn:
+              - Det
+              - Det C
+            category: Lightgreen
+          - title: Sport
+            start: "19:00"
+            end: "21:45"
+            description: FTA 5, Det C, MZH/draussen
+            appearsIn:
+              - Det
+              - Det C
+            category: Green
+          - title: PD/ID
+            start: "21:45"
+            end: "22:15"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: PD/ID Kasernen Reinigung
+            start: "17:30"
+            end: "18:15"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: HV
+            start: "18:15"
+            end: "18:30"
+            appearsIn:
+              - Det
+              - Det C
+          - title: FAK Ausgang
+            start: "18:30"
+            end: "23:10"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+            description: bis 2310 ABV
+          - title: ABV
+            start: 23:00
+            end: 23:15
+          - title: Besprechung mit LB
+            start: "09:00"
+            end: "16:00"
+            footnote: true
+            appearsIn:
+              - Beso
+            category: Footnote
+            description: Det C
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Dienstbesprechung
+            start: "16:00"
+            end: "16:30"
+            appearsIn:
+              - Det
+              - Det C
+            category: Orange
+          - title: PD/ID Kasernen Reinigung
+            start: "16:30"
+            end: "18:00"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: HV
+            start: "18:00"
+            end: "18:30"
+          - title: Allgemeiner Urlaub
+            start: "18:30"
+            end: "23:10"
+            appearsIn:
+              - Det
+              - Det C
+            description: bis So 2330 ABV
+          - title: ABV
+            start: 23:00
+            end: 23:15
+          - title: Fsg Lunch Na E
+            start: "12:00"
+            end: "12:30"
+            footnote: True
+            appearsIn:
+              - Beso
+            category: Footnote
+            description: Det C
+          - title: Abtrittsmeldung an Kp Kdo
+            start: "18:00"
+            end: "18:30"
+            footnote: True
+            appearsIn:
+              - Beso
+            category: Footnote
+            description: Det C
+          - title: Spätestens PALF abgegeben
+            start: "19:30"
+            end: "20:00"
+            footnote: True
+            appearsIn:
+              - Beso
+            category: Footnote
+            description: Det C
+      - columns:
+          - Det
+          - Det c
+        events:
+          # Hack: paint over repeating events
+          - title: Allgemeiner Urlaub
+            start: 01:00
+            end: "23:30"
+      - columns:
+          - Det
+          - Det C
+        events:
+          # Hack: paint over repeating events
+          - title: Allgemeiner Urlaub
+            start: 00:00
+            end: "23:30"
+          - title: Einrücken
+            start: "22:30"
+            end: "23:00"
+          - title: ABV
+            start: "23:00"
+            end: "23:30"
+  - remarks:
+      - "Infra:"
+      - "KP: GK 023"
+      - "Mun Mag"
+      - "Mat Mag: 15b 009"
+      - ""
+      - "Manschafts Rm: GK 106"
+      - "Manschafts Rm: GK 108"
+      - "Of Zimmer: GK 126"
+      - "Of Zimmer: GK 151"
+      - ""
+      - "Mittwoch:"
+      - "ThS: GK 021 (ganzer Tag)"
+    days:
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: ID
+            start: "18:00"
+            end: "19:00"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: Det Abend
+            start: "18:45"
+            end: "22:00"
+            appearsIn:
+              - Det
+              - Det C
+          - title: ID
+            start: "22:00"
+            end: "22:30"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: ABV
+            start: 22:30
+            end: 22:45
+            appearsIn: [Det, Det C]
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Avor Einrücken
+            start: 07:30
+            end: "09:00"
+            appearsIn:
+              - Det C
+            category: FD
+          - title: Einführungsadmin
+            start: 09:00
+            end: "12:00"
+            appearsIn:
+              - Det C
+            category: Orange
+            description: Det C, Kp
+          - title: Einführung neuer Det C
+            start: "12:45"
+            end: "18:00"
+            appearsIn:
+              - Det C
+            category: Lightblue
+          - title: Dienstbesprechung
+            start: "18:45"
+            end: "19:45"
+            appearsIn:
+              - Det
+              - Det C
+            category: Orange
+            description: "Det C, GK 106 & 108"
+          - title: Tenue Sport erstellen
+            start: "19:45"
+            end: "20:00"
+            appearsIn:
+              - Det
+              - Det C
+            category: Lightgreen
+          - title: Sport
+            start: "20:00"
+            end: "21:30"
+            description: Jogen, Det C, Aarenroute
+            appearsIn:
+              - Det
+              - Det C
+            category: Green
+          - title: PD/ID
+            start: "21:30"
+            end: "22:15"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: Besprechung mit LB
+            start: 09:00
+            end: 15:00
+            footnote: True
+            description: Det C
+            category: Footnote
+            appearsIn:
+              - Beso
+      - columns:
+          - Det
+          - Det C
+          - Beso
+        events:
+          - title: Abgabe IAA
+            start: "12:45"
+            end: "13:30"
+            appearsIn:
+              - Det
+              - Det C
+            category: Green
+            description: Einh Fw, Mat Mag
+          - title: WPD
+            start: "13:30"
+            end: "14:15"
+            appearsIn:
+              - Det
+              - Det C
+            category: Green
+            description: Det C Stv, Bern
+          - title: PD / ID / Kas Reinigung
+            start: "14:15"
+            end: "15:30"
+            appearsIn:
+              - Det
+              - Det C
+            category: Yellow
+          - title: Entlassungsadmin
+            start: "15:30"
+            end: "17:30"
+            appearsIn:
+              - Det
+              - Det C
+            category: Orange
+            description: GK 021, Kp Kdo
+          - title: Entlassung
+            start: "17:30"
+            end: "18:30"
+            appearsIn:
+              - Det
+              - Det C
+            category: Orange
+          # filler to overwrite repeating events
+          - title: " "
+            start: "18:30"
+            end: "23:30"
+          - title: Erstellung PALF
+            start: 08:30
+            end: 09:00
+            footnote: True
+            description: Det C
+            category: Footnote
+            appearsIn:
+              - Beso
+          - title: Rückgabe CFC Mat
+            start: 11:00
+            end: 12:00
+            footnote: True
+            description: Det C
+            category: Footnote
+            appearsIn:
+              - Beso
+          - title: Fsg Lunch NaE
+            start: 12:00
+            end: 12:30
+            footnote: True
+            description: Det C
+            category: Footnote
+            appearsIn:
+              - Beso
+          - title: Mat Depot Pers Packung
+            start: 13:30
+            end: 14:00
+            footnote: True
+            description: GK 021, Det C
+            category: Footnote
+            appearsIn:
+              - Beso
 
-  - columns: [Det]
-    events:
-      - title: Auffahrtswochenende
-        start: '05:30'
-        end: '23:30'
-        repeats: daily
-  - columns: [Det]
-    events: []
-  - columns: [Det]
-    events: []
-  - columns: [Det]
-    events: []
+      - columns: [Det]
+        events:
+          - title: Auffahrtswochenende
+            start: "05:30"
+            end: "23:30"
+            repeats: daily
+      - columns: [Det]
+        events: []
+      - columns: [Det]
+        events: []
+      - columns: [Det]
+        events: []
