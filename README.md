@@ -90,6 +90,14 @@ We should see the events we defined
 Now to create a realistic wap you may have a template to get started or you can use the folder `data/` for inspiration.
 Note the warnings printed if your data is malformed.
 
+### Improved DX
+
+Use the following command to automatically update the genereated WAP PDF, when the configuration file has changed:
+
+```bash
+echo ../data/det7.yaml | entr ./wap-tool ../data/det7.yaml > ../examples/det7.pdf
+```
+
 ## Docs
 
 The [schema](schema/wap.json) remains the source of truth for the model.
