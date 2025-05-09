@@ -2,7 +2,7 @@
 meta:
   author: Hptm H
   firstDay: 2025-05-12
-  startTime: 05:45
+  startTime: "05:45"
   endTime: "23:30"
   unit: Cy Kp 42/3
   title: Det 7
@@ -60,7 +60,7 @@ weeks:
           - Beso
         events:
           - title: Einrücken
-            start: 09:30
+            start: "09:30"
             end: "09:45"
             appearsIn:
               - Det
@@ -214,8 +214,8 @@ weeks:
           - Beso
         events:
           - title: Tagwache
-            start: 05:45
-            end: 06:15
+            start: "05:45"
+            end: "06:15"
             repeats: daily
             appearsIn:
               - Det
@@ -225,8 +225,8 @@ weeks:
               - Det Zimm
           - title: Vpf Bern
             category: Yellow
-            start: 06:15
-            end: 07:00
+            start: "06:15"
+            end: "07:00"
             repeats: daily
             appearsIn:
               - Det
@@ -235,74 +235,74 @@ weeks:
               - Det CESA
               - Det Zimm
           - title: AV
-            start: 06:45
-            end: 07:00
+            start: "06:45"
+            end: "07:00"
             appearsIn:
               - Det
           - title: Verladen Mat Mun
-            start: 07:00
-            end: 07:30
+            start: "07:00"
+            end: "07:30"
             category: Lightgreen
             appearsIn:
               - Det
             description: Det C, Mat & Mun Mag
           - title: Fsg Lunch
-            start: 07:00
-            end: 07:30
+            start: "07:00"
+            end: "07:30"
             category: Lightgreen
             appearsIn:
               - Det
             description: Det C Stv, Timeout
           - title: Mat & Mun Ausgabe
-            start: 07:00
-            end: 07:30
+            start: "07:00"
+            end: "07:30"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: MatMag / MunMag, C Planung
           - title: Fsg Schlüssel PD-Stand, Det C
-            start: 13:30
-            end: 13:45
+            start: "13:30"
+            end: "13:45"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: MatMag / MunMag, C Planung
           - title: Mat & Mun Rückgabe
-            start: 13:45
-            end: 14:00
+            start: "13:45"
+            end: "14:00"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: MatMag / MunMag, C Planung
           - title: AWB Fsg, Ra Stelle Bern, Det C
-            start: 14:30
-            end: 15:30
+            start: "14:30"
+            end: "15:30"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
           - title: Rückgabe Schlüssel
-            start: 14:45
-            end: 15:00
+            start: "14:45"
+            end: "15:00"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: PD-Stand, Det C
           - title: Vs COMINT
-            start: 19:00
-            end: 21:00
+            start: "19:00"
+            end: "21:00"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: det nach ZiWa, Det C
           - title: Meldung PA Mat
-            start: 21:30
-            end: 22:00
+            start: "21:30"
+            end: "22:00"
             footnote: true
             category: Footnote
             appearsIn:
@@ -310,13 +310,13 @@ weeks:
             description: Einh Fw, Det C
           - title: Vs SAND
             category: Blue
-            start: 07:30
-            end: 08:00
+            start: "07:30"
+            end: "08:00"
             appearsIn:
               - Det
           - title: Schiessen
             category: Green
-            start: 08:00
+            start: "08:00"
             end: "12:00"
             appearsIn:
               - Det
@@ -380,8 +380,8 @@ weeks:
           - Beso
         events:
           - title: AV
-            start: 07:00
-            end: 07:30
+            start: "07:00"
+            end: "07:30"
             appearsIn:
               - Det
               - Det C
@@ -391,80 +391,80 @@ weeks:
             repeats: daily
           - title: AVOR
             category: FD
-            start: 07:30
-            end: 09:00
+            start: "07:30"
+            end: "09:00"
             appearsIn:
               - Det CNO
           - title: Meet
             category: Lightblue
-            start: 09:00
-            end: 09:30
+            start: "09:00"
+            end: "09:30"
             appearsIn:
               - Det CNO
               - Det C
           - title: FD
             category: FD
-            start: 09:30
+            start: "09:30"
             end: "12:00"
             appearsIn:
               - Det CNO
           - title: Einführung
             category: Lightblue
-            start: 07:30
-            end: 08:00
+            start: "07:30"
+            end: "08:00"
             appearsIn:
               - Det CESA
               - Det C
           - title: AVOR
             category: FD
-            start: 08:00
-            end: 08:30
+            start: "08:00"
+            end: "08:30"
             appearsIn:
               - Det CESA
           # - title: Einführung KVP
           #   category: FD
-          #   start: 07:45
-          #   end: 08:30
+          #   start: "07:45"
+          #   end: "08:30"
           #   appearsIn:
           #   - Det C
           #   description: KP
           - title: INITIO
             category: Lightblue
-            start: 08:30
-            end: 09:00
+            start: "08:30"
+            end: "09:00"
             description: VB19
             appearsIn:
               - Det CESA
               - Det C
           - title: FD
             category: FD
-            start: 09:00
+            start: "09:00"
             end: "12:00"
             appearsIn:
               - Det CESA
           - title: FD
             category: FD
-            start: 07:30
+            start: "07:30"
             end: "12:00"
             appearsIn:
               - Det Zimm
           - title: FD
             category: FD
-            start: 09:30
+            start: "09:30"
             end: "12:00"
             appearsIn:
               - Det C
           - title: CFC Hardware Ausgabe
-            start: 08:00
-            end: 12:00
+            start: "08:00"
+            end: "12:00"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: Onboarding-Prozess & PC Setup, Det C
           - title: Kontakt LBA
-            start: 12:45
-            end: 13:15
+            start: "12:45"
+            end: "13:15"
             footnote: true
             category: Footnote
             appearsIn:
@@ -472,13 +472,13 @@ weeks:
             description: Kontakt LBA, Verlust, KP, Det C
           - title: FD
             category: FD
-            start: 08:00
+            start: "08:00"
             end: "12:00"
             appearsIn:
               - Det
           - title: Vpf BERN
             category: Yellow
-            start: 12:00
+            start: "12:00"
             end: "12:45"
             repeats: daily
             appearsIn:
@@ -545,38 +545,38 @@ weeks:
           - Beso
         events:
           - title: Fz Fsg Kp 1
-            start: 07:30
-            end: 08:00
+            start: "07:30"
+            end: "08:00"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: Det C
           - title: Besprechung mit LB
-            start: 09:00
-            end: 14:00
+            start: "09:00"
+            end: "14:00"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: Det C
           - title: WPD Durchführung
-            start: 12:45
-            end: 13:15
+            start: "12:45"
+            end: "13:15"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: ALC Thun, Det C
           - title: FD
-            start: 07:30
+            start: "07:30"
             end: "12:00"
             appearsIn:
               - Det
             category: FD
             repeats: daily
           - title: Kontrollbesuche
-            start: 07:30
+            start: "07:30"
             end: "12:00"
             appearsIn:
               - Det C
@@ -617,8 +617,8 @@ weeks:
               - Det
               - Det C
           - title: ABV
-            start: 23:00
-            end: 23:20
+            start: "23:00"
+            end: "23:20"
             appearsIn: [Det, Det C]
       - columns: # friday
           - Det
@@ -626,32 +626,32 @@ weeks:
           - Beso
         events:
           - title: Fsg Lunch NaE
-            start: 12:00
-            end: 12:30
+            start: "12:00"
+            end: "12:30"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: Det C
           - title: Antrag/Konzept Det Abend an KP Kdt
-            start: 14:00
-            end: 14:30
+            start: "14:00"
+            end: "14:30"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: Det C
           - title: Abtrittsmeldung an Pk Kdo
-            start: 17:45
-            end: 18:15
+            start: "17:45"
+            end: "18:15"
             footnote: true
             category: Footnote
             appearsIn:
               - Beso
             description: Det C
           - title: Spätestens PALF abgegeben
-            start: 19:30
-            end: 20:00
+            start: "19:30"
+            end: "20:00"
             footnote: true
             category: Footnote
             appearsIn:
@@ -691,7 +691,7 @@ weeks:
         events:
           # Hack: paint over repeating events
           - title: Allgemeiner Urlaub
-            start: 01:00
+            start: "01:00"
             end: "23:30"
       - columns: # sunday
           - Det
@@ -699,7 +699,7 @@ weeks:
         events:
           # Hack: paint over repeating events
           - title: Allgemeiner Urlaub
-            start: 01:00
+            start: "01:00"
             end: "22:30"
           - title: Einrücken
             start: "22:30"
@@ -727,8 +727,8 @@ weeks:
           - Beso
         events:
           - title: Touchpoint
-            start: 11:15
-            end: 11:45
+            start: "11:15"
+            end: "11:45"
             footnote: True
             description: Stefan Lehmann, Loge HQ
             category: Footnote
@@ -776,8 +776,8 @@ weeks:
               - Det C
             category: FD
           - title: Kp Rap
-            start: 20:00
-            end: 21:00
+            start: "20:00"
+            end: "21:00"
             footnote: True
             description: Teams, Det C
             category: KVP
@@ -837,8 +837,8 @@ weeks:
             category: Yellow
             description: bis 2310 ABV
           - title: ABV
-            start: 23:00
-            end: 23:15
+            start: "23:00"
+            end: "23:15"
           - title: Besprechung mit LB
             start: "09:00"
             end: "16:00"
@@ -877,8 +877,8 @@ weeks:
               - Det C
             description: bis So 2330 ABV
           - title: ABV
-            start: 23:00
-            end: 23:15
+            start: "23:00"
+            end: "23:15"
           - title: Fsg Lunch Na E
             start: "12:00"
             end: "12:30"
@@ -888,8 +888,8 @@ weeks:
             category: Footnote
             description: Det C
           - title: Touchpoint
-            start: 14:00
-            end: 14:30
+            start: "14:00"
+            end: "14:30"
             footnote: True
             description: Stefan Lehmann, Loge HQ
             category: Footnote
@@ -917,7 +917,7 @@ weeks:
         events:
           # Hack: paint over repeating events
           - title: Allgemeiner Urlaub
-            start: 01:00
+            start: "01:00"
             end: "23:30"
       - columns: # sunday
           - Det
@@ -925,7 +925,7 @@ weeks:
         events:
           # Hack: paint over repeating events
           - title: Allgemeiner Urlaub
-            start: 00:00
+            start: "00:00"
             end: "23:30"
           - title: Einrücken
             start: "22:30"
@@ -973,8 +973,8 @@ weeks:
               - Det C
             category: Yellow
           - title: ABV
-            start: 22:30
-            end: 22:45
+            start: "22:30"
+            end: "22:45"
             appearsIn: [Det, Det C]
       - columns: # tuesday
           - Det
@@ -982,21 +982,21 @@ weeks:
           - Beso
         events:
           - title: AVOR Einrücken
-            start: 07:30
+            start: "07:30"
             end: "09:00"
             appearsIn:
               - Det C
             category: FD
           - title: Badge Fsg (25 Stück) für AC
-            start: 08:00
-            end: 08:30
+            start: "08:00"
+            end: "08:30"
             footnote: True
             description: Det C
             category: Footnote
             appearsIn:
               - Beso
           - title: Einführungsadmin
-            start: 09:00
+            start: "09:00"
             end: "12:00"
             appearsIn:
               - Det C
@@ -1039,8 +1039,8 @@ weeks:
               - Det C
             category: Yellow
           - title: Besprechung mit LB
-            start: 09:00
-            end: 15:00
+            start: "09:00"
+            end: "15:00"
             footnote: True
             description: Det C
             category: Footnote
@@ -1094,39 +1094,39 @@ weeks:
             start: "18:30"
             end: "23:30"
           - title: Erstellung PALF
-            start: 08:30
-            end: 09:00
+            start: "08:30"
+            end: "09:00"
             footnote: True
             description: Det C
             category: Footnote
             appearsIn:
               - Beso
           - title: RELATIO
-            start: 11:15
-            end: 12:00
+            start: "11:15"
+            end: "12:00"
             description: VB21
             category: Lightblue
             appearsIn:
               - Det C
           - title: Rückgabe CFC Mat
-            start: 11:00
-            end: 12:00
+            start: "11:00"
+            end: "12:00"
             footnote: True
             description: Det C
             category: Footnote
             appearsIn:
               - Beso
           - title: Fsg Lunch NaE
-            start: 12:00
-            end: 12:30
+            start: "12:00"
+            end: "12:30"
             footnote: True
             description: Det C
             category: Footnote
             appearsIn:
               - Beso
           - title: Mat Depot Pers Packung
-            start: 13:30
-            end: 14:00
+            start: "13:30"
+            end: "14:00"
             footnote: True
             description: GK 021, Det C
             category: Footnote
