@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	_ "embed"
 	"fmt"
 	"log"
 	"math"
@@ -64,6 +66,17 @@ func NewPDFDrawer() *PDFDrawer {
 
 }
 
+// Embed the font files in the executable
+//
+//go:embed ttf/OpenSans-Regular.ttf
+var openSansRegular []byte
+
+//go:embed ttf/OpenSans-Bold.ttf
+var openSansBold []byte
+
+//go:embed ttf/OpenSans-Italic.ttf
+var openSansItalic []byte
+
 func (d *PDFDrawer) setupDocument() (err error) {
 	mm6ToPx := mmToPx(6)
 	trimbox := gopdf.Box{Left: mm6ToPx, Top: mm6ToPx, Right: d.pageSize.W - mm6ToPx, Bottom: d.pageSize.H - mm6ToPx}
@@ -71,15 +84,15 @@ func (d *PDFDrawer) setupDocument() (err error) {
 		PageSize: *d.pageSize,
 		TrimBox:  trimbox,
 	})
-	err = d.pdf.AddTTFFont("regular", "./ttf/OpenSans-Regular.ttf")
+	err = d.pdf.AddTTFFontByReader("regular", bytes.NewReader(openSansRegular))
 	if err != nil {
 		return err
 	}
-	err = d.pdf.AddTTFFont("bold", "./ttf/OpenSans-Bold.ttf")
+	err = d.pdf.AddTTFFontByReader("bold", bytes.NewReader(openSansBold))
 	if err != nil {
 		return err
 	}
-	err = d.pdf.AddTTFFont("italic", "./ttf/OpenSans-Italic.ttf")
+	err = d.pdf.AddTTFFontByReader("italic", bytes.NewReader(openSansItalic))
 	if err != nil {
 		return err
 	}
