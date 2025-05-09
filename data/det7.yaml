@@ -278,8 +278,8 @@ weeks:
               - Beso
             description: MatMag / MunMag, C Planung
           - title: AWB Fsg, Ra Stelle Bern, Det C
-            start: 14:00
-            end: 15:00
+            start: 14:30
+            end: 15:30
             footnote: true
             category: Footnote
             appearsIn:
@@ -347,12 +347,12 @@ weeks:
               - Det
             description: Det C, PD-Stand
           - title: KVP
-            category: KVP
+            category: Orange
             start: "15:00"
             end: "18:00"
             appearsIn:
               - Det
-            description: Capture the Flag, Det C, Raum noch zu bestimmen
+            description: Capture the Flag, Det C, MK 014
           - title: PA Mat Kontrolle
             category: Green
             start: "18:45"
@@ -432,6 +432,7 @@ weeks:
             category: Lightblue
             start: 08:30
             end: 09:00
+            description: VB19
             appearsIn:
               - Det CESA
               - Det C
@@ -543,6 +544,14 @@ weeks:
           - Det C
           - Beso
         events:
+          - title: Fz Fsg Kp 1
+            start: 07:30
+            end: 08:00
+            footnote: true
+            category: Footnote
+            appearsIn:
+              - Beso
+            description: Det C
           - title: Besprechung mit LB
             start: 09:00
             end: 14:00
@@ -717,13 +726,21 @@ weeks:
           - Det C
           - Beso
         events:
+          - title: Touchpoint
+            start: 11:15
+            end: 11:45
+            footnote: True
+            description: Stefan Lehmann, Loge HQ
+            category: Footnote
+            appearsIn:
+              - Beso
           - title: Z z Vf Det C
             start: "18:45"
             end: "22:15"
             appearsIn:
               - Det
               - Det C
-            description: Raum noch zu bestimmen
+            description: GK 007
       - columns: # tuesday
           - Det
           - Det C
@@ -870,6 +887,14 @@ weeks:
               - Beso
             category: Footnote
             description: Det C
+          - title: Touchpoint
+            start: 14:00
+            end: 14:30
+            footnote: True
+            description: Stefan Lehmann, Loge HQ
+            category: Footnote
+            appearsIn:
+              - Beso
           - title: Abtrittsmeldung an Kp Kdo
             start: "18:00"
             end: "18:30"
@@ -956,12 +981,20 @@ weeks:
           - Det C
           - Beso
         events:
-          - title: Avor Einrücken
+          - title: AVOR Einrücken
             start: 07:30
             end: "09:00"
             appearsIn:
               - Det C
             category: FD
+          - title: Badge Fsg (25 Stück) für AC
+            start: 08:00
+            end: 08:30
+            footnote: True
+            description: Det C
+            category: Footnote
+            appearsIn:
+              - Beso
           - title: Einführungsadmin
             start: 09:00
             end: "12:00"
@@ -1068,6 +1101,13 @@ weeks:
             category: Footnote
             appearsIn:
               - Beso
+          - title: RELATIO
+            start: 11:15
+            end: 12:00
+            description: VB21
+            category: Lightblue
+            appearsIn:
+              - Det C
           - title: Rückgabe CFC Mat
             start: 11:00
             end: 12:00
