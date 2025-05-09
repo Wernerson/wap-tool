@@ -8,8 +8,12 @@ import (
 	"time"
 )
 
-var DefaultColor = RGBColor{0xf0, 0xf0, 0xf0}
-var MinimumEventDurationMin = 10
+const (
+	daysInWeek              = 7
+	minimumEventDurationMin = 10
+)
+
+var defaultColor = RGBColor{0xf0, 0xf0, 0xf0}
 
 // Main type representing a WAP
 // Days < Weeks * 7
@@ -88,7 +92,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 	w = new(Wap)
 	w.categories = make(map[string]RGBColor)
 	// Default color
-	w.categories[""] = DefaultColor
+	w.categories[""] = defaultColor
 	w.parseColors(data.Categories)
 	w.dayStart = DayTime(5, 30)
 	w.dayEnd = DayTime(23, 30)
@@ -131,7 +135,7 @@ func NewWAP(data *WapJson) (w *Wap) {
 		w.Days += len(week.Days)
 		w.Remarks = append(w.Remarks, week.Remarks)
 		for i := range 7 {
-			correctedTime := w.firstDay.AddDate(0, 0, weekIdx*7+i)
+			correctedTime := w.firstDay.AddDate(0, 0, weekIdx*daysInWeek+i)
 			localDay := TranslateWeekDay(correctedTime.Weekday())
 			name := localDay + ", " + SwissDate(correctedTime)
 			w.dayNames = append(w.dayNames, name)
@@ -142,8 +146,8 @@ func NewWAP(data *WapJson) (w *Wap) {
 			w.DailyRemarks = append(w.DailyRemarks, []string{})
 		}
 		for dayIdx, day := range week.Days {
-			w.columns[weekIdx*7+dayIdx] = day.Columns
-			w.DailyRemarks[weekIdx*7+dayIdx] = day.Remarks
+			w.columns[weekIdx*daysInWeek+dayIdx] = day.Columns
+			w.DailyRemarks[weekIdx*daysInWeek+dayIdx] = day.Remarks
 		}
 	}
 	w.parseEvents(data.Weeks)
@@ -160,7 +164,7 @@ func (w *Wap) parseColors(categories []WapJsonCategoriesElem) {
 		c, err := parseColor(cat.Color)
 		if err != nil {
 			log.Println("WARNING falling back to default color. Failed to parse: ", err.Error())
-			c = DefaultColor
+			c = defaultColor
 		}
 		w.categories[cat.Identifier] = c
 	}
@@ -168,6 +172,10 @@ func (w *Wap) parseColors(categories []WapJsonCategoriesElem) {
 
 func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 	for weekIdx, week := range weeks {
+		if len(week.Days) > daysInWeek {
+			log.Printf("ERROR: too many days %d, expected at most %d", len(week.Days), daysInWeek)
+			continue
+		}
 		for i, day := range week.Days {
 			for _, event := range day.Events {
 				start, err := parseDayTime(event.Start)
@@ -189,7 +197,7 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 					End:         end,
 					Title:       event.Title,
 					Description: description,
-					DayOffset:   weekIdx*7 + i,
+					DayOffset:   weekIdx*daysInWeek + i,
 					AppearsIn:   []string{},
 				}
 				if end.Before(start) {
@@ -227,8 +235,8 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 	// Validate
 	for _, event := range w.events {
 		duration := event.End.Sub(event.Start)
-		if duration.Minutes() < float64(MinimumEventDurationMin) {
-			log.Printf("WARNING %v length %v min too short and will not be properly displayed. Recommended duration %d min\n", event, duration.Minutes(), MinimumEventDurationMin)
+		if duration.Minutes() < float64(minimumEventDurationMin) {
+			log.Printf("WARNING %v length %v min too short and will not be properly displayed. Recommended duration %d min\n", event, duration.Minutes(), minimumEventDurationMin)
 		}
 
 		if event.Start.Before(w.dayStart) {
@@ -257,26 +265,5 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 			event.Category = ""
 		}
 		// - MAYBE note if there is unallocated time
-	}
-}
-
-func TranslateWeekDay(t time.Weekday) string {
-	switch t {
-	case time.Monday:
-		return "Montag"
-	case time.Tuesday:
-		return "Dienstag"
-	case time.Wednesday:
-		return "Mittwoch"
-	case time.Thursday:
-		return "Donnerstag"
-	case time.Friday:
-		return "Freitag"
-	case time.Saturday:
-		return "Samstag"
-	case time.Sunday:
-		return "Sonntag"
-	default:
-		return "Unknown day"
 	}
 }

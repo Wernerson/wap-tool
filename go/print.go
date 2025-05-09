@@ -181,9 +181,9 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 	for week := range wap.Weeks {
 		d.setupPage()
 		d.drawWeeklyRemarks(week)
-		for day := range 7 {
-			totalDayIdx := week*7 + day
-			d.drawColumnHeader(week*7 + day)
+		for day := range daysInWeek {
+			totalDayIdx := week*daysInWeek + day
+			d.drawColumnHeader(week*daysInWeek + day)
 			// we model the current footnote convention:
 			// for each day the footnote counter resets
 			// Monday it starts with 10, Tuesday 20, ...
@@ -354,7 +354,7 @@ func (d *PDFDrawer) toGridSystem(t time.Time, dayIndex int) gopdf.Point {
 // For example | Det1 | Det2 | Det3 |
 func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
 	columnLocation := d.assignColumnLocations(d.wap.columns[totalDayOffset], d.colWidth)
-	dayInWeek := totalDayOffset % 7
+	dayInWeek := totalDayOffset % daysInWeek
 	detHeightMin := 90.0
 	dayHeightMin := 20.0
 	// Box for the week
@@ -454,7 +454,6 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	}
 }
 
-// TODO(refactor) reuse EventPosition?
 type columnInfo struct {
 	// Offset from the x of the day
 	Offset float64
@@ -462,6 +461,7 @@ type columnInfo struct {
 	W float64
 }
 
+// TODO(refactor) this is called from too many places
 func (d *PDFDrawer) assignColumnLocations(columns []string, width float64) map[string]columnInfo {
 	m := make(map[string]columnInfo)
 	// divide evently
@@ -469,8 +469,6 @@ func (d *PDFDrawer) assignColumnLocations(columns []string, width float64) map[s
 		return m
 	}
 	// Treat Beso specially: otherwise it looks bad
-	// Assumption
-
 	smallWidth := width / 6
 	normalCols := 0
 	for _, c := range columns {

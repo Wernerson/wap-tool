@@ -9,7 +9,7 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
-var VERSION = "v0.1"
+const VERSION = "v0.0.1"
 
 func readYaml(inputPath string) (wap *WapJson, err error) {
 	dat, err := os.ReadFile(inputPath)
@@ -64,8 +64,7 @@ func main() {
 	log.Println("INFO reading wap definition at ", inputPath)
 	wapData, err := readYaml(inputPath)
 	if err != nil {
-		log.Print("ERROR reading yaml: ", err.Error())
-		os.Exit(1)
+		log.Fatal("ERROR reading yaml: ", err.Error())
 	}
 	wap := NewWAP(wapData)
 	NewPDFDrawer().Draw(wap, outputPath)
