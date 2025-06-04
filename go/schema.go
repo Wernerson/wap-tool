@@ -150,6 +150,9 @@ type WapJsonWeeksElemDaysElemEventsElem struct {
 	// Whether the event appears as a footnote and is described in the daily remarks.
 	Footnote *bool `json:"footnote,omitempty" yaml:"footnote,omitempty" mapstructure:"footnote,omitempty"`
 
+	// if the event is open-ended
+	OpenEnd *bool `json:"openEnd,omitempty" yaml:"openEnd,omitempty" mapstructure:"openEnd,omitempty"`
+
 	// if the event repeats periodically.
 	Repeats *WapJsonWeeksElemDaysElemEventsElemRepeats `json:"repeats,omitempty" yaml:"repeats,omitempty" mapstructure:"repeats,omitempty"`
 

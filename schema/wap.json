@@ -132,6 +132,10 @@
                         "type": "string",
                         "pattern": "^[0-2]\\d:[0-5]\\d$"
                       },
+                      "openEnd": {
+                        "description": "if the event is open-ended",
+                        "type": "boolean"
+                      },
                       "description": {
                         "description": "Additional information such as the responsible person or the location.",
                         "type": "string"

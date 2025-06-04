@@ -1,6 +1,10 @@
 package main
 
-import "github.com/signintech/gopdf"
+import (
+	"math"
+
+	"github.com/signintech/gopdf"
+)
 
 // Draw a grid on pdf where start is the top left corner and bounds is the size of the grid.
 // rows and columns define the number of rows and columns.
@@ -31,4 +35,20 @@ func drawVerticalLines(pdf *gopdf.GoPdf, start gopdf.Point, bounds gopdf.Rect, c
 func drawRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {
 	err := pdf.Rectangle(p.X, p.Y, p.X+rect.W, p.Y+rect.H, "DF", 0, 0)
 	checkPDFerror(err)
+}
+
+func drawOpenEndRect(pdf *gopdf.GoPdf, p gopdf.Point, rect gopdf.Rect) {
+	offsetHeight := 5.0
+	points := []gopdf.Point{}
+	points = append(points, gopdf.Point{X: p.X, Y: p.Y})
+	points = append(points, gopdf.Point{X: p.X, Y: p.Y + rect.H + offsetHeight})
+	numSinPoints := 100
+	for i := 0; i < numSinPoints; i++ {
+		t := float64(i) / float64(numSinPoints)
+		sinY := math.Sin(-2 * math.Pi * t)
+		points = append(points, gopdf.Point{X: p.X + t*rect.W, Y: p.Y + rect.H + offsetHeight + sinY*offsetHeight})
+	}
+	points = append(points, gopdf.Point{X: p.X + rect.W, Y: p.Y + rect.H + offsetHeight})
+	points = append(points, gopdf.Point{X: p.X + rect.W, Y: p.Y})
+	pdf.Polygon(points, "DF")
 }

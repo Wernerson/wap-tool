@@ -51,6 +51,7 @@ type Wap struct {
 // - w.categories[Category]
 type Event struct {
 	Start, End  time.Time
+	OpenEnd     bool
 	DayOffset   int
 	Repeats     bool
 	AppearsIn   []string
@@ -215,6 +216,9 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 				}
 				if event.Footnote != nil {
 					freshEvent.Footnote = *event.Footnote
+				}
+				if event.OpenEnd != nil {
+					freshEvent.OpenEnd = *event.OpenEnd
 				}
 				for _, col := range event.AppearsIn {
 					if slices.Contains(day.Columns, col) {

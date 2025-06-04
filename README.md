@@ -137,7 +137,6 @@ What is not (yet) supported:
 
 - No text markup. Event titles are bold, otherwise all text is printed plain.
   For the remarks column this could be desirable.
-- No special styling: For example in the excel WAPs, open ended events are usually displayed with waves at the bottom.
 
 ### Tool Support
 

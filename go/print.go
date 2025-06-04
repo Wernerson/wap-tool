@@ -407,7 +407,11 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	if c, ok := d.wap.categories[event.Category]; ok {
 		d.pdf.SetFillColor(c.R, c.G, c.B)
 	}
-	drawRect(d.pdf, elem.P, elem.R)
+	if elem.Event.OpenEnd {
+		drawOpenEndRect(d.pdf, elem.P, elem.R)
+	} else {
+		drawRect(d.pdf, elem.P, elem.R)
+	}
 	title := event.Title
 	titleFontSize := d.smallFontSize
 	rect := gopdf.Rect{
