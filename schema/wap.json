@@ -64,6 +64,10 @@
           "color": {
             "description": "Color to give the category",
             "type": "string"
+          },
+          "textColor": {
+            "description": "Color of the text in the category",
+            "type": "string"
           }
         },
         "required": [

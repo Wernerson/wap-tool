@@ -29,6 +29,9 @@ type WapJsonCategoriesElem struct {
 
 	// Short identifier for the category. To be used as reference from events.
 	Identifier string `json:"identifier" yaml:"identifier" mapstructure:"identifier"`
+
+	// Color of the text in the category
+	TextColor *string `json:"textColor,omitempty" yaml:"textColor,omitempty" mapstructure:"textColor,omitempty"`
 }
 
 // UnmarshalJSON implements json.Unmarshaler.

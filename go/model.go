@@ -13,7 +13,13 @@ const (
 	minimumEventDurationMin = 10
 )
 
-var defaultColor = RGBColor{0xf0, 0xf0, 0xf0}
+var defaultTextColor = RGBColor{0x00, 0x00, 0x00}
+var defaultBgColor = RGBColor{0xf0, 0xf0, 0xf0}
+
+var defaultColor = Category{
+	bgColor:   defaultBgColor,
+	textColor: defaultTextColor,
+}
 
 // Main type representing a WAP
 // Days < Weeks * 7
@@ -27,7 +33,7 @@ type Wap struct {
 	Weeks  int
 	events Events
 	// Styling information
-	categories map[string]RGBColor
+	categories map[string]Category
 	// Columns for each day
 	columns  [][]string
 	firstDay time.Time
@@ -40,6 +46,11 @@ type Wap struct {
 	Remarks [][]string
 	// Remarks for each day
 	DailyRemarks [][]string
+}
+
+type Category struct {
+	bgColor   RGBColor
+	textColor RGBColor
 }
 
 // Represents a valid Event
@@ -91,7 +102,7 @@ func (e Event) String() string {
 
 func NewWAP(data *WapJson) (w *Wap) {
 	w = new(Wap)
-	w.categories = make(map[string]RGBColor)
+	w.categories = make(map[string]Category)
 	// Default color
 	w.categories[""] = defaultColor
 	w.parseColors(data.Categories)
@@ -162,12 +173,20 @@ func (w *Wap) String() string {
 
 func (w *Wap) parseColors(categories []WapJsonCategoriesElem) {
 	for _, cat := range categories {
-		c, err := parseColor(cat.Color)
+		bgColor, err := parseColor(cat.Color)
 		if err != nil {
 			log.Println("WARNING falling back to default color. Failed to parse: ", err.Error())
-			c = defaultColor
+			bgColor = defaultBgColor
 		}
-		w.categories[cat.Identifier] = c
+		textColor := defaultTextColor
+		if cat.TextColor != nil {
+			textColor, err = parseColor(*cat.TextColor)
+			if err != nil {
+				log.Println("WARNING falling back to default text color. Failed to parse: ", err.Error())
+				textColor = defaultTextColor
+			}
+		}
+		w.categories[cat.Identifier] = Category{bgColor: bgColor, textColor: textColor}
 	}
 }
 

@@ -405,7 +405,8 @@ func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
 func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	event := elem.Event
 	if c, ok := d.wap.categories[event.Category]; ok {
-		d.pdf.SetFillColor(c.R, c.G, c.B)
+		d.pdf.SetFillColor(c.bgColor.R, c.bgColor.G, c.bgColor.B)
+		d.pdf.SetTextColor(c.textColor.R, c.textColor.G, c.textColor.B)
 	}
 	if elem.Event.OpenEnd {
 		drawOpenEndRect(d.pdf, elem.P, elem.R)
@@ -424,7 +425,6 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 		rect.H -= d.padding
 	}
 	d.pdf.SetXY(elem.P.X, elem.P.Y)
-	d.pdf.SetTextColor(0x00, 0x00, 0x00)
 	err := d.pdf.SetFont("bold", "", titleFontSize)
 	checkPDFerror(err)
 	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
