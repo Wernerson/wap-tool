@@ -403,6 +403,7 @@ func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
 }
 
 func (d *PDFDrawer) drawEvent(elem EventPosition) {
+	log.Println(elem)
 	event := elem.Event
 	if c, ok := d.wap.categories[event.Category]; ok {
 		d.pdf.SetFillColor(c.bgColor.R, c.bgColor.G, c.bgColor.B)
@@ -415,7 +416,7 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	}
 	title := event.Title
 	titleFontSize := d.smallFontSize
-	drawVertical := elem.R.H > 2*elem.R.W
+	drawVertical := elem.R.H > 2*elem.R.W && !elem.Event.ForceHorizontal
 	rect := getRect(drawVertical, elem, d)
 	err := d.pdf.SetFont("bold", "", titleFontSize)
 	checkPDFerror(err)

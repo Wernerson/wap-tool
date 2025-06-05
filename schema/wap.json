@@ -166,6 +166,10 @@
                       "footnote": {
                         "type": "boolean",
                         "description": "Whether the event appears as a footnote and is described in the daily remarks."
+                      },
+                      "forceHorizontalText": {
+                        "type": "boolean",
+                        "description": "This forces the text to appear horizontal"
                       }
                     },
                     "required": [

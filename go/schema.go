@@ -153,6 +153,9 @@ type WapJsonWeeksElemDaysElemEventsElem struct {
 	// Whether the event appears as a footnote and is described in the daily remarks.
 	Footnote *bool `json:"footnote,omitempty" yaml:"footnote,omitempty" mapstructure:"footnote,omitempty"`
 
+	// This forces the text to appear horizontal
+	ForceHorizontalText *bool `json:"forceHorizontalText,omitempty" yaml:"forceHorizontalText,omitempty" mapstructure:"forceHorizontalText,omitempty"`
+
 	// if the event is open-ended
 	OpenEnd *bool `json:"openEnd,omitempty" yaml:"openEnd,omitempty" mapstructure:"openEnd,omitempty"`
 

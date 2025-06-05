@@ -61,15 +61,16 @@ type Category struct {
 // - 0 <= dayOffset && dayOffset < w.Days
 // - w.categories[Category]
 type Event struct {
-	Start, End  time.Time
-	OpenEnd     bool
-	DayOffset   int
-	Repeats     bool
-	AppearsIn   []string
-	Category    string
-	Title       string
-	Description string
-	Footnote    bool
+	Start, End      time.Time
+	OpenEnd         bool
+	DayOffset       int
+	Repeats         bool
+	AppearsIn       []string
+	Category        string
+	Title           string
+	Description     string
+	Footnote        bool
+	ForceHorizontal bool
 }
 
 type Events []Event
@@ -238,6 +239,9 @@ func (w *Wap) parseEvents(weeks []WapJsonWeeksElem) {
 				}
 				if event.OpenEnd != nil {
 					freshEvent.OpenEnd = *event.OpenEnd
+				}
+				if event.ForceHorizontalText != nil {
+					freshEvent.ForceHorizontal = *event.ForceHorizontalText
 				}
 				for _, col := range event.AppearsIn {
 					if slices.Contains(day.Columns, col) {
