@@ -408,7 +408,6 @@ func (d *PDFDrawer) drawColumnHeader(totalDayOffset int) {
 }
 
 func (d *PDFDrawer) drawEvent(elem EventPosition) {
-	log.Println(elem)
 	event := elem.Event
 	if c, ok := d.wap.categories[event.Category]; ok {
 		d.pdf.SetFillColor(c.bgColor.R, c.bgColor.G, c.bgColor.B)
