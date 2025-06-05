@@ -550,11 +550,19 @@ weeks:
         events:
           - title: PD / ID / Kas Reinigung
             start: "16:00"
-            end: "17:15"
+            end: "16:45"
             appearsIn:
               - Det
               - Det C
             category: Yellow
+          - title: Waffe fassen
+            description: Ausser ZiWa
+            start: "16:45"
+            end: "17:15"
+            category: Green
+            appearsIn:
+              - Det
+              - Det C
           - title: Dienstbesprechung
             start: "17:15"
             end: "17:45"
@@ -575,7 +583,7 @@ weeks:
             appearsIn:
               - Det
               - Det C
-            description: Bis So 2330 ABV
+            description: Bis Mo 2330 ABV
 
           - title: Antrag/Konzept Det Abend an KP Kdt
             start: "14:00"
@@ -617,12 +625,6 @@ weeks:
           # Hack: paint over repeating events
           - title: Allgemeiner Urlaub
             start: "01:00"
-            end: "22:30"
-          - title: Einrücken
-            start: "22:30"
-            end: "23:00"
-          - title: ABV
-            start: "23:00"
             end: "23:30"
   - remarks: # week 2
       - "Infra:"
@@ -707,10 +709,24 @@ weeks:
             appearsIn:
               - Beso
       - columns: # wednesday
+          - WEME Det
           - Det
           - Det C
           - Beso
         events:
+          - title: WEME
+            start: "07:00"
+            end: "18:00"
+            category: Lightgreen
+            appearsIn:
+              - WEME Det
+          - title: IAA Mat Abgabe
+            category: Green
+            start: "13:30"
+            end: "14:00"
+            appearsIn:
+              - Det
+              - Det C
           - title: Sport
             start: "18:45"
             end: "21:45"
@@ -735,10 +751,17 @@ weeks:
             appearsIn:
               - Beso
       - columns: # thursday
+          - WEME Det
           - Det
           - Det C
           - Beso
         events:
+          - title: WEME
+            start: "07:00"
+            end: "18:00"
+            category: Lightgreen
+            appearsIn:
+              - WEME Det
           - title: PD/ID Kasernen Reinigung
             start: "17:30"
             end: "18:15"
@@ -772,10 +795,17 @@ weeks:
             category: Footnote
             description: Det C
       - columns: # friday
+          - WEME Det
           - Det
           - Det C
           - Beso
         events:
+          - title: WEME
+            start: "07:00"
+            end: "18:00"
+            category: Lightgreen
+            appearsIn:
+              - WEME Det
           - title: PD / ID / Kasernen Reinigung
             start: "16:00"
             end: "17:15"
@@ -861,10 +891,22 @@ weeks:
           - Det C
           - Beso
         events:
+          - title: JARAP
+            category: Lightgreen
+            start: "07:30"
+            end: "12:00"
+            appearsIn:
+              - Det C
+          - title: JARAP
+            category: Lightgreen
+            start: "12:30"
+            end: "18:00"
+            appearsIn:
+              - Det C
           - title: Sport
             start: "18:45"
             end: "20:30"
-            description: Jogen, Det C, Aarenroute
+            description: Joggen, Det C, Aarenroute
             appearsIn:
               - Det
               - Det C
@@ -1001,10 +1043,45 @@ weeks:
             appearsIn:
               - Beso
       - columns: # friday
+          - Det KVP
           - Det
           - Det C
           - Beso
         events:
+          - title: Tagwache
+            start: "05:30"
+            end: "06:15"
+            appearsIn:
+              - Det
+              - Det KVP
+          - title: Vpf Bern
+            start: "06:15"
+            end: "07:00"
+            category: Yellow
+            appearsIn:
+              - Det
+              - Det KVP
+          - title: Vpf Bern
+            start: "12:00"
+            end: "12:45"
+            category: Yellow
+            appearsIn:
+              - Det
+              - Det C
+              - Det KVP
+          - title: AV
+            start: "07:00"
+            end: "07:30"
+            appearsIn:
+              - Det
+              - Det KVP
+              - Det C
+          - title: Räumung KP
+            start: "07:30"
+            end: "12:00"
+            category: Lightgreen
+            appearsIn:
+              - Det KVP
           - title: Einführung neuer Det C / Übergabe Kp 1
             start: "07:30"
             end: "11:15"
@@ -1019,11 +1096,12 @@ weeks:
             category: Lightblue
             appearsIn:
               - Det C
-          - title: Abgabe IAA, sowie CFC Mat
+          - title: Abgabe sowie CFC Mat
             start: "12:45"
             end: "13:30"
             appearsIn:
               - Det
+              - Det KVP
               - Det C
             category: Green
             description: Einh Fw, Mat Mag
@@ -1032,6 +1110,7 @@ weeks:
             end: "14:15"
             appearsIn:
               - Det
+              - Det KVP
               - Det C
             category: Green
             description: Det C Stv, Bern
@@ -1040,6 +1119,7 @@ weeks:
             end: "15:30"
             appearsIn:
               - Det
+              - Det KVP
               - Det C
             category: Yellow
           - title: Entlassungsadmin
@@ -1047,6 +1127,7 @@ weeks:
             end: "17:30"
             appearsIn:
               - Det
+              - Det KVP
               - Det C
             category: Orange
             description: GK 021, Kp Kdo
@@ -1055,6 +1136,7 @@ weeks:
             end: "18:30"
             appearsIn:
               - Det
+              - Det KVP
               - Det C
             category: Orange
 
