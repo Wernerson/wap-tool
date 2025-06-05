@@ -457,7 +457,7 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 func getAlignment(drawVertical bool) int {
 	alignment := gopdf.Center
 	if drawVertical {
-		alignment ^= gopdf.Middle
+		alignment |= gopdf.Middle
 	}
 	return alignment
 }
