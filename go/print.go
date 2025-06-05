@@ -415,29 +415,22 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	}
 	title := event.Title
 	titleFontSize := d.smallFontSize
-	rect := gopdf.Rect{
-		W: elem.R.W,
-		H: elem.R.H,
-	}
-	// No padding for small events (like Tagwache/AV)
-	if rect.H >= 16 {
-		elem.P.Y += d.padding
-		rect.H -= d.padding
-	}
-	d.pdf.SetXY(elem.P.X, elem.P.Y)
+	drawVertical := elem.R.H > 2*elem.R.W
+	rect := getRect(drawVertical, elem, d)
 	err := d.pdf.SetFont("bold", "", titleFontSize)
 	checkPDFerror(err)
 	ok, heightNeeded, _ := d.pdf.IsFitMultiCell(&rect, title)
 	if !ok {
 		log.Println("WARNING", "title does not fit in rectangle for event: ", event)
 	}
+	setupTitleXY(d, drawVertical, *event, elem, rect, heightNeeded)
 	err = d.pdf.MultiCellWithOption(&rect, title,
 		gopdf.CellOption{
-			Align:       gopdf.Center,
+			Align:       getAlignment(drawVertical),
 			BreakOption: d.breakOption,
 		})
 	checkPDFerror(err)
-	d.pdf.SetXY(elem.P.X, elem.P.Y+heightNeeded)
+	setupDescriptionXY(drawVertical, d, elem, rect, heightNeeded)
 	err = d.pdf.SetFont("regular", "", math.Min(d.smallFontSize, titleFontSize))
 	checkPDFerror(err)
 	// TODO check properly whether description fits
@@ -445,16 +438,77 @@ func (d *PDFDrawer) drawEvent(elem EventPosition) {
 	// we get does not fit event though there would be enough space on the next line
 	// ok, _, _ = d.pdf.IsFitMultiCellWithNewline(&rect, event.Description)
 	if event.Description != "" {
-		descriptionRect := gopdf.Rect{
-			W: elem.R.W,
-			H: elem.R.W - heightNeeded,
-		}
+		descriptionRect := getDescriptionRect(elem, heightNeeded, drawVertical)
 		err := d.pdf.MultiCellWithOption(&descriptionRect, event.Description,
 			gopdf.CellOption{
-				Align:       gopdf.Center,
+				Align:       getAlignment(drawVertical),
 				BreakOption: d.breakOption,
 			})
 		checkPDFerror(err)
+	}
+	d.pdf.RotateReset()
+}
+
+func getAlignment(drawVertical bool) int {
+	alignment := gopdf.Center
+	if drawVertical {
+		alignment ^= gopdf.Middle
+	}
+	return alignment
+}
+
+func getRect(drawVertical bool, elem EventPosition, d *PDFDrawer) gopdf.Rect {
+	rect := gopdf.Rect{
+		W: elem.R.W,
+		H: elem.R.H,
+	}
+	if drawVertical {
+		rect = gopdf.Rect{
+			W: rect.H,
+			H: rect.W,
+		}
+	}
+	// No padding for small events (like Tagwache/AV) or if vertical
+	if rect.H >= 16 && !drawVertical {
+		elem.P.Y += d.padding
+		rect.H -= d.padding
+	}
+
+	return rect
+}
+
+func getDescriptionRect(elem EventPosition, heightNeeded float64, drawVertical bool) gopdf.Rect {
+	if drawVertical {
+		return gopdf.Rect{
+			W: elem.R.H,
+			H: elem.R.W,
+		}
+	} else {
+		return gopdf.Rect{
+			W: elem.R.W,
+			H: elem.R.H - heightNeeded,
+		}
+	}
+}
+
+func setupTitleXY(d *PDFDrawer, drawVertical bool, event Event, elem EventPosition, rect gopdf.Rect, heightNeeded float64) {
+	d.pdf.SetXY(elem.P.X, elem.P.Y)
+	if drawVertical {
+		d.pdf.SetX(elem.P.X - rect.W/2)
+		if event.Description != "" {
+			d.pdf.SetY(elem.P.Y + rect.W/2 - heightNeeded/2)
+		} else {
+			d.pdf.SetY(elem.P.Y + rect.W/2)
+		}
+		d.pdf.Rotate(90, elem.P.X, elem.P.Y+(rect.W/2))
+	}
+}
+
+func setupDescriptionXY(drawVertical bool, d *PDFDrawer, elem EventPosition, rect gopdf.Rect, heightNeeded float64) {
+	if drawVertical {
+		d.pdf.SetXY(elem.P.X-rect.W/2, elem.P.Y+heightNeeded/2+rect.W/2)
+	} else {
+		d.pdf.SetXY(elem.P.X, elem.P.Y+heightNeeded)
 	}
 }
 
