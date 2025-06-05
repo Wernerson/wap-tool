@@ -200,7 +200,12 @@ func (d *PDFDrawer) Draw(wap *Wap, outputPath string) {
 						footNoteSource.Description = ""
 						elem.Event = &footNoteSource
 						ts := MilitaryTime(event.Start)
-						remarks = append(remarks, fmt.Sprintf("%d  %s %s, %s", footnoteCounter, ts, event.Title, event.Description))
+						footnoteText := fmt.Sprintf("%d  %s %s", footnoteCounter, ts, event.Title)
+						if event.Description != "" {
+							footnoteText = fmt.Sprintf("%s, %s", footnoteText, event.Description)
+						}
+						remarks = append(remarks, footnoteText)
+
 						footnoteCounter += 1
 					}
 					d.drawEvent(elem)
