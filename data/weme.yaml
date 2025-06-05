@@ -1,0 +1,395 @@
+# yaml-language-server: $schema=../schema/wap.json
+meta:
+  author: Wm Brunner Sebastian
+  firstDay: 2025-06-09
+  startTime: "05:30"
+  endTime: "23:30"
+  unit: Cy Kp 42/3
+  title: WEME
+  version: "Stand: 06.06.2025"
+categories:
+  - identifier: Green
+    color: "#00b050"
+  - identifier: Lightgreen
+    color: "#92d050"
+  - identifier: Orange
+    color: "#ff9900"
+  - identifier: Aufgabe
+    color: "#ff9900"
+  - identifier: ALC
+    color: "#ff69b4"
+  - identifier: Verschiebung
+    color: "#00b0f0"
+  - identifier: Lightblue
+    color: "#dbeef4"
+  - identifier: Yellow
+    color: "#ffffcc"
+  - identifier: Footnote
+    color: "#ffffff"
+  - identifier: Purple
+    color: "#800080"
+    textColor: "#FFFFFF"
+weeks:
+  - remarks: # week 1
+      # With | we get newlines, not with >
+    days:
+      - columns: # monday, 9.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Beso
+      - columns: # tuesday, 10.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Beso
+      - columns: # wednesday, 11.6
+          - Det
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Beso
+        events:
+          - title: WEME
+            category: Lightgreen
+            start: "07:00"
+            end: "18:00"
+            appearsIn:
+              - Einh Four
+          - title: IAA Mat Abgabe
+            category: Green
+            description: Det 08
+            start: "08:00"
+            end: "18:00"
+            appearsIn:
+              - Einh Fw
+              - Det C
+              - Det
+      - columns: # thursday, 12.6
+          - WEME Det
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Beso
+        events:
+          - title: WEME
+            category: Lightgreen
+            start: "07:00"
+            end: "18:00"
+            appearsIn:
+              - Einh Four
+          - title: Einrücken Bern
+            description: Einh Fw
+            category: Yellow
+            start: "07:00"
+            end: "09:30"
+            appearsIn:
+              - WEME Det
+          - title: WEME
+            category: Lightgreen
+            start: "09:30"
+            end: "18:00"
+            appearsIn:
+              - WEME Det
+          - title: WEME Mat vorb
+            description: Riga Raum, Einh Fw
+            start: "07:00"
+            end: "18:00"
+            appearsIn:
+              - Einh Fw
+          - title: VS BERN - UTTIGEN
+            category: Verschiebung
+            start: "12:00"
+            end: "13:00"
+            appearsIn:
+              - Det C
+          - title: Mun RS
+            description: AVC Uttigen
+            category: Aufgabe
+            start: "13:00"
+            end: "14:00"
+            appearsIn:
+              - Det C
+          - title: VS UTTIGEN - BERN
+            category: Verschiebung
+            start: "14:00"
+            end: "15:00"
+            appearsIn:
+              - Det C
+          - title: Einh Fw, Fasst die MilClients des Kp Kdo zurück
+            category: Aufgabe
+            footnote: true
+            start: "12:00"
+            end: "12:30"
+            appearsIn:
+              - Beso
+          - title: Einh Fw
+            description: Mdg Mat Verlust Form
+            category: Aufgabe
+            footnote: true
+            start: "12:00"
+            end: "12:30"
+            appearsIn:
+              - Beso
+          - title: Alle, Rückgabe ausgefasstes Mat an Einh Fw
+            description: auch Det sowie Laptops
+            category: Aufgabe
+            footnote: true
+            start: "12:00"
+            end: "12:30"
+            appearsIn:
+              - Beso
+
+      - columns: # friday, 13.6
+          - WEME Det
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Beso
+        events:
+          - title: WEME
+            category: Lightgreen
+            start: "07:00"
+            end: "18:00"
+            appearsIn:
+              - Einh Four
+              - WEME Det
+          - title: VS BERN - THUN
+            category: Verschiebung
+            start: "06:00"
+            end: "07:00"
+            appearsIn:
+              - Einh Fw
+          - title: Mat Rückg
+            description: ALC-T
+            category: ALC
+            start: "07:00"
+            end: "10:00"
+            appearsIn:
+              - Einh Fw
+          - title: VS THUN - BERN
+            category: Verschiebung
+            start: "10:00"
+            end: "11:00"
+            appearsIn:
+              - Einh Fw
+          - title: Einh Fw, Übergabe Mat + Mun Mag + RIGA an Kp 42/1
+            category: Aufgabe
+            footnote: true
+            start: "14:00"
+            end: "14:30"
+            appearsIn:
+              - Beso
+          - title: Einh Fw, Po 10
+            description: Halle 2, Tor 25-26, Allg Ei Mat
+            category: ALC
+            start: "07:30"
+            end: "08:00"
+            footnote: true
+            appearsIn:
+              - Beso
+          - title: Einh Fw, Po 11
+            description: Halle 3, Abschnitt 4, Textilien
+            category: ALC
+            start: "08:30"
+            end: "09:00"
+            footnote: true
+            appearsIn:
+              - Beso
+          - title: Einh Fw, Po 20
+            description: Tankstelle, Schwachplatz, Vorplatz Halle 2, Fz
+            category: ALC
+            start: "07:00"
+            end: "07:30"
+            footnote: true
+            appearsIn:
+              - Beso
+          - title: Einh Fw, Po 34
+            description: Geb 148, Wf Insp Kiste
+            category: ALC
+            start: "08:30"
+            end: "09:00"
+            footnote: true
+            appearsIn:
+              - Beso
+          - title: Einh Fw, Po 40
+            description: Geb 6, Küchenmaterial
+            category: ALC
+            start: "09:30"
+            end: "10:00"
+            footnote: true
+            appearsIn:
+              - Beso
+          - title: Einh Fw, Po 45
+            description: Halle 2, Tor 25-26, IKT Material
+            category: ALC
+            start: "09:00"
+            end: "09:30"
+            footnote: true
+            appearsIn:
+              - Beso
+          - title: Einh Fw, Po 45.1
+            description: Halle 2, Tor 25-26, Büromat und Restabgaben
+            category: ALC
+            start: "09:00"
+            end: "09:30"
+            footnote: true
+            appearsIn:
+              - Beso
+          - title: Abtreten
+            category: Orange
+            openEnd: true
+            start: "17:00"
+            end: "18:30"
+            appearsIn:
+              - WEME Det
+              - Det C
+              - Einh Fw
+              - Einh Four
+
+      - columns: # saturday, 14.6
+          - WEME Det
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Beso
+        events:
+          - title: WoE
+            start: "01:00"
+            end: "23:30"
+            appearsIn:
+              - WEME Det
+              - Det C
+              - Einh Fw
+              - Einh Four
+      - columns: # sunday, 15.6
+          - WEME Det
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Beso
+        events:
+          - title: WoE
+            start: "01:00"
+            end: "23:30"
+            appearsIn:
+              - WEME Det
+              - Det C
+              - Einh Fw
+              - Einh Four
+
+  - remarks: # week 2
+      # With | we get newlines, not with >
+    days:
+      - remarks:
+        - höh Kader, Melden sich mit DB beim Einh Four für die Abrechnung offener VDT
+
+        columns: # monday, 16.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Einh Kdt Stv
+          - Beso
+        events:
+          - title: JARAP
+            description: gem Bf Cy Bat 42, alle höh Kader
+            start: "07:00"
+            end: "23:00"
+            appearsIn:
+            - Det C
+            - Einh Fw
+            - Einh Four
+            - Einh Kdt Stv
+
+      - columns: # tuesday, 17.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Einh Kdt Stv
+          - Beso
+
+      - columns: # wednesday, 18.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Einh Kdt Stv
+          - Beso
+        events:
+          - title: Insp Einh Kdt
+            category: Lightgreen
+            start: "12:00"
+            end: "18:00"
+            appearsIn:
+              - Einh Kdt Stv
+
+      - columns: # thursday, 19.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Einh Kdt Stv
+          - Beso
+
+      - columns: # friday, 20.6
+          - Det KVP
+          - Det C
+          - Einh Four
+          - Einh Fw
+          - Einh Kdt Stv
+          - Beso
+        events:
+          - title: WEME
+            category: Lightgreen
+            start: "07:00"
+            end: "12:00"
+            appearsIn:
+              - Einh Kdt Stv
+              - Einh Fw
+          - title: Räumung temp KP
+            start: "07:00"
+            end: "12:00"
+            appearsIn:
+              - Einh Four
+              - Det C
+              - Det KVP
+          - title: Abschluss DL 2024
+            description: Einh Kdt
+            start: "12:00"
+            end: "15:00"
+            category: Purple
+            appearsIn:
+              - Einh Kdt Stv
+              - Einh Four
+              - Einh Fw
+          - title: Abtreten
+            category: Orange
+            openEnd: true
+            start: "15:00"
+            end: "17:00"
+            appearsIn:
+              - Det C
+              - Det KVP
+              - Einh Kdt Stv
+              - Einh Fw
+              - Einh Four
+          - title: Einh Four, Schlüssel für Det Infra einschliessen
+            description: Im KP Kp 42/1
+            category: Aufgabe
+            footnote: true
+            start: "16:00"
+            end: "16:30"
+            appearsIn:
+              - Beso
+
+      - columns: # saturday, 21.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Einh Kdt Stv
+          - Beso
+
+      - columns: # saturday, 21.6
+          - Det C
+          - Einh Fw
+          - Einh Four
+          - Einh Kdt Stv
+          - Beso
