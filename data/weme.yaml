@@ -54,7 +54,7 @@ weeks:
             start: "07:00"
             end: "18:00"
             appearsIn:
-              - Einh Four
+              - Einh Fw
           - title: IAA Mat Abgabe
             category: Green
             description: Det 08
