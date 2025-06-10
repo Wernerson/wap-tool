@@ -3,12 +3,7 @@ import { ref, provide } from "vue";
 import { JsonForms, JsonFormsChangeEvent } from "@jsonforms/vue";
 import { defaultStyles, mergeStyles, vanillaRenderers } from "@jsonforms/vue-vanilla";
 import schema from "../../schema/wap.json"
-import { load as loadYaml} from "js-yaml"
-
-type State = {
-  meta: Object
-}
-
+import { load as loadYaml, dump as dumpYaml} from "js-yaml"
 
 const renderers = Object.freeze([
   ...vanillaRenderers,
@@ -43,6 +38,27 @@ const onFileChange = (event: any) => {
   reader.readAsText(event.target.files[0])
 }
 
+const onDownloadClicked = (event: any) => {
+  console.log(data)
+  const yamlString = dumpYaml(data.value)
+  // Create a Blob from YAML string
+  const blob = new Blob([yamlString], { type: 'text/yaml;charset=utf-8' });
+
+  // Create a temporary link element
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'WAP.yaml'; // file name
+
+  // Append to body, trigger click, and remove
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // Release object URL
+  URL.revokeObjectURL(url);
+}
+
 const onFormChange = (event: JsonFormsChangeEvent) => {
   data.value = event.data;
 };
@@ -52,7 +68,7 @@ const onFormChange = (event: JsonFormsChangeEvent) => {
   <header>
     <h1>WAUI - WAP Tool UI</h1>
     <input type="file" @change="onFileChange" accept=".yml, .yaml"/>
-    <button>Download</button>
+    <button @click="onDownloadClicked">Download</button>
   </header>
 
   <div class="myform">
