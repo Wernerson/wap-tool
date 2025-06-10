@@ -1,6 +1,4 @@
 {
-  "$schema": "https://json-schema.org/draft-07/schema",
-  "$id": "https://milab.ch/wap/debug/v2.schema.json",
   "title": "WAP",
   "description": "Wochenarbeitsplan (WAP): schedule for a military week with events and logistical informations.",
   "type": "object",
@@ -10,23 +8,27 @@
       "type": "object",
       "properties": {
         "author": {
+          "title": "Author",
           "description": "The person who created the WAP.",
           "type": "string"
         },
         "startTime": {
-          "description": "The earliest time displayed in the WAP. Given in format HH-MM",
+          "description": "The earliest time displayed in the WAP. Given in format HH:MM",
           "type": "string",
-          "pattern": "^[0-2]\\d:[0-5]\\d$"
+          "pattern": "^[0-2]\\d:[0-5]\\d$",
+          "format": "time"
         },
         "endTime": {
-          "description": "The latest time displayed in the WAP. Given in format HH-MM",
+          "description": "The latest time displayed in the WAP. Given in format HH:MM",
           "type": "string",
-          "pattern": "^[0-2]\\d:[0-5]\\d$"
+          "pattern": "^[0-2]\\d:[0-5]\\d$",
+          "format": "time"
         },
         "firstDay": {
           "description": "The first day of the WAP. Given in format YYYY-MM-DD",
           "type": "string",
-          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$"
+          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$",
+          "format": "date"
         },
         "unit": {
           "description": "The unit the WAP is for",

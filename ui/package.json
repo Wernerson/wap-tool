@@ -17,7 +17,13 @@
   "dependencies": {
     "@vueuse/core": "^13.3.0",
     "js-yaml": "^4.1.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-json-schema": "^1.1.1",
+    "@jsonforms/core": "3.5.1",
+    "@jsonforms/vue": "3.5.1",
+    "@jsonforms/vue-vanilla": "3.5.1",
+    "ajv": "^8.17.1",
+    "core-js": "^3.40.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",
