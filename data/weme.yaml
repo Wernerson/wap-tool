@@ -71,12 +71,6 @@ weeks:
           - Einh Four
           - Beso
         events:
-          - title: WEME
-            category: Lightgreen
-            start: "07:00"
-            end: "18:00"
-            appearsIn:
-              - Einh Four
           - title: Einrücken Bern
             description: Einh Fw
             category: Yellow
@@ -92,6 +86,7 @@ weeks:
               - WEME Det
           - title: WEME Mat vorb
             description: Riga Raum, Einh Fw
+            category: Lightgreen
             start: "07:00"
             end: "18:00"
             appearsIn:
