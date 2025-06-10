@@ -1,6 +1,5 @@
 # yaml-language-server: $schema=../schema/wap.json
 meta:
-  author: Wm Brunner Sebastian
   firstDay: 2025-06-09
   startTime: "05:30"
   endTime: "23:30"
@@ -59,7 +58,7 @@ weeks:
           - title: IAA Mat Abgabe
             category: Green
             description: Det 08
-            start: "08:00"
+            start: "17:30"
             end: "18:00"
             appearsIn:
               - Einh Fw
