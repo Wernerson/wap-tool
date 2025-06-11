@@ -77,5 +77,6 @@ func printHelpAndExit() {
 	fmt.Println("  <inputPath>       Path to the input YAML file")
 	fmt.Println("  -o, --output      Output path (optional, default: /dev/stdout)")
 	fmt.Println("  -h, --help        Show this help message")
+	fmt.Println("Alternate usage: main web		Runs the tools as web api and accepts yamls on /upload")
 	os.Exit(1)
 }
