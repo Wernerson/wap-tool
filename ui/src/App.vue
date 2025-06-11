@@ -114,6 +114,7 @@ const uischema = {
                     {
                       type: "Control",
                       scope: "#/properties/remarks",
+                      label: "",
                       options: {
                         showSortButtons: true
                       }
@@ -122,7 +123,100 @@ const uischema = {
                 },
                 {
                   type: "Control",
-                  scope: "#/properties/days"
+                  scope: "#/properties/days",
+                  options: {
+                    detail: {
+                    type: "VerticalLayout",
+                    elements: [
+                      {
+                        type: "Control",
+                        scope: "#/properties/columns"
+                      },
+                      {
+                        type: "Control",
+                        scope: "#/properties/remarks"
+                      },
+                      {
+                        type: "Control",
+                        scope: "#/properties/events",
+                        options: {
+                          detail: {
+                            type: "VerticalLayout",
+                            elements: [
+                              {
+                                type: "HorizontalLayout",
+                                elements: [
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/title"
+                                  },
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/description",
+                                  },
+                                ]
+                              },
+                              {
+                                type: "HorizontalLayout",
+                                elements: [
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/start",
+                                    options: timePickerOptions
+                                  },
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/end",
+                                    options: timePickerOptions
+                                  },
+                                ]
+                              },
+                              {
+                                type: "HorizontalLayout",
+                                elements: [
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/category",
+                                  },
+                                ]
+                              },
+                              {
+                                type: "HorizontalLayout",
+                                elements: [
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/openEnd"
+                                  },
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/repeats"
+                                  },
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/footnote"
+                                  },
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/forceHorizontalText"
+                                  }
+                                ]
+                              },
+                              {
+                                type: "HorizontalLayout",
+                                elements: [
+                                  {
+                                    type: "Control",
+                                    scope: "#/properties/appearsIn"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                  }
                 }
               ]
             },
