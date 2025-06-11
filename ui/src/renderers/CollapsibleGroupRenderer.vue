@@ -1,17 +1,15 @@
 <template>
-  <v-card class="mb-4" elevation="2">
-    <v-card-title
+  <VCard class="mb-4" elevation="2">
+    <VCardTitle
       @click="expanded = !expanded"
-      class="cursor-pointer d-flex justify-between align-center"
+      class="cursor-pointer d-flex justify-space-between align-center"
     >
       {{ label }}
-      <i 
-      class="mdi"
-      :class="{ 'mdi-chevron-up': expanded, 'mdi-chevron-down': !expanded }"></i>
-    </v-card-title>
+      <VIcon :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
+    </VCardTitle>
 
-    <v-expand-transition>
-      <v-card-text v-if="expanded">
+    <VExpandTransition>
+      <VCardText v-if="expanded">
         <component
           v-for="(element, index) in groupLayout.elements"
           :key="index"
@@ -23,16 +21,16 @@
           :renderers="renderers"
           :cells="cells"
         />
-      </v-card-text>
-    </v-expand-transition>
-  </v-card>
+      </VCardText>
+    </VExpandTransition>
+  </VCard>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { VExpandTransition, VIcon, VCard, VCardText, VCardTitle } from 'vuetify/components'
 import { DispatchRenderer } from '@jsonforms/vue'
 import type { GroupLayout, LayoutProps } from '@jsonforms/core'
-import { mdiChevronDown, mdiChevronUp } from '@mdi/js';
 
 const expanded = ref(true)
 
