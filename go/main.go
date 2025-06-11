@@ -46,6 +46,8 @@ func main() {
 				log.Println("ERROR: Missing value for output path")
 				printHelpAndExit()
 			}
+		case "web":
+			serveWeb()
 		default:
 			if inputPath == "" {
 				inputPath = args[i]
