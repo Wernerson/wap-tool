@@ -149,7 +149,6 @@ const onFormChange = (event: JsonFormsChangeEvent) => {
 </script>
 
 <template>
-  <v-app>
     <header>
       <h1>WAUI - WAP Tool UI</h1>
       <input type="file" @change="onFileChange" accept=".yml, .yaml"/>
@@ -165,7 +164,6 @@ const onFormChange = (event: JsonFormsChangeEvent) => {
       @change="onFormChange" />
     </div>
     <pre>{{ data }}</pre>
-  </v-app>
 </template>
 
 <style scoped>

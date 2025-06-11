@@ -9,7 +9,7 @@
     </VCardTitle>
 
     <VExpandTransition>
-      <VCardText v-if="expanded">
+      <VCardText v-show="expanded">
         <component
           v-for="(element, index) in groupLayout.elements"
           :key="index"
