@@ -229,9 +229,26 @@ const uischema = {
 
 const data = ref({})
 
-const processData = (data: any) => {
+const processData = (value: any) => {
+  if ("meta" in value && "firstDay" in value.meta && "weeks" in value) {
+    let firstDate = new Date(value.meta.firstDay);
+    for (const week of value.weeks) {
+      week.title = "Woche vom " + firstDate.toLocaleDateString("de-CH", {weekday: "long", year: 'numeric', month: 'numeric', day: 'numeric' });
+      if ("days" in week) { 
+        let firstWeekDay = new Date(firstDate);
+        for (const day of week.days) {
+          day.title = firstWeekDay.toLocaleDateString("de-CH", {weekday: "long", year: 'numeric', month: 'numeric', day: 'numeric' });
+          firstWeekDay.setDate(firstWeekDay.getDate() + 1);
+        }
+      }
+      firstDate.setDate(firstDate.getDate() + 7);
+    }
+  }
+}
+
+const sortData = (data: any) => {
   if ("weeks" in data) {
-    for (let week of data.weeks) {
+    for (const week of data.weeks) {
       for (let day of week.days) {
         if ("events" in day) {
           const today = new Date().toISOString().split('T')[0]; // e.g., "2025-06-11"
@@ -256,6 +273,7 @@ const onFileChange = (event: any) => {
     console.debug("Raw file text:", text)
     const yaml = loadYaml(text, "utf8")
     console.log("YAML object", yaml)
+    sortData(yaml)
     processData(yaml)
     data.value = yaml
   }
@@ -271,7 +289,10 @@ const onDownloadClicked = (event: any) => {
 }
 
 const onFormChange = (event: JsonFormsChangeEvent) => {
-  data.value = event.data;
+  const value = event.data;
+  processData(value);
+  console.log(value)
+  data.value = value;
 };
 
 function downloadFile(filename: string, file: Blob) {

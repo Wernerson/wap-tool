@@ -60,13 +60,13 @@ type WapJsonMeta struct {
 	// The person who created the WAP.
 	Author string `json:"author" yaml:"author" mapstructure:"author"`
 
-	// The latest time displayed in the WAP. Given in format HH-MM
+	// The latest time displayed in the WAP. Given in format HH:MM
 	EndTime *string `json:"endTime,omitempty" yaml:"endTime,omitempty" mapstructure:"endTime,omitempty"`
 
 	// The first day of the WAP. Given in format YYYY-MM-DD
 	FirstDay string `json:"firstDay" yaml:"firstDay" mapstructure:"firstDay"`
 
-	// The earliest time displayed in the WAP. Given in format HH-MM
+	// The earliest time displayed in the WAP. Given in format HH:MM
 	StartTime *string `json:"startTime,omitempty" yaml:"startTime,omitempty" mapstructure:"startTime,omitempty"`
 
 	// The title of the WAP. Often contains the week number.
@@ -122,6 +122,9 @@ type WapJsonWeeksElem struct {
 
 	// Additional remarks.
 	Remarks []string `json:"remarks,omitempty" yaml:"remarks,omitempty" mapstructure:"remarks,omitempty"`
+
+	// Title corresponds to the JSON schema field "title".
+	Title *string `json:"title,omitempty" yaml:"title,omitempty" mapstructure:"title,omitempty"`
 }
 
 // Each day in the WAP.
@@ -134,6 +137,9 @@ type WapJsonWeeksElemDaysElem struct {
 
 	// Tagesbemerkungen
 	Remarks []string `json:"remarks,omitempty" yaml:"remarks,omitempty" mapstructure:"remarks,omitempty"`
+
+	// Title corresponds to the JSON schema field "title".
+	Title *string `json:"title,omitempty" yaml:"title,omitempty" mapstructure:"title,omitempty"`
 }
 
 // An event.

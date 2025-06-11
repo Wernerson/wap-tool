@@ -25,8 +25,7 @@
         "firstDay": {
           "description": "The first day of the WAP. Given in format YYYY-MM-DD",
           "type": "string",
-          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$",
-          "format": "date"
+          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$"
         },
         "unit": {
           "description": "The unit the WAP is for",
@@ -83,6 +82,9 @@
       "items": {
         "type": "object",
         "properties": {
+          "title": {
+            "type": "string"
+          },
           "remarks": {
             "description": "Additional remarks.",
             "type": "array",
@@ -98,6 +100,9 @@
               "description": "Each day in the WAP.",
               "type": "object",
               "properties": {
+                "title": {
+                  "type": "string"
+                },
                 "columns": {
                   "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
                   "type": "array",
