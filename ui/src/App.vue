@@ -1,30 +1,101 @@
 <script setup lang="ts">
-import { ref, provide, markRaw } from "vue";
-import { JsonForms, JsonFormsChangeEvent } from "@jsonforms/vue";
+import { ref, markRaw } from "vue";
+import { JsonForms, type JsonFormsChangeEvent } from "@jsonforms/vue";
 import { extendedVuetifyRenderers } from '@jsonforms/vue-vuetify';
 import schema from "../../schema/wap.json"
 import { load as loadYaml, dump as dumpYaml} from "js-yaml";
 
 import '@mdi/font/css/materialdesignicons.css';
+import { collapsibleGroupTester } from "./tester/collapsibleGroupTester";
+import CollapsibleGroupRenderer from "./renderers/CollapsibleGroupRenderer.vue";
 
 const renderers = markRaw([
   ...extendedVuetifyRenderers,
+  { tester: collapsibleGroupTester, renderer: CollapsibleGroupRenderer },
   // here you can add custom renderers
 ]);
 
-
+const timePickerOptions = {
+                    format: "time",
+                    ampm: false,
+                    timeFormat: "HH:mm",
+                    timeSaveFormat: "HH:mm"
+                  }
 
 const uischema = {
   type: "VerticalLayout",
   elements: [
     {
-      type: "VerticalLayout",
+      type: "CollapsibleGroup",
+      label: "Informationen",
       elements: [
         {
-          type: "Control",
-          scope: "#/properties/meta",
+          type: "HorizontalLayout",
+          elements: [
+            {
+              type: "Control",
+              scope: "#/properties/meta/properties/title"
+            },
+            {
+              type: "Control",
+              scope: "#/properties/meta/properties/unit"
+            },
+          ]
+        },
+        {
+          type: "HorizontalLayout",
+          elements: [
+            {
+              type: "Control",
+              scope: "#/properties/meta/properties/author"
+            },
+            {
+              type: "Control",
+              scope: "#/properties/meta/properties/version"
+            },
+          ]
         },
       ],
+    },
+    {
+      type: "CollapsibleGroup",
+      label: "Zeiten",
+      elements: [
+        {
+          type: "VerticalLayout",
+          elements: [
+            {
+              type: "HorizontalLayout",
+              elements: [
+                {
+                  type: "Control",
+                  scope: "#/properties/meta/properties/startTime",
+                  options: timePickerOptions
+                },
+                {
+                  type: "Control",
+                  scope: "#/properties/meta/properties/endTime",
+                  options: timePickerOptions
+                },
+              ]
+            },
+            {
+              type: "HorizontalLayout",
+              elements: [
+                {
+                  type: "Control",
+                  scope: "#/properties/meta/properties/firstDay",
+                  options: {
+                    format: "date",
+                    dateFormat: "YYYY-MM-DD",
+                    dateSaveFormat: "YYYY-MM-DD",
+                  }
+                },
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       type: "HorizontalLayout",
@@ -78,16 +149,23 @@ const onFormChange = (event: JsonFormsChangeEvent) => {
 </script>
 
 <template>
-  <header>
-    <h1>WAUI - WAP Tool UI</h1>
-    <input type="file" @change="onFileChange" accept=".yml, .yaml"/>
-    <button @click="onDownloadClicked">Download</button>
-  </header>
+  <v-app>
+    <header>
+      <h1>WAUI - WAP Tool UI</h1>
+      <input type="file" @change="onFileChange" accept=".yml, .yaml"/>
+      <button @click="onDownloadClicked">Download</button>
+    </header>
 
-  <div class="myform">
-    <JsonForms :data="data" :renderers="renderers" :schema="schema" :uischema="uischema" @change="onFormChange" />
-  </div>
-  <pre>{{ data }}</pre>
+    <div class="myform">
+      <JsonForms 
+      :data="data" 
+      :renderers="renderers" 
+      :schema="schema" 
+      :uischema="uischema" 
+      @change="onFormChange" />
+    </div>
+    <pre>{{ data }}</pre>
+  </v-app>
 </template>
 
 <style scoped>

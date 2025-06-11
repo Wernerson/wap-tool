@@ -1,24 +1,22 @@
 import './assets/main.css'
 
+import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles'
+
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import { mdi, aliases as mdiAliases } from 'vuetify/iconsets/mdi';
-import { createVuetify } from 'vuetify';
-import { mdiIconAliases } from '@jsonforms/vue-vuetify';
-import '@mdi/font/css/materialdesignicons.css';
-
+import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
 const vuetify = createVuetify({
   icons: {
-      defaultSet: 'mdi',
-      sets: {
-        mdi,
-      },
-      aliases: { ...mdiAliases, ...mdiIconAliases },
-    },
-    defaults: {}
+    defaultSet: 'mdi',
+    aliases,
+    sets: { mdi }
+  }
 });
 
 createApp(App)
-.use(vuetify).mount('#app')
+    .use(vuetify)
+    .mount('#app')

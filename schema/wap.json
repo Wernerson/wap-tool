@@ -15,14 +15,12 @@
         "startTime": {
           "description": "The earliest time displayed in the WAP. Given in format HH:MM",
           "type": "string",
-          "pattern": "^[0-2]\\d:[0-5]\\d$",
-          "format": "time"
+          "pattern": "^[0-2]\\d:[0-5]\\d$"
         },
         "endTime": {
           "description": "The latest time displayed in the WAP. Given in format HH:MM",
           "type": "string",
-          "pattern": "^[0-2]\\d:[0-5]\\d$",
-          "format": "time"
+          "pattern": "^[0-2]\\d:[0-5]\\d$"
         },
         "firstDay": {
           "description": "The first day of the WAP. Given in format YYYY-MM-DD",
