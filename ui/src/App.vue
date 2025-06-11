@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { ref, provide } from "vue";
+import { ref, provide, markRaw } from "vue";
 import { JsonForms, JsonFormsChangeEvent } from "@jsonforms/vue";
-import { defaultStyles, mergeStyles, vanillaRenderers } from "@jsonforms/vue-vanilla";
+import { extendedVuetifyRenderers } from '@jsonforms/vue-vuetify';
 import schema from "../../schema/wap.json"
-import { load as loadYaml, dump as dumpYaml} from "js-yaml"
+import { load as loadYaml, dump as dumpYaml} from "js-yaml";
 
-const renderers = Object.freeze([
-  ...vanillaRenderers,
+import '@mdi/font/css/materialdesignicons.css';
+
+const renderers = markRaw([
+  ...extendedVuetifyRenderers,
   // here you can add custom renderers
 ]);
+
+
 
 const uischema = {
   type: "VerticalLayout",
@@ -19,6 +23,15 @@ const uischema = {
         {
           type: "Control",
           scope: "#/properties/meta",
+        },
+      ],
+    },
+    {
+      type: "HorizontalLayout",
+      elements: [
+        {
+          type: "Control",
+          scope: "#/properties/weeks"
         },
       ],
     },
@@ -78,5 +91,5 @@ const onFormChange = (event: JsonFormsChangeEvent) => {
 </template>
 
 <style scoped>
-
+@import '@jsonforms/vue-vuetify/lib/jsonforms-vue-vuetify.css';
 </style>
