@@ -151,25 +151,49 @@ const onDownloadClicked = (event: any) => {
   const yamlString = dumpYaml(data.value)
   // Create a Blob from YAML string
   const blob = new Blob([yamlString], { type: 'text/yaml;charset=utf-8' });
-
-  // Create a temporary link element
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'WAP.yaml'; // file name
-
-  // Append to body, trigger click, and remove
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  // Release object URL
-  URL.revokeObjectURL(url);
+  downloadFile("WAP.yml", blob)
 }
 
 const onFormChange = (event: JsonFormsChangeEvent) => {
   data.value = event.data;
 };
+
+function downloadFile(filename: string, file: Blob) {
+  // Create a temporary link element
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename; // file name
+
+    // Append to body, trigger click, and remove
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Release object URL
+    URL.revokeObjectURL(url);
+}
+
+async function onConvertClicked(event: any) {
+  const formData = new FormData();
+
+  const yamlString = dumpYaml(data.value)
+  // Create a Blob from YAML string
+  const blob = new Blob([yamlString], { type: 'text/yaml;charset=utf-8' });
+
+  formData.append("file", blob);
+
+  try {
+    const response = await fetch("http://localhost:8080/upload", {
+      method: "POST",
+      body: formData,
+    });
+    
+    downloadFile("WAP.pdf", await response.blob());
+  } catch (e) {
+    console.error(e);
+  }
+}
 </script>
 
 <template>
@@ -177,6 +201,7 @@ const onFormChange = (event: JsonFormsChangeEvent) => {
       <h1>WAUI - WAP Tool UI</h1>
       <input type="file" @change="onFileChange" accept=".yml, .yaml"/>
       <button @click="onDownloadClicked">Download</button>
+      <button @click="onConvertClicked">Convert to PDF</button>
     </header>
 
     <div class="myform">

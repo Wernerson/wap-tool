@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/goccy/go-yaml"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/goccy/go-yaml"
 )
 
 func yamlFromBytes(dat []byte) (wap *WapJson, err error) {
@@ -57,5 +58,6 @@ func handleYAMLtoPDF(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", "attachment; filename=output.pdf")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(dat)
 }
