@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=../schema/wap.json
 meta: # define metadata
   author: Autor
-  firstDay: 2025-04-20
+  firstDay: "2025-04-20"
   startTime: '05:30'
   endTime: '23:00'
   unit: 'Kp 42/3'

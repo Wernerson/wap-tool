@@ -228,6 +228,27 @@ const uischema = {
 };
 
 const data = ref({})
+
+const processData = (data: any) => {
+  if ("weeks" in data) {
+    for (let week of data.weeks) {
+      for (let day of week.days) {
+        if ("events" in day) {
+          const today = new Date().toISOString().split('T')[0]; // e.g., "2025-06-11"
+          day.events.sort((a: any, b: any) => {
+            if (!("start" in a) || !("start" in b)) {
+              return 0;
+            }
+            const dateA = new Date(`${today}T${a.start}:00`);
+            const dateB = new Date(`${today}T${b.start}:00`);
+            return dateA.valueOf() - dateB.valueOf();
+          })
+        }
+      }
+    }
+  }
+}
+
 const onFileChange = (event: any) => {
   const reader = new FileReader()
   reader.onload = (ev) => {
@@ -235,6 +256,7 @@ const onFileChange = (event: any) => {
     console.debug("Raw file text:", text)
     const yaml = loadYaml(text, "utf8")
     console.log("YAML object", yaml)
+    processData(yaml)
     data.value = yaml
   }
   reader.readAsText(event.target.files[0])
