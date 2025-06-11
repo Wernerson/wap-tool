@@ -22,3 +22,7 @@ header {
 hr {
   margin: 0.5rem 0;
 }
+
+.v-table {
+  width: 100%;
+}

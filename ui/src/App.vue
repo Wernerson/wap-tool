@@ -101,8 +101,32 @@ const uischema = {
       type: "HorizontalLayout",
       elements: [
         {
-          type: "Control",
-          scope: "#/properties/weeks"
+          type: "ListWithDetails",
+          scope: "#/properties/weeks",
+          options: {
+            detail: {
+              type: "VerticalLayout",
+              elements: [
+                {
+                  type: "CollapsibleGroup",
+                  label: "Wochenbemerkungen",
+                  elements: [
+                    {
+                      type: "Control",
+                      scope: "#/properties/remarks",
+                      options: {
+                        showSortButtons: true
+                      }
+                    },
+                  ]
+                },
+                {
+                  type: "Control",
+                  scope: "#/properties/days"
+                }
+              ]
+            },
+          },
         },
       ],
     },

@@ -86,7 +86,7 @@
           "remarks": {
             "description": "Additional remarks.",
             "type": "array",
-            "items": {
+            "items": { 
               "type": "string"
             }
           },
