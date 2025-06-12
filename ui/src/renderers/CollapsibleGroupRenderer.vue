@@ -30,13 +30,20 @@
 import { ref, computed } from 'vue'
 import { VExpandTransition, VIcon, VCard, VCardText, VCardTitle } from 'vuetify/components'
 import { DispatchRenderer } from '@jsonforms/vue'
-import type { GroupLayout, LayoutProps } from '@jsonforms/core'
+import type { GroupLayout, JsonFormsCellRendererRegistryEntry, JsonFormsRendererRegistryEntry, JsonSchema, Layout, LayoutProps } from '@jsonforms/core'
 
-const expanded = ref(true)
-
-const props = defineProps<LayoutProps>()
+const props = defineProps<{
+  uischema: Layout;  // or type any if you're not using TS
+  schema: JsonSchema;
+  path: string;
+  enabled: boolean;
+  renderers: JsonFormsRendererRegistryEntry[];
+  cells: JsonFormsCellRendererRegistryEntry[];
+}>()
 
 const groupLayout = computed(() => props.uischema as GroupLayout)
+
+const expanded = computed(() => groupLayout.value.options?.defaultOpen ?? true)
 
 const label = computed(() => {
   const lbl = groupLayout.value.label

@@ -111,6 +111,9 @@ const uischema = {
     {
       type: "CollapsibleGroup",
       label: "Kategorien",
+      options: {
+        defaultOpen: false
+      },
       elements: [
         {
           type: "Control",
