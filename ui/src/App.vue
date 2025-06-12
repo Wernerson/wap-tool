@@ -8,14 +8,21 @@ import { load as loadYaml, dump as dumpYaml} from "js-yaml";
 import '@mdi/font/css/materialdesignicons.css';
 import CollapsibleGroupRenderer from "./renderers/CollapsibleGroupRenderer.vue";
 import ColorPickerRenderer from "./renderers/ColorPickerRenderer.vue";
-import { rankWith, uiTypeIs } from "@jsonforms/core";
+import { and, formatIs, isControl, optionIs, rankWith, schemaMatches, schemaTypeIs, uiTypeIs, type ControlElement, type JsonSchema } from "@jsonforms/core";
 import CategoryPickerRenderer from "./renderers/CategoryPickerRenderer.vue";
+import AppearsInRenderer from "./renderers/AppearsInRenderer.vue";
 
 const renderers = markRaw([
   ...extendedVuetifyRenderers,
   { tester: rankWith(3, uiTypeIs("CollapsibleGroup")), renderer: CollapsibleGroupRenderer },
   { tester: rankWith(3, uiTypeIs("ColorPicker")), renderer: ColorPickerRenderer},
-  { tester: rankWith(3, uiTypeIs("CategoryPicker")), renderer: markRaw(CategoryPickerRenderer)}
+  { tester: rankWith(3, uiTypeIs("CategoryPicker")), renderer: markRaw(CategoryPickerRenderer)},
+  { tester: rankWith(
+  10, // Adjust rank to override default array renderer
+  (uischema, schema) =>
+    isControl(uischema) &&
+    (uischema as any).scope?.endsWith('appearsIn')
+), renderer: AppearsInRenderer}
   // here you can add custom renderers
 ]);
 
@@ -387,7 +394,6 @@ async function onConvertClicked(_event: any) {
     console.error(e);
   }
 }
-const color = "#ffffff"
 </script>
 
 <template>
@@ -404,7 +410,7 @@ const color = "#ffffff"
       :data="data" 
       :renderers="renderers" 
       :schema="schema" 
-      :uischema="uischema" 
+      :uischema="uischema"
       @change="onFormChange" />
     </div>
     <pre>{{ data }}</pre>

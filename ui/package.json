@@ -22,6 +22,7 @@
     "@jsonforms/vue-vuetify": "^3.5.1",
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
+    "@types/lodash": "^4.17.17",
     "@vueuse/core": "^13.3.0",
     "ajv": "^8.17.1",
     "core-js": "^3.40.0",
