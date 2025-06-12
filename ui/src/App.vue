@@ -8,12 +8,16 @@ import { load as loadYaml, dump as dumpYaml} from "js-yaml";
 import '@mdi/font/css/materialdesignicons.css';
 import CollapsibleGroupRenderer from "./renderers/CollapsibleGroupRenderer.vue";
 import ColorPickerRenderer from "./renderers/ColorPickerRenderer.vue";
-import { and, formatIs, isControl, optionIs, rankWith, schemaMatches, schemaTypeIs, uiTypeIs, type ControlElement, type JsonSchema } from "@jsonforms/core";
+import { isControl, isObjectArrayControl, isPrimitiveArrayControl, rankWith, uiTypeIs } from "@jsonforms/core";
 import CategoryPickerRenderer from "./renderers/CategoryPickerRenderer.vue";
 import AppearsInRenderer from "./renderers/AppearsInRenderer.vue";
+import arrayRenderer from "./renderers/CustomArrayLayoutRenderer.vue";
+import primitiveArrayRenderer from "./renderers/CustomPrimitiveArrayLayoutRenderer.vue";
 
 const renderers = markRaw([
   ...extendedVuetifyRenderers,
+  { tester: rankWith(10, isObjectArrayControl), renderer: arrayRenderer},
+  { tester: rankWith(10, isPrimitiveArrayControl), renderer: primitiveArrayRenderer},
   { tester: rankWith(3, uiTypeIs("CollapsibleGroup")), renderer: CollapsibleGroupRenderer },
   { tester: rankWith(3, uiTypeIs("ColorPicker")), renderer: ColorPickerRenderer},
   { tester: rankWith(3, uiTypeIs("CategoryPicker")), renderer: markRaw(CategoryPickerRenderer)},
@@ -161,10 +165,11 @@ const uischema = {
       ]
     },
     {
-      type: "HorizontalLayout",
+      type: "CollapsibleGroup",
+      label: "Wochen",
       elements: [
         {
-          type: "ListWithDetails",
+          type: "Control",
           scope: "#/properties/weeks",
           options: {
             detail: {
@@ -177,7 +182,6 @@ const uischema = {
                     {
                       type: "Control",
                       scope: "#/properties/remarks",
-                      label: "",
                       options: {
                         showSortButtons: true
                       }
@@ -185,101 +189,126 @@ const uischema = {
                   ]
                 },
                 {
-                  type: "Control",
-                  scope: "#/properties/days",
-                  options: {
-                    detail: {
-                    type: "VerticalLayout",
-                    elements: [
-                      {
-                        type: "Control",
-                        scope: "#/properties/columns"
-                      },
-                      {
-                        type: "Control",
-                        scope: "#/properties/remarks"
-                      },
-                      {
-                        type: "Control",
-                        scope: "#/properties/events",
-                        options: {
-                          detail: {
-                            type: "VerticalLayout",
+                  type: "CollapsibleGroup",
+                  label: "Tage",
+                  elements: [
+                    {
+                      type: "Control",
+                      scope: "#/properties/days",
+                      options: {
+                        detail: {
+                        type: "VerticalLayout",
+                        elements: [
+                          {
+                            type: "CollapsibleGroup",
+                            label: "Spalten",
                             elements: [
                               {
-                                type: "HorizontalLayout",
-                                elements: [
-                                  {
-                                    type: "Control",
-                                    scope: "#/properties/title"
-                                  },
-                                  {
-                                    type: "Control",
-                                    scope: "#/properties/description",
-                                  },
-                                ]
+                                type: "Control",
+                                scope: "#/properties/columns",
+                                options: {
+                                  showSortButtons: true
+                                }
                               },
+                            ]
+                          },
+                          {
+                            type: "CollapsibleGroup",
+                            label: "Tagesbemerkungen",
+                            elements: [
                               {
-                                type: "HorizontalLayout",
+                                type: "Control",
+                                scope: "#/properties/remarks",
+                                options: {
+                                  showSortButtons: true
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            type: "Control",
+                            scope: "#/properties/events",
+                            options: {
+                              detail: {
+                                type: "VerticalLayout",
                                 elements: [
                                   {
-                                    type: "Control",
-                                    scope: "#/properties/start",
-                                    options: timePickerOptions
+                                    type: "HorizontalLayout",
+                                    elements: [
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/title"
+                                      },
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/description",
+                                      },
+                                    ]
                                   },
                                   {
-                                    type: "Control",
-                                    scope: "#/properties/end",
-                                    options: timePickerOptions
-                                  },
-                                ]
-                              },
-                              {
-                                type: "HorizontalLayout",
-                                elements: [
-                                  {
-                                    type: "CategoryPicker",
-                                    scope: "#/properties/category",
-                                    options: {
-                                      source: "categories"
-                                    }
-                                  },
-                                ]
-                              },
-                              {
-                                type: "HorizontalLayout",
-                                elements: [
-                                  {
-                                    type: "Control",
-                                    scope: "#/properties/openEnd"
+                                    type: "HorizontalLayout",
+                                    elements: [
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/start",
+                                        options: timePickerOptions
+                                      },
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/end",
+                                        options: timePickerOptions
+                                      },
+                                    ]
                                   },
                                   {
-                                    type: "Control",
-                                    scope: "#/properties/footnote"
+                                    type: "HorizontalLayout",
+                                    elements: [
+                                      {
+                                        type: "CategoryPicker",
+                                        scope: "#/properties/category",
+                                        options: {
+                                          source: "categories"
+                                        }
+                                      },
+                                    ]
                                   },
                                   {
-                                    type: "Control",
-                                    scope: "#/properties/forceHorizontalText"
-                                  }
-                                ]
-                              },
-                              {
-                                type: "HorizontalLayout",
-                                elements: [
+                                    type: "HorizontalLayout",
+                                    elements: [
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/openEnd"
+                                      },
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/footnote"
+                                      },
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/forceHorizontalText"
+                                      }
+                                    ]
+                                  },
                                   {
-                                    type: "Control",
-                                    scope: "#/properties/appearsIn"
+                                    type: "HorizontalLayout",
+                                    elements: [
+                                      {
+                                        type: "Control",
+                                        scope: "#/properties/appearsIn"
+                                      }
+                                    ]
                                   }
                                 ]
                               }
-                            ]
+                            }
                           }
-                        }
+                        ]
                       }
-                    ]
-                  }
-                  }
+                      }
+                    }
+                  ]
                 }
+                
               ]
             },
           },
