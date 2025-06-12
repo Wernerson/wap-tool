@@ -9,11 +9,13 @@ import '@mdi/font/css/materialdesignicons.css';
 import CollapsibleGroupRenderer from "./renderers/CollapsibleGroupRenderer.vue";
 import ColorPickerRenderer from "./renderers/ColorPickerRenderer.vue";
 import { rankWith, uiTypeIs } from "@jsonforms/core";
+import CategoryPickerRenderer from "./renderers/CategoryPickerRenderer.vue";
 
 const renderers = markRaw([
   ...extendedVuetifyRenderers,
   { tester: rankWith(3, uiTypeIs("CollapsibleGroup")), renderer: CollapsibleGroupRenderer },
-  { tester: rankWith(3, uiTypeIs("ColorPicker")), renderer: ColorPickerRenderer}
+  { tester: rankWith(3, uiTypeIs("ColorPicker")), renderer: ColorPickerRenderer},
+  { tester: rankWith(3, uiTypeIs("CategoryPicker")), renderer: markRaw(CategoryPickerRenderer)}
   // here you can add custom renderers
 ]);
 
@@ -226,8 +228,11 @@ const uischema = {
                                 type: "HorizontalLayout",
                                 elements: [
                                   {
-                                    type: "Control",
+                                    type: "CategoryPicker",
                                     scope: "#/properties/category",
+                                    options: {
+                                      source: "categories"
+                                    }
                                   },
                                 ]
                               },
@@ -386,6 +391,7 @@ const color = "#ffffff"
 </script>
 
 <template>
+  <v-app>
     <header>
       <h1>WAUI - WAP Tool UI</h1>
       <input type="file" @change="onFileChange" accept=".yml, .yaml"/>
@@ -402,6 +408,7 @@ const color = "#ffffff"
       @change="onFormChange" />
     </div>
     <pre>{{ data }}</pre>
+  </v-app>
 </template>
 
 <style scoped>

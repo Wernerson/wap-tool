@@ -18,11 +18,6 @@ import type { ControlProps } from '@jsonforms/core';
 const props = defineProps<ControlProps>();
 const { control, handleChange } = useJsonFormsControl(props);
 
-const presetColors = [
-  "#0f0f0f",
-  "#f0f0f0"
-];
-
 const defaultColor = control.value.uischema.options?.defaultColor || '#ff0000';
 
 // Local reactive color value
