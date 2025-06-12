@@ -26,3 +26,7 @@ hr {
 .v-table {
   width: 100%;
 }
+
+.v-expansion-panel-text__wrapper {
+  padding: 8px 8px 16px !important;
+}
