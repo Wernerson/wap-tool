@@ -28,7 +28,7 @@ const { control, handleChange } = useJsonFormsControl(props);
 const jsonforms = inject<JsonFormsSubStates>('jsonforms');
 if (!jsonforms?.core) throw new Error("Missing 'jsonforms.core'");
 
-const rootData = computed(() => jsonforms.core.data);
+const rootData = computed(() => jsonforms?.core?.data || {});
 
 // Complex path resolution
 function resolvePath(obj: any, path: string): any {
