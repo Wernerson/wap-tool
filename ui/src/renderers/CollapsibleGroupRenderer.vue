@@ -43,7 +43,7 @@ const props = defineProps<{
 
 const groupLayout = computed(() => props.uischema as GroupLayout)
 
-const expanded = computed(() => groupLayout.value.options?.defaultOpen ?? true)
+const expanded = ref(groupLayout.value.options?.defaultOpen ?? true)
 
 const label = computed(() => {
   const lbl = groupLayout.value.label
