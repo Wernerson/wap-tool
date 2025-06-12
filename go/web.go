@@ -22,6 +22,14 @@ func yamlFromBytes(dat []byte) (wap *WapJson, err error) {
 }
 
 func serveWeb() {
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	// Optional: serve root with a default file like index.html
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/index.html")
+	})
+
 	http.HandleFunc("/upload", handleYAMLtoPDF)
 	fmt.Println("Server started at http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
