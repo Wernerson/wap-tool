@@ -252,10 +252,6 @@ const uischema = {
                                   },
                                   {
                                     type: "Control",
-                                    scope: "#/properties/repeats"
-                                  },
-                                  {
-                                    type: "Control",
                                     scope: "#/properties/footnote"
                                   },
                                   {
