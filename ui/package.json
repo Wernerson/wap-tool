@@ -15,6 +15,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@ckpack/vue-color": "^1.6.0",
     "@jsonforms/core": "^3.5.1",
     "@jsonforms/vue": "^3.5.1",
     "@jsonforms/vue-vanilla": "3.5.1",

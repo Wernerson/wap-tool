@@ -6,12 +6,14 @@ import schema from "../../schema/wap.json"
 import { load as loadYaml, dump as dumpYaml} from "js-yaml";
 
 import '@mdi/font/css/materialdesignicons.css';
-import { collapsibleGroupTester } from "./tester/collapsibleGroupTester";
 import CollapsibleGroupRenderer from "./renderers/CollapsibleGroupRenderer.vue";
+import ColorPickerRenderer from "./renderers/ColorPickerRenderer.vue";
+import { rankWith, uiTypeIs } from "@jsonforms/core";
 
 const renderers = markRaw([
   ...extendedVuetifyRenderers,
-  { tester: collapsibleGroupTester, renderer: CollapsibleGroupRenderer },
+  { tester: rankWith(3, uiTypeIs("CollapsibleGroup")), renderer: CollapsibleGroupRenderer },
+  { tester: rankWith(3, uiTypeIs("ColorPicker")), renderer: ColorPickerRenderer}
   // here you can add custom renderers
 ]);
 
@@ -94,6 +96,55 @@ const uischema = {
               ]
             }
           ]
+        }
+      ]
+    },
+    {
+      type: "CollapsibleGroup",
+      label: "Kategorien",
+      elements: [
+        {
+          type: "Control",
+          scope: "#/properties/categories",
+          options: {
+            detail: {
+              type: "VerticalLayout",
+              elements: [
+                {
+                  type: "HorizontalLayout",
+                  elements: [
+                    {
+                      type: "Control",
+                      scope: "#/properties/identifier"
+                    },
+                    {
+                      type: "Control",
+                      scope: "#/properties/comment"
+                    }
+                  ]
+                },
+                {
+                  type: "HorizontalLayout",
+                  elements: [
+                    {
+                      type: "ColorPicker",
+                      scope: "#/properties/color",
+                      options: {
+                        defaultColor: "#f0f0f0"
+                      }
+                    },
+                    {
+                      type: "ColorPicker",
+                      scope: "#/properties/textColor",
+                      options: {
+                        defaultColor: "#000000"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -268,7 +319,7 @@ const sortData = (data: any) => {
 
 const onFileChange = (event: any) => {
   const reader = new FileReader()
-  reader.onload = (ev) => {
+  reader.onload = (_ev) => {
     const text = reader.result
     console.debug("Raw file text:", text)
     const yaml = loadYaml(text, "utf8")
@@ -280,7 +331,7 @@ const onFileChange = (event: any) => {
   reader.readAsText(event.target.files[0])
 }
 
-const onDownloadClicked = (event: any) => {
+const onDownloadClicked = (_event: any) => {
   console.log(data)
   const yamlString = dumpYaml(data.value)
   // Create a Blob from YAML string
@@ -311,7 +362,7 @@ function downloadFile(filename: string, file: Blob) {
     URL.revokeObjectURL(url);
 }
 
-async function onConvertClicked(event: any) {
+async function onConvertClicked(_event: any) {
   const formData = new FormData();
 
   const yamlString = dumpYaml(data.value)
@@ -331,6 +382,7 @@ async function onConvertClicked(event: any) {
     console.error(e);
   }
 }
+const color = "#ffffff"
 </script>
 
 <template>
