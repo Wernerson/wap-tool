@@ -23,4 +23,12 @@ export default defineConfig({
     // Exclude vuetify since it has an issue with vite dev - TypeError: makeVExpansionPanelTextProps is not a function - the makeVExpansionPanelTextProps is used before it is defined
     exclude: ['vuetify'],
   },
+  server: {
+    proxy: {
+      "/upload": {
+        target: "http://localhost:8080",
+        changeOrigin: true
+      }
+    }
+  }
 })
