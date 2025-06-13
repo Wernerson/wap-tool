@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=../schema/wap.json
 meta: # define metadata
   author: Autor
-  signerText: 
-  - Some Signer
-  - Cy Kp 42/3
+  signerText: |
+    Some Signer
+    Cy Kp 42/3
   firstDay: "2025-04-20"
   startTime: '05:30'
   endTime: '23:00'

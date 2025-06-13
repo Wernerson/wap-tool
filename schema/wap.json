@@ -14,10 +14,7 @@
         },
         "signerText": {
           "description": "Text to be displayed under the signing box",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "type": "string"
         },
         "startTime": {
           "description": "The earliest time displayed in the WAP. Given in format HH:MM",

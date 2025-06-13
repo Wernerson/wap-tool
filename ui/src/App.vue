@@ -70,6 +70,18 @@ const uischema = {
             },
           ]
         },
+        {
+          type: "HorizontalLayout",
+          elements: [
+            {
+              type: "Control",
+              scope: "#/properties/meta/properties/signerText",
+              options: {
+                multi: true
+              }
+            }
+          ]
+        }
       ],
     },
     {
@@ -412,7 +424,7 @@ async function onConvertClicked(_event: any) {
   formData.append("file", blob);
 
   try {
-    const response = await fetch("/upload", {
+    const response = await fetch("http://localhost:8080/upload", {
       method: "POST",
       body: formData,
     });

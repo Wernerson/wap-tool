@@ -42,7 +42,7 @@ type Wap struct {
 	dayEnd   time.Time
 	// Metadata
 	Unit, Version, Author, Title string
-	SignerText                   []string
+	SignerText                   string
 	// Remarks for each week
 	Remarks [][]string
 	// Remarks for each day
@@ -143,7 +143,9 @@ func NewWAP(data *WapJson) (w *Wap) {
 		w.Version = time.Now().Format(time.DateOnly)
 	}
 	w.Author = data.Meta.Author
-	w.SignerText = data.Meta.SignerText
+	if data.Meta.SignerText != nil {
+		w.SignerText = *data.Meta.SignerText
+	}
 	w.Title = data.Meta.Title
 	w.Weeks = len(data.Weeks)
 	for weekIdx, week := range data.Weeks {

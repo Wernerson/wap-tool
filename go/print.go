@@ -308,7 +308,7 @@ func (d *PDFDrawer) drawWeeklyRemarks(weekIdx int) {
 	signatureTextX := signatureStart.X + 6
 	signatureTextY := signatureStart.Y + signatureRect.H + 10
 	d.pdf.SetFontSize(d.mediumFontSize)
-	for i, text := range d.wap.SignerText {
+	for i, text := range strings.Split(d.wap.SignerText, "\n") {
 		d.pdf.SetXY(signatureTextX, signatureTextY+float64(i)*d.mediumFontSize)
 		d.pdf.Text(text)
 	}
