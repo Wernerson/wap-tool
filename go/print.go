@@ -38,14 +38,15 @@ type PDFDrawer struct {
 	// p1 ------+
 	//  | wapBox|
 	//  + ------+
-	p1            gopdf.Point
-	wapBox        gopdf.Rect
-	bigColumns    int
-	minuteHeight  float64
-	colWidth      float64
-	smallFontSize float64
-	largeFontSize float64
-	padding       float64
+	p1             gopdf.Point
+	wapBox         gopdf.Rect
+	bigColumns     int
+	minuteHeight   float64
+	colWidth       float64
+	smallFontSize  float64
+	mediumFontSize float64
+	largeFontSize  float64
+	padding        float64
 }
 
 func NewPDFDrawer() *PDFDrawer {
@@ -57,10 +58,11 @@ func NewPDFDrawer() *PDFDrawer {
 			BreakIndicator: ' ',
 			Separator:      "-",
 		},
-		bigColumns:    8, // weekly remarks is a column too
-		smallFontSize: 4,
-		largeFontSize: 8,
-		padding:       2,
+		bigColumns:     8, // weekly remarks is a column too
+		smallFontSize:  4,
+		mediumFontSize: 6,
+		largeFontSize:  8,
+		padding:        2,
 	}
 
 }
@@ -301,6 +303,15 @@ func (d *PDFDrawer) drawWeeklyRemarks(weekIdx int) {
 	d.pdf.SetStrokeColor(0x00, 0x00, 0x00)
 	d.pdf.SetFillColor(0xff, 0xff, 0xff)
 	drawRect(d.pdf, signatureStart, signatureRect)
+
+	// Add Signature Text
+	signatureTextX := signatureStart.X + 6
+	signatureTextY := signatureStart.Y + signatureRect.H + 10
+	d.pdf.SetFontSize(d.mediumFontSize)
+	for i, text := range d.wap.SignerText {
+		d.pdf.SetXY(signatureTextX, signatureTextY+float64(i)*d.mediumFontSize)
+		d.pdf.Text(text)
+	}
 }
 
 func (d *PDFDrawer) setupPage() {

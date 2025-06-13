@@ -66,6 +66,9 @@ type WapJsonMeta struct {
 	// The first day of the WAP. Given in format YYYY-MM-DD
 	FirstDay string `json:"firstDay" yaml:"firstDay" mapstructure:"firstDay"`
 
+	// Text to be displayed under the signing box
+	SignerText []string `json:"signerText,omitempty" yaml:"signerText,omitempty" mapstructure:"signerText,omitempty"`
+
 	// The earliest time displayed in the WAP. Given in format HH:MM
 	StartTime *string `json:"startTime,omitempty" yaml:"startTime,omitempty" mapstructure:"startTime,omitempty"`
 

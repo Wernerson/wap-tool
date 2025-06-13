@@ -12,6 +12,13 @@
           "description": "The person who created the WAP.",
           "type": "string"
         },
+        "signerText": {
+          "description": "Text to be displayed under the signing box",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "startTime": {
           "description": "The earliest time displayed in the WAP. Given in format HH:MM",
           "type": "string",

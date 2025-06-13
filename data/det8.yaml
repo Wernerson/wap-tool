@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=../schema/wap.json
 meta:
   author: Oblt Körber Conrad
+  signerText:
+  - "Hptm Alexander Heuzeroth"
+  - "Cy Kp 42/3"
   firstDay: "2025-06-02"
   startTime: "05:45"
   endTime: "23:30"
