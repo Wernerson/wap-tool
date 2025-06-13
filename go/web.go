@@ -23,12 +23,7 @@ func yamlFromBytes(dat []byte) (wap *WapJson, err error) {
 
 func serveWeb() {
 	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-
-	// Optional: serve root with a default file like index.html
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/index.html")
-	})
+	http.Handle("/", fs)
 
 	http.HandleFunc("/upload", handleYAMLtoPDF)
 	fmt.Println("Server started at http://localhost:8080")
@@ -59,7 +54,7 @@ func handleYAMLtoPDF(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("ERROR reading yaml: ", err.Error())
 	}
 	wap := NewWAP(wapData)
-	var path = "/tmp/test.pdf"
+	var path = "./test.pdf"
 	NewPDFDrawer().Draw(wap, path)
 
 	dat, err := os.ReadFile(path)

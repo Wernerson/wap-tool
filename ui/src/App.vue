@@ -325,7 +325,7 @@ const processData = (value: any) => {
     let firstDate = new Date(value.meta.firstDay);
     for (const week of value.weeks) {
       week.title = "Woche vom " + firstDate.toLocaleDateString("de-CH", {weekday: "long", year: 'numeric', month: 'numeric', day: 'numeric' });
-      if ("days" in week) { 
+      if ("days" in week) {
         let firstWeekDay = new Date(firstDate);
         for (const day of week.days) {
           day.title = firstWeekDay.toLocaleDateString("de-CH", {weekday: "long", year: 'numeric', month: 'numeric', day: 'numeric' });
@@ -412,11 +412,11 @@ async function onConvertClicked(_event: any) {
   formData.append("file", blob);
 
   try {
-    const response = await fetch("http://localhost:8080/upload", {
+    const response = await fetch("/upload", {
       method: "POST",
       body: formData,
     });
-    
+
     downloadFile("WAP.pdf", await response.blob());
   } catch (e) {
     console.error(e);
@@ -434,10 +434,10 @@ async function onConvertClicked(_event: any) {
     </header>
 
     <div class="myform">
-      <JsonForms 
-      :data="data" 
-      :renderers="renderers" 
-      :schema="schema" 
+      <JsonForms
+      :data="data"
+      :renderers="renderers"
+      :schema="schema"
       :uischema="uischema"
       @change="onFormChange" />
     </div>
