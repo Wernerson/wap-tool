@@ -20,10 +20,9 @@ const renderers = markRaw([
   { tester: rankWith(10, isPrimitiveArrayControl), renderer: primitiveArrayRenderer},
   { tester: rankWith(3, uiTypeIs("CollapsibleGroup")), renderer: CollapsibleGroupRenderer },
   { tester: rankWith(3, uiTypeIs("ColorPicker")), renderer: ColorPickerRenderer},
-  { tester: rankWith(3, uiTypeIs("CategoryPicker")), renderer: markRaw(CategoryPickerRenderer)},
+  { tester: rankWith(20, uiTypeIs("CategoryPicker")), renderer: markRaw(CategoryPickerRenderer)},
   { tester: rankWith(
-  10, // Adjust rank to override default array renderer
-  (uischema, schema) =>
+  20, (uischema) =>
     isControl(uischema) &&
     (uischema as any).scope?.endsWith('appearsIn')
 ), renderer: AppearsInRenderer}
