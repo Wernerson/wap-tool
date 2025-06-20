@@ -1,0 +1,223 @@
+{
+  "title": "WAP",
+  "description": "Wochenarbeitsplan (WAP): schedule for a military week with events and logistical informations.",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "Metadata concerning the WAP.",
+      "type": "object",
+      "properties": {
+        "author": {
+          "title": "Author",
+          "description": "The person who created the WAP.",
+          "type": "string"
+        },
+        "signerText": {
+          "description": "Text to be displayed under the signing box",
+          "type": "string"
+        },
+        "startTime": {
+          "description": "The earliest time displayed in the WAP. Given in format HH:MM",
+          "type": "string",
+          "pattern": "^[0-2]\\d:[0-5]\\d$"
+        },
+        "endTime": {
+          "description": "The latest time displayed in the WAP. Given in format HH:MM",
+          "type": "string",
+          "pattern": "^[0-2]\\d:[0-5]\\d$"
+        },
+        "firstDay": {
+          "description": "The first day of the WAP. Given in format YYYY-MM-DD",
+          "type": "string",
+          "pattern": "^\\d{4}-([0][1-9]|1[0-2])-([0][1-9]|[1-2]\\d|3[01])$"
+        },
+        "unit": {
+          "description": "The unit the WAP is for",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title of the WAP. Often contains the week number.",
+          "type": "string"
+        },
+        "version": {
+          "description": "The version of the WAP or when it was last modified.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "author",
+        "title",
+        "firstDay"
+      ]
+    },
+    "categories": {
+      "description": "Defines categories for events to display them styled.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "description": "Short identifier for the category. To be used as reference from events.",
+            "type": "string"
+          },
+          "comment": {
+            "description": "Describes for what the category is used. Not to be printed.",
+            "type": "string"
+          },
+          "color": {
+            "description": "Color to give the category",
+            "type": "string"
+          },
+          "textColor": {
+            "description": "Color of the text in the category",
+            "type": "string"
+          }
+        },
+        "required": [
+          "identifier",
+          "color"
+        ],
+        "uniqueItems": true
+      }
+    },
+    "weeks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "remarks": {
+            "description": "Additional remarks",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "days": {
+            "type": "array",
+            "minItems": 7,
+            "maxItems": 7,
+            "items": {
+              "description": "Each day in the WAP.",
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "columns": {
+                  "description": "The columns this day is subdivided in. Can be refered by appearsIn for events.",
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "description": "A column name. For example Det1 or Beso.",
+                    "type": "string",
+                    "not": {
+                      "const": "Beso"
+                    }
+                  }
+                },
+                "remarks": {
+                  "type": "array",
+                  "description": "Tagesbemerkungen",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "description": "The text to be printed as a remark",
+                        "type": "string"
+                      },
+                      "start": {
+                        "description": "Optional Start-Time",
+                        "type": "string",
+                        "pattern": "^[0-2]\\d:[0-5]\\d$"
+                      },
+                      "end": {
+                        "description": "Optional End-Time",
+                        "type": "string",
+                        "pattern": "^[0-2]\\d:[0-5]\\d$"
+                      }
+                    },
+                  "required": ["title"]
+                  }
+                },
+                "events": {
+                  "description": "All events that occur on this day.",
+                  "type": "array",
+                  "items": {
+                    "description": "An event.",
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "description": "Title of the event.",
+                        "type": "string"
+                      },
+                      "start": {
+                        "description": "Start time. In format HH:MM",
+                        "type": "string",
+                        "pattern": "^[0-2]\\d:[0-5]\\d$"
+                      },
+                      "end": {
+                        "description": "End time. In format HH:MM",
+                        "type": "string",
+                        "pattern": "^[0-2]\\d:[0-5]\\d$"
+                      },
+                      "openEnd": {
+                        "description": "if the event is open-ended",
+                        "type": "boolean"
+                      },
+                      "description": {
+                        "description": "Additional information such as the responsible person or the location.",
+                        "type": "string"
+                      },
+                      "category": {
+                        "description": "Identifer of a defined category.",
+                        "type": "string"
+                      },
+                      "appearsIn": {
+                        "description": "Columns in which this event should appear.",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "not": {
+                            "const": "Beso"
+                          }
+                        }
+                      },
+                      "repeats": {
+                        "description": "if the event repeats periodically.",
+                        "enum": [
+                          "no",
+                          "daily",
+                          "weekly"
+                        ]
+                      },
+                      "forceHorizontalText": {
+                        "type": "boolean",
+                        "description": "This forces the text to appear horizontal"
+                      },
+                      "zIndex": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "start",
+                      "end"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "days"
+        ]
+      }
+    }
+  }
+}

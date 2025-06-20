@@ -1,0 +1,356 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "CollapsibleGroup",
+      "i18n": "information",
+      "elements": [
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "scope": "#/properties/meta/properties/title"
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/meta/properties/unit"
+            }
+          ]
+        },
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "scope": "#/properties/meta/properties/author"
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/meta/properties/version"
+            }
+          ]
+        },
+        {
+          "type": "HorizontalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "scope": "#/properties/meta/properties/signerText",
+              "options": {
+                "multi": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "CollapsibleGroup",
+      "i18n": "times",
+      "elements": [
+        {
+          "type": "VerticalLayout",
+          "elements": [
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                {
+                  "type": "Control",
+                  "scope": "#/properties/meta/properties/startTime",
+                  "options": {
+                    "format": "time",
+                    "ampm": false,
+                    "timeFormat": "HH:mm",
+                    "timeSaveFormat": "HH:mm"
+                  }
+                },
+                {
+                  "type": "Control",
+                  "scope": "#/properties/meta/properties/endTime",
+                  "options": {
+                    "format": "time",
+                    "ampm": false,
+                    "timeFormat": "HH:mm",
+                    "timeSaveFormat": "HH:mm"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                {
+                  "type": "Control",
+                  "scope": "#/properties/meta/properties/firstDay",
+                  "options": {
+                    "format": "date",
+                    "dateFormat": "YYYY-MM-DD",
+                    "dateSaveFormat": "YYYY-MM-DD"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "CollapsibleGroup",
+      "i18n": "categories",
+      "options": {
+        "defaultOpen": false
+      },
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/categories",
+          "options": {
+            "detail": {
+              "type": "VerticalLayout",
+              "elements": [
+                {
+                  "type": "HorizontalLayout",
+                  "elements": [
+                    {
+                      "type": "Control",
+                      "scope": "#/properties/identifier"
+                    },
+                    {
+                      "type": "Control",
+                      "scope": "#/properties/comment"
+                    }
+                  ]
+                },
+                {
+                  "type": "HorizontalLayout",
+                  "elements": [
+                    {
+                      "type": "ColorPicker",
+                      "scope": "#/properties/color",
+                      "options": {
+                        "defaultColor": "#f0f0f0"
+                      }
+                    },
+                    {
+                      "type": "ColorPicker",
+                      "scope": "#/properties/textColor",
+                      "options": {
+                        "defaultColor": "#000000"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "CollapsibleGroup",
+      "i18n": "weeks",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/weeks",
+          "options": {
+            "detail": {
+              "type": "VerticalLayout",
+              "elements": [
+                {
+                  "type": "CollapsibleGroup",
+                  "i18n": "weeks.remarks.group",
+                  "elements": [
+                    {
+                      "type": "Control",
+                      "scope": "#/properties/remarks",
+                      "options": {
+                        "showSortButtons": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "CollapsibleGroup",
+                  "i18n": "weeks.days",
+                  "elements": [
+                    {
+                      "type": "Control",
+                      "scope": "#/properties/days",
+                      "options": {
+                        "detail": {
+                          "type": "VerticalLayout",
+                          "elements": [
+                            {
+                              "type": "CollapsibleGroup",
+                              "i18n": "weeks.days.columns.group",
+                              "elements": [
+                                {
+                                  "type": "Control",
+                                  "scope": "#/properties/columns",
+                                  "options": {
+                                    "showSortButtons": true
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "CollapsibleGroup",
+                              "i18n": "weeks.days.remarks.group",
+                              "elements": [
+                                {
+                                  "type": "Control",
+                                  "scope": "#/properties/remarks",
+                                  "options": {
+                                    "showSortButtons": true,
+                                    "detail": {
+                                      "type": "VerticalLayout",
+                                      "elements": [
+                                        {
+                                          "type": "HorizontalLayout",
+                                          "elements": [
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/title"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "HorizontalLayout",
+                                          "elements": [
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/start",
+                                              "options": {
+                                                "format": "time",
+                                                "ampm": false,
+                                                "timeFormat": "HH:mm",
+                                                "timeSaveFormat": "HH:mm"
+                                              }
+                                            },
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/end",
+                                              "options": {
+                                                "format": "time",
+                                                "ampm": false,
+                                                "timeFormat": "HH:mm",
+                                                "timeSaveFormat": "HH:mm"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "CollapsibleGroup",
+                              "i18n": "weeks.days.events",
+                              "elements": [
+                                {
+                                  "type": "EventList",
+                                  "scope": "#/properties/events",
+                                  "options": {
+                                    "detail": {
+                                      "type": "VerticalLayout",
+                                      "elements": [
+                                        {
+                                          "type": "HorizontalLayout",
+                                          "elements": [
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/title"
+                                            },
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/description"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "HorizontalLayout",
+                                          "elements": [
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/start",
+                                              "options": {
+                                                "format": "time",
+                                                "ampm": false,
+                                                "timeFormat": "HH:mm",
+                                                "timeSaveFormat": "HH:mm"
+                                              }
+                                            },
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/end",
+                                              "options": {
+                                                "format": "time",
+                                                "ampm": false,
+                                                "timeFormat": "HH:mm",
+                                                "timeSaveFormat": "HH:mm"
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "HorizontalLayout",
+                                          "elements": [
+                                            {
+                                              "type": "CategoryPicker",
+                                              "scope": "#/properties/category",
+                                              "options": {
+                                                "source": "categories"
+                                              }
+                                            },
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/appearsIn"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "HorizontalLayout",
+                                          "elements": [
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/openEnd"
+                                            },
+                                            {
+                                              "type": "Control",
+                                              "scope": "#/properties/forceHorizontalText"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "HorizontalLayout",
+                                          "elements": [
+                                            {
+                                              "type": "Control",
+                                              "scope": "/properties/zIndex"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

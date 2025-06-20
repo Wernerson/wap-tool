@@ -1,0 +1,45 @@
+stages:
+  - lint
+  - test
+  - build
+
+golangci_lint:
+  tags:
+    - debian
+    - shared
+  stage: lint
+  image: golangci/golangci-lint:latest
+  script:
+    - cd go
+    - golangci-lint run ./...
+
+go_format_check:
+  tags:
+    - debian
+    - shared
+  stage: lint
+  image: golang:latest
+  script:
+    - cd go
+    - test -z "$(gofmt -l .)" # Fails if any files are not formatted
+
+go_test_and_vet:
+  tags:
+    - debian
+    - shared
+  stage: test
+  image: golang:latest
+  script:
+    - cd go
+    - go test ./...
+    - go vet ./...
+
+go_build_check:
+  tags:
+    - debian
+    - shared
+  stage: build
+  image: golang:latest
+  script:
+    - cd go
+    - go build ./...

@@ -1,0 +1,8 @@
+/go/wap-tool
+*.tar
+*.tar.gz
+
+*.pdf
+!examples/minimal.pdf
+!examples/full.pdf
+data/*

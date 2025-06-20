@@ -1,0 +1,76 @@
+meta:
+  title: Det X
+  unit: Kp 12/3
+  author: Autor
+  version: 'Stand: 19.06.2025'
+  signerText: |-
+    Wm Hülsensack
+    Kp 12/3
+  startTime: '05:30'
+  endTime: '23:30'
+  firstDay: '2025-06-16'
+categories:
+  - identifier: Orange
+    color: '#F5A623'
+    textColor: '#9013FE'
+weeks:
+  - days:
+      - title: Montag, 16.6.2025
+        columns:
+          - Det
+          - Det C
+        remarks:
+          - title: Hier ist eine Wochenbemerkung
+          - title: Hier ist ein Beso
+            start: '14:00'
+            end: '15:00'
+        events:
+          - title: Zi-Bezug & Zi Ordnung
+            start: '10:00'
+            end: '11:00'
+            category: Orange
+            appearsIn:
+              - Det
+          - title: Einrükcung und Fahr Repe
+            start: '09:00'
+            end: '10:00'
+            appearsIn:
+              - Det
+              - Det C
+          - title: Fassung IAA Mat
+            description: ' Ein Four'
+            start: '11:00'
+            end: '12:00'
+            appearsIn:
+              - Det
+              - Det C
+          - title: Abrücken
+            start: '14:00'
+            end: '16:00'
+            openEnd: true
+          - title: Lunch Fassen
+            description: Kantine
+            start: '11:45'
+            end: '12:30'
+            appearsIn:
+              - Det C
+            zIndex: 1
+      - title: Dienstag, 17.6.2025
+        columns:
+          - Det
+        events:
+          - title: Ein langes Event
+            description: Mit einer langen Beschreibung, die auf zwei Zeilen gehen muss
+            start: '08:00'
+            end: '12:00'
+          - title: Noch ein langes Event
+            start: '12:00'
+            end: '23:00'
+      - title: Mittwoch, 18.6.2025
+      - title: Donnerstag, 19.6.2025
+      - title: Freitag, 20.6.2025
+      - title: Samstag, 21.6.2025
+      - title: Sonntag, 22.6.2025
+    title: Woche vom Montag, 16.6.2025
+    remarks:
+      - Eine Wochenbemerkung

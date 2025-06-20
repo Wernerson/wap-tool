@@ -1,0 +1,1 @@
+npx json2ts ../schema/wap.json > src/wap.d.ts

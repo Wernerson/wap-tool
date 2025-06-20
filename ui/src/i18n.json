@@ -1,0 +1,898 @@
+{
+  "de": {
+    "general": {
+      "array": {
+        "up": "Hoch",
+        "down": "Runter"
+      },
+      "errorsExist": "Der WAP enthält Fehler und kann daher nicht runtergeladen werden",
+      "emptyWap": "WAP leeren",
+      "download": "YAML runterladen",
+      "downloadPdf": "PDF runterladen",
+      "upload": {
+        "title": "WAP hier hochladen",
+        "dialogTitle": "Dateformat nicht unterstützt",
+        "dialogText": "Es sind nur Dateien im 'yaml' Format zugelassen",
+        "dialogConfirm": "Bestätigen"
+      },
+      "settings": {
+        "theme": "Theme",
+        "language": "Sprache"
+      }
+    },
+    "information": {
+      "label": "Informationen"
+    },
+    "times": {
+      "label": "Zeiten"
+    },
+    "meta": {
+      "title": {
+        "label": "Titel",
+        "description": "Titel des WAPs",
+        "error": {
+          "required": "Titel darf nicht leer sein"
+        }
+      },
+      "author": {
+        "label": "Autor",
+        "description": "Autor des WAPs",
+        "error": {
+          "required": "Autor darf nicht leer sein"
+        }
+      },
+      "unit": {
+        "label": "Einheit",
+        "description": "Einheit, für die der WAP ist"
+      },
+      "version": {
+        "label": "Version",
+        "description": "Version des WAPs, bzw. letztes Modifizierungsdatum"
+      },
+      "signerText": {
+        "label": "Signierer",
+        "description": "Text, der unter der Signier-Box angezeigt wird"
+      },
+      "startTime": {
+        "label": "Start-Zeit",
+        "description": "Die früheste angeizeigte Zeit im WAP. Format: HH:MM"
+      },
+      "endTime": {
+        "label": "End-Zeit",
+        "description": "Die späteste angezeigte Zeit im WAP. Format: HH:MM"
+      },
+      "firstDay": {
+        "label": "Erster Tag",
+        "description": "Erster Tag des WAPs. Format: YYYY-MM-DD",
+        "error": {
+          "required": "Erster Tag darf nicht leer sein"
+        }
+      }
+    },
+    "categories": {
+      "label": "Kategorien",
+      "identifier": {
+        "label": "Kategorie-Name",
+        "description": "Kurzer Name der Kategorie",
+        "error": {
+          "required": "Kategorie-Name darf nicht leer sein"
+        }
+      },
+      "comment": {
+        "label": "Kommentar",
+        "description": "Beschreibt, wofür die Kategorie verwendet werden soll. Wird nicht gedruckt"
+      },
+      "color": {
+        "label": "Hintergrundfarbe"
+      },
+      "textColor": {
+        "label": "Textfarbe"
+      },
+      "addTooltip": "Kategorie hinzufügen",
+      "removeTooltip": "Kategorie löschen",
+      "deleteDialogTitle": "Kategorie löschen",
+      "deleteDialogMessage": "Wollen Sie diese Kategorie wirklich löschen?",
+      "deleteDialogAccept": "Bestätigen",
+      "deleteDialogDecline": "Abbrechen",
+      "noDataMessage": "Keine Kategorien"
+    },
+    "weeks": {
+      "label": "Wochen",
+      "remarks": {
+        "group": {
+          "label": "Wochenbemerkungen"
+        },
+        "description": "Eine Wochenbemerkung",
+        "addTooltip": "Wochenbemerkung hinzufügen",
+        "removeTooltip": "Wochenbemerkung löschen",
+        "noDataMessage": "Keine Wochenbemerkungen"
+      },
+      "addTooltip": "Woche hinzufügen",
+      "removeTooltip": "Woche löschen",
+      "deleteDialogTitle": "Woche löschen",
+      "deleteDialogMessage": "Wollen Sie diese Woche wirklich löschen?",
+      "deleteDialogAccept": "Bestätigen",
+      "deleteDialogDecline": "Abbrechen",
+      "noDataMessage": "Keine Wochen",
+      "days": {
+        "label": "Tage",
+        "error": {
+          "required": "Tage dürfen nicht leer sein"
+        },
+        "columns": {
+          "group": {
+            "label": "Spalten"
+          },
+          "description": "Eine Spaltenbezeichnung, z.B. Det1 oder Beso",
+          "addTooltip": "Spalte hinzufügen",
+          "removeTooltip": "Spalte löschen",
+          "noDataMessage": "Keine Spalten"
+        },
+        "remarks": {
+          "group": {
+            "label": "Tagesbemerkungen"
+          },
+          "title": {
+            "label": "Text",
+            "description": "Text der Tagesbemerkung"
+          },
+          "start": {
+            "label": "Start-Zeit",
+            "description": "Optionale Start-Zeit der Tagesbemerkung"
+          },
+          "end": {
+            "label": "End-Zeit",
+            "description": "Optionale End-Zeit der Tagesbemerkung"
+          },
+          "addTooltip": "Tagesbemerkung hinzufügen",
+          "removeTooltip": "Tagesbemerkung löschen",
+          "deleteDialogTitle": "Tagesbemerkung löschen",
+          "deleteDialogMessage": "Wollen Sie diese Tagesbemerkung wirklich löschen?",
+          "deleteDialogAccept": "Bestätigen",
+          "deleteDialogDecline": "Abbrechen",
+          "noDataMessage": "Keine Tagesbemerkungen"
+        },
+        "addTooltip": "Tag hinzufügen",
+        "removeTooltip": "Tag löschen",
+        "deleteDialogTitle": "Tag löschen",
+        "deleteDialogMessage": "Wollen Sie diesen Tag wirklich löschen?",
+        "deleteDialogAccept": "Bestätigen",
+        "deleteDialogDecline": "Abbrechen",
+        "noDataMessage": "Keine Tage",
+        "events": {
+          "label": "Events",
+          "title": {
+            "label": "Titel",
+            "description": "Titel des Events",
+            "error": {
+              "required": "Titel darf nicht leer sein"
+            }
+          },
+          "addTooltip": "Event hinzufügen",
+          "removeTooltip": "Event löschen",
+          "deleteDialogTitle": "Löschung bestätigen",
+          "deleteDialogMessage": "Wollen Sie dieses Event wirklich löschen?",
+          "deleteDialogAccept": "Bestätigen",
+          "deleteDialogDecline": "Abbrechen",
+          "copyTooltip": "Event kopieren",
+          "copyDialogTitle": "Event kopieren",
+          "copyDialogMessage": "Event zu einem anderen Datum kopieren",
+          "copyDialogText": "Event zu einem anderen Datum kopieren",
+          "copyDialogAccept": "Bestätigen",
+          "copyDialogDecline": "Abbrechen",
+          "noDataMessage": "Keine Events",
+          "description": {
+            "label": "Beschreibung",
+            "description": "Zusätzliche Information, z.B. verantwortliche Person oder Ort"
+          },
+          "start": {
+            "label": "Start-Zeit",
+            "description": "Start-Zeit. Format: HH:MM",
+            "error": {
+              "required": "Start-Zeit darf nicht leer sein"
+            }
+          },
+          "end": {
+            "label": "End-Zeit",
+            "description": "End-Zeit. Format: HH:MM",
+            "error": {
+              "required": "End-Zeit darf nicht leer sein"
+            }
+          },
+          "category": {
+            "label": "Kategorie",
+            "description": "Kurzrname der gewünschten Kategorie"
+          },
+          "openEnd": {
+            "label": "Opend End",
+            "description": "Ob das Event ein offenes Ende hat"
+          },
+          "forceHorizontalText": {
+            "label": "Horizontalen Text erzwingen",
+            "description": "Ob der Text des Events auf jeden Fall Horizontal angezeigt werden soll"
+          },
+          "appearsIn": {
+            "label": "Erscheint in",
+            "description": "Die Spalten, in denen das Event erscheinen soll"
+          },
+          "zIndex": {
+            "label": "Z-Index",
+            "description": "Definiert, über welche Events dieses Event gezeichnet werden soll"
+          }
+        }
+      }
+    }
+  },
+  "fr": {
+    "general": {
+      "array": {
+        "up": "Monter",
+        "down": "Descendre"
+      },
+      "errorsExist": "Le WAP contient des erreurs et ne peut donc pas être téléchargé",
+      "emptyWap": "Vider le WAP",
+      "download": "Télécharger YAML",
+      "downloadPdf": "Télécharger PDF",
+      "upload": {
+        "title": "Téléverser le WAP ici",
+        "dialogTitle": "Format de fichier non pris en charge",
+        "dialogText": "Seuls les fichiers au format 'yaml' sont autorisés",
+        "dialogConfirm": "Confirmer"
+      },
+      "settings": {
+        "theme": "Thème",
+        "language": "Langue"
+      }
+    },
+    "information": {
+      "label": "Informations"
+    },
+    "times": {
+      "label": "Horaires"
+    },
+    "meta": {
+      "title": {
+        "label": "Titre",
+        "description": "Titre du WAP",
+        "error": {
+          "required": "Le titre ne peut pas être vide"
+        }
+      },
+      "author": {
+        "label": "Auteur",
+        "description": "Auteur du WAP",
+        "error": {
+          "required": "L’auteur ne peut pas être vide"
+        }
+      },
+      "unit": {
+        "label": "Unité",
+        "description": "Unité pour laquelle le WAP est destiné"
+      },
+      "version": {
+        "label": "Version",
+        "description": "Version du WAP ou date de dernière modification"
+      },
+      "signerText": {
+        "label": "Signataire",
+        "description": "Texte affiché sous la boîte de signature"
+      },
+      "startTime": {
+        "label": "Heure de début",
+        "description": "Heure la plus tôt affichée dans le WAP. Format : HH:MM"
+      },
+      "endTime": {
+        "label": "Heure de fin",
+        "description": "Heure la plus tard affichée dans le WAP. Format : HH:MM"
+      },
+      "firstDay": {
+        "label": "Premier jour",
+        "description": "Premier jour du WAP. Format : YYYY-MM-DD",
+        "error": {
+          "required": "Le premier jour ne peut pas être vide"
+        }
+      }
+    },
+    "categories": {
+      "label": "Catégories",
+      "identifier": {
+        "label": "Nom de la catégorie",
+        "description": "Nom court de la catégorie",
+        "error": {
+          "required": "Le nom de la catégorie ne peut pas être vide"
+        }
+      },
+      "comment": {
+        "label": "Commentaire",
+        "description": "Décrit l’utilisation prévue de la catégorie. Ne sera pas imprimé"
+      },
+      "color": {
+        "label": "Couleur de fond"
+      },
+      "textColor": {
+        "label": "Couleur du texte"
+      },
+      "addTooltip": "Ajouter une catégorie",
+      "removeTooltip": "Supprimer la catégorie",
+      "deleteDialogTitle": "Supprimer la catégorie",
+      "deleteDialogMessage": "Voulez-vous vraiment supprimer cette catégorie ?",
+      "deleteDialogAccept": "Confirmer",
+      "deleteDialogDecline": "Annuler",
+      "noDataMessage": "Aucune catégorie"
+    },
+    "weeks": {
+      "label": "Semaines",
+      "remarks": {
+        "group": {
+          "label": "Remarques hebdomadaires"
+        },
+        "description": "Remarque hebdomadaire",
+        "addTooltip": "Ajouter une remarque hebdomadaire",
+        "removeTooltip": "Supprimer la remarque hebdomadaire",
+        "noDataMessage": "Aucune remarque hebdomadaire"
+      },
+      "addTooltip": "Ajouter une semaine",
+      "removeTooltip": "Supprimer la semaine",
+      "deleteDialogTitle": "Supprimer la semaine",
+      "deleteDialogMessage": "Voulez-vous vraiment supprimer cette semaine ?",
+      "deleteDialogAccept": "Confirmer",
+      "deleteDialogDecline": "Annuler",
+      "noDataMessage": "Aucune semaine",
+      "days": {
+        "label": "Jours",
+        "error": {
+          "required": "Les jours ne peuvent pas être vides"
+        },
+        "columns": {
+          "group": {
+            "label": "Colonnes"
+          },
+          "description": "Nom de colonne, par ex. Det1 ou Beso",
+          "addTooltip": "Ajouter une colonne",
+          "removeTooltip": "Supprimer la colonne",
+          "noDataMessage": "Aucune colonne"
+        },
+        "remarks": {
+          "group": {
+            "label": "Remarques journalières"
+          },
+          "title": {
+            "label": "Texte",
+            "description": "Texte de la remarque"
+          },
+          "start": {
+            "label": "Heure de début",
+            "description": "Heure de début optionnelle de la remarque"
+          },
+          "end": {
+            "label": "Heure de fin",
+            "description": "Heure de fin optionnelle de la remarque"
+          },
+          "addTooltip": "Ajouter une remarque",
+          "removeTooltip": "Supprimer la remarque",
+          "deleteDialogTitle": "Supprimer la remarque",
+          "deleteDialogMessage": "Voulez-vous vraiment supprimer cette remarque ?",
+          "deleteDialogAccept": "Confirmer",
+          "deleteDialogDecline": "Annuler",
+          "noDataMessage": "Aucune remarque journalière"
+        },
+        "addTooltip": "Ajouter un jour",
+        "removeTooltip": "Supprimer le jour",
+        "deleteDialogTitle": "Supprimer le jour",
+        "deleteDialogMessage": "Voulez-vous vraiment supprimer ce jour ?",
+        "deleteDialogAccept": "Confirmer",
+        "deleteDialogDecline": "Annuler",
+        "noDataMessage": "Aucun jour",
+        "events": {
+          "label": "Événements",
+          "title": {
+            "label": "Titre",
+            "description": "Titre de l'événement",
+            "error": {
+              "required": "Le titre ne peut pas être vide"
+            }
+          },
+          "addTooltip": "Ajouter un événement",
+          "removeTooltip": "Supprimer l’événement",
+          "deleteDialogTitle": "Confirmer la suppression",
+          "deleteDialogMessage": "Voulez-vous vraiment supprimer cet événement ?",
+          "deleteDialogAccept": "Confirmer",
+          "deleteDialogDecline": "Annuler",
+          "copyTooltip": "Copier l’événement",
+          "copyDialogTitle": "Copier l’événement",
+          "copyDialogText": "Copier l'événement à une autre date",
+          "copyDialogMessage": "Copier l’événement à une autre date",
+          "copyDialogAccept": "Confirmer",
+          "copyDialogDecline": "Annuler",
+          "noDataMessage": "Aucun événement",
+          "description": {
+            "label": "Description",
+            "description": "Informations supplémentaires, par ex. responsable ou lieu"
+          },
+          "start": {
+            "label": "Heure de début",
+            "description": "Heure de début. Format : HH:MM",
+            "error": {
+              "required": "L’heure de début ne peut pas être vide"
+            }
+          },
+          "end": {
+            "label": "Heure de fin",
+            "description": "Heure de fin. Format : HH:MM",
+            "error": {
+              "required": "L’heure de fin ne peut pas être vide"
+            }
+          },
+          "category": {
+            "label": "Catégorie",
+            "description": "Nom court de la catégorie souhaitée"
+          },
+          "openEnd": {
+            "label": "Fin ouverte",
+            "description": "Indique si l’événement a une fin ouverte"
+          },
+          "forceHorizontalText": {
+            "label": "Forcer le texte horizontal",
+            "description": "Indique si le texte doit toujours s’afficher à l’horizontale"
+          },
+          "appearsIn": {
+            "label": "Apparaît dans",
+            "description": "Colonnes dans lesquelles l’événement doit apparaître"
+          },
+          "zIndex": {
+            "label": "Z-Index",
+            "description": "Définit au-dessus de quels événements cet événement doit être dessiné"
+          }
+        }
+      }
+    }
+  },
+  "it": {
+    "general": {
+      "array": {
+        "up": "Su",
+        "down": "Giù"
+      },
+      "errorsExist": "Il WAP contiene errori e quindi non può essere scaricato",
+      "emptyWap": "Svuota WAP",
+      "download": "Scarica YAML",
+      "downloadPdf": "Scarica PDF",
+      "upload": {
+        "title": "Carica qui il WAP",
+        "dialogTitle": "Formato file non supportato",
+        "dialogText": "Sono ammessi solo file in formato 'yaml'",
+        "dialogConfirm": "Conferma"
+      },
+      "settings": {
+        "theme": "Tema",
+        "language": "Lingua"
+      }
+    },
+    "information": {
+      "label": "Informazioni"
+    },
+    "times": {
+      "label": "Orari"
+    },
+    "meta": {
+      "title": {
+        "label": "Titolo",
+        "description": "Titolo del WAP",
+        "error": {
+          "required": "Il titolo non può essere vuoto"
+        }
+      },
+      "author": {
+        "label": "Autore",
+        "description": "Autore del WAP",
+        "error": {
+          "required": "L’autore non può essere vuoto"
+        }
+      },
+      "unit": {
+        "label": "Unità",
+        "description": "Unità a cui si riferisce il WAP"
+      },
+      "version": {
+        "label": "Versione",
+        "description": "Versione del WAP o data dell’ultima modifica"
+      },
+      "signerText": {
+        "label": "Firmatario",
+        "description": "Testo visualizzato sotto l’area della firma"
+      },
+      "startTime": {
+        "label": "Ora di inizio",
+        "description": "Ora più precoce visualizzata nel WAP. Formato: HH:MM"
+      },
+      "endTime": {
+        "label": "Ora di fine",
+        "description": "Ora più tarda visualizzata nel WAP. Formato: HH:MM"
+      },
+      "firstDay": {
+        "label": "Primo giorno",
+        "description": "Primo giorno del WAP. Formato: YYYY-MM-DD",
+        "error": {
+          "required": "Il primo giorno non può essere vuoto"
+        }
+      }
+    },
+    "categories": {
+      "label": "Categorie",
+      "identifier": {
+        "label": "Nome della categoria",
+        "description": "Nome breve della categoria",
+        "error": {
+          "required": "Il nome della categoria non può essere vuoto"
+        }
+      },
+      "comment": {
+        "label": "Commento",
+        "description": "Descrive l’uso previsto della categoria. Non viene stampato"
+      },
+      "color": {
+        "label": "Colore di sfondo"
+      },
+      "textColor": {
+        "label": "Colore del testo"
+      },
+      "addTooltip": "Aggiungi categoria",
+      "removeTooltip": "Elimina categoria",
+      "deleteDialogTitle": "Elimina categoria",
+      "deleteDialogMessage": "Vuoi davvero eliminare questa categoria?",
+      "deleteDialogAccept": "Conferma",
+      "deleteDialogDecline": "Annulla",
+      "noDataMessage": "Nessuna categoria"
+    },
+    "weeks": {
+      "label": "Settimane",
+      "remarks": {
+        "group": {
+          "label": "Note settimanali"
+        },
+        "description": "Una nota settimanale",
+        "addTooltip": "Aggiungi nota settimanale",
+        "removeTooltip": "Elimina nota settimanale",
+        "noDataMessage": "Nessuna nota settimanale"
+      },
+      "addTooltip": "Aggiungi settimana",
+      "removeTooltip": "Elimina settimana",
+      "deleteDialogTitle": "Elimina settimana",
+      "deleteDialogMessage": "Vuoi davvero eliminare questa settimana?",
+      "deleteDialogAccept": "Conferma",
+      "deleteDialogDecline": "Annulla",
+      "noDataMessage": "Nessuna settimana",
+      "days": {
+        "label": "Giorni",
+        "error": {
+          "required": "I giorni non possono essere vuoti"
+        },
+        "columns": {
+          "group": {
+            "label": "Colonne"
+          },
+          "description": "Nome di una colonna, ad es. Det1 o Beso",
+          "addTooltip": "Aggiungi colonna",
+          "removeTooltip": "Elimina colonna",
+          "noDataMessage": "Nessuna colonna"
+        },
+        "remarks": {
+          "group": {
+            "label": "Note giornaliere"
+          },
+          "title": {
+            "label": "Testo",
+            "description": "Testo della nota giornaliera"
+          },
+          "start": {
+            "label": "Ora di inizio",
+            "description": "Ora di inizio opzionale della nota"
+          },
+          "end": {
+            "label": "Ora di fine",
+            "description": "Ora di fine opzionale della nota"
+          },
+          "addTooltip": "Aggiungi nota giornaliera",
+          "removeTooltip": "Elimina nota giornaliera",
+          "deleteDialogTitle": "Elimina nota giornaliera",
+          "deleteDialogMessage": "Vuoi davvero eliminare questa nota?",
+          "deleteDialogAccept": "Conferma",
+          "deleteDialogDecline": "Annulla",
+          "noDataMessage": "Nessuna nota giornaliera"
+        },
+        "addTooltip": "Aggiungi giorno",
+        "removeTooltip": "Elimina giorno",
+        "deleteDialogTitle": "Elimina giorno",
+        "deleteDialogMessage": "Vuoi davvero eliminare questo giorno?",
+        "deleteDialogAccept": "Conferma",
+        "deleteDialogDecline": "Annulla",
+        "noDataMessage": "Nessun giorno",
+        "events": {
+          "label": "Eventi",
+          "title": {
+            "label": "Titolo",
+            "description": "Titolo dell’evento",
+            "error": {
+              "required": "Il titolo non può essere vuoto"
+            }
+          },
+          "addTooltip": "Aggiungi evento",
+          "removeTooltip": "Elimina evento",
+          "deleteDialogTitle": "Conferma eliminazione",
+          "deleteDialogMessage": "Vuoi davvero eliminare questo evento?",
+          "deleteDialogAccept": "Conferma",
+          "deleteDialogDecline": "Annulla",
+          "copyTooltip": "Copia evento",
+          "copyDialogTitle": "Copia evento",
+          "copyDialogText": "Copiare l'evento in un'altra data",
+          "copyDialogMessage": "Copia evento in un'altra data",
+          "copyDialogAccept": "Conferma",
+          "copyDialogDecline": "Annulla",
+          "noDataMessage": "Nessun evento",
+          "description": {
+            "label": "Descrizione",
+            "description": "Informazioni aggiuntive, ad es. responsabile o luogo"
+          },
+          "start": {
+            "label": "Ora di inizio",
+            "description": "Ora di inizio. Formato: HH:MM",
+            "error": {
+              "required": "L’ora di inizio non può essere vuota"
+            }
+          },
+          "end": {
+            "label": "Ora di fine",
+            "description": "Ora di fine. Formato: HH:MM",
+            "error": {
+              "required": "L’ora di fine non può essere vuota"
+            }
+          },
+          "category": {
+            "label": "Categoria",
+            "description": "Nome breve della categoria desiderata"
+          },
+          "openEnd": {
+            "label": "Fine aperta",
+            "description": "Indica se l’evento ha una fine aperta"
+          },
+          "forceHorizontalText": {
+            "label": "Forza testo orizzontale",
+            "description": "Indica se il testo dell’evento deve sempre essere visualizzato orizzontalmente"
+          },
+          "appearsIn": {
+            "label": "Appare in",
+            "description": "Colonne in cui deve apparire l’evento"
+          },
+          "zIndex": {
+            "label": "Z-Index",
+            "description": "Definisce sopra quali eventi questo evento deve essere disegnato"
+          }
+        }
+      }
+    }
+  },
+  "en": {
+    "general": {
+      "array": {
+        "up": "Up",
+        "down": "Down"
+      },
+      "errorsExist": "The WAP contains errors and therefore cannot be downloaded",
+      "emptyWap": "Clear WAP",
+      "download": "Download YAML",
+      "downloadPdf": "Download PDF",
+      "upload": {
+        "title": "Upload WAP here",
+        "dialogTitle": "File format not supported",
+        "dialogText": "Only files in 'yaml' format are allowed",
+        "dialogConfirm": "Confirm"
+      },
+      "settings": {
+        "theme": "Theme",
+        "language": "Language"
+      }
+    },
+    "information": {
+      "label": "Information"
+    },
+    "times": {
+      "label": "Times"
+    },
+    "meta": {
+      "title": {
+        "label": "Title",
+        "description": "Title of the WAP",
+        "error": {
+          "required": "Title must not be empty"
+        }
+      },
+      "author": {
+        "label": "Author",
+        "description": "Author of the WAP",
+        "error": {
+          "required": "Author must not be empty"
+        }
+      },
+      "unit": {
+        "label": "Unit",
+        "description": "Unit for which the WAP is intended"
+      },
+      "version": {
+        "label": "Version",
+        "description": "Version of the WAP or last modification date"
+      },
+      "signerText": {
+        "label": "Signer",
+        "description": "Text displayed below the signature box"
+      },
+      "startTime": {
+        "label": "Start Time",
+        "description": "Earliest time shown in the WAP. Format: HH:MM"
+      },
+      "endTime": {
+        "label": "End Time",
+        "description": "Latest time shown in the WAP. Format: HH:MM"
+      },
+      "firstDay": {
+        "label": "First Day",
+        "description": "First day of the WAP. Format: YYYY-MM-DD",
+        "error": {
+          "required": "First day must not be empty"
+        }
+      }
+    },
+    "categories": {
+      "label": "Categories",
+      "identifier": {
+        "label": "Category Name",
+        "description": "Short name of the category",
+        "error": {
+          "required": "Category name must not be empty"
+        }
+      },
+      "comment": {
+        "label": "Comment",
+        "description": "Describes the purpose of the category. Not printed"
+      },
+      "color": {
+        "label": "Background Color"
+      },
+      "textColor": {
+        "label": "Text Color"
+      },
+      "addTooltip": "Add category",
+      "removeTooltip": "Delete category",
+      "deleteDialogTitle": "Delete category",
+      "deleteDialogMessage": "Do you really want to delete this category?",
+      "deleteDialogAccept": "Confirm",
+      "deleteDialogDecline": "Cancel",
+      "noDataMessage": "No categories"
+    },
+    "weeks": {
+      "label": "Weeks",
+      "remarks": {
+        "group": {
+          "label": "Week Remarks"
+        },
+        "description": "A weekly remark",
+        "addTooltip": "Add weekly remark",
+        "removeTooltip": "Delete weekly remark",
+        "noDataMessage": "No weekly remarks"
+      },
+      "addTooltip": "Add week",
+      "removeTooltip": "Delete week",
+      "deleteDialogTitle": "Delete week",
+      "deleteDialogMessage": "Do you really want to delete this week?",
+      "deleteDialogAccept": "Confirm",
+      "deleteDialogDecline": "Cancel",
+      "noDataMessage": "No weeks",
+      "days": {
+        "label": "Days",
+        "error": {
+          "required": "Days must not be empty"
+        },
+        "columns": {
+          "group": {
+            "label": "Columns"
+          },
+          "description": "A column label, e.g., Det1 or Beso",
+          "addTooltip": "Add column",
+          "removeTooltip": "Delete column",
+          "noDataMessage": "No columns"
+        },
+        "remarks": {
+          "group": {
+            "label": "Day Remarks"
+          },
+          "title": {
+            "label": "Text",
+            "description": "Text of the day remark"
+          },
+          "start": {
+            "label": "Start Time",
+            "description": "Optional start time of the day remark"
+          },
+          "end": {
+            "label": "End Time",
+            "description": "Optional end time of the day remark"
+          },
+          "addTooltip": "Add day remark",
+          "removeTooltip": "Delete day remark",
+          "deleteDialogTitle": "Delete day remark",
+          "deleteDialogMessage": "Do you really want to delete this day remark?",
+          "deleteDialogAccept": "Confirm",
+          "deleteDialogDecline": "Cancel",
+          "noDataMessage": "No day remarks"
+        },
+        "addTooltip": "Add day",
+        "removeTooltip": "Delete day",
+        "deleteDialogTitle": "Delete day",
+        "deleteDialogMessage": "Do you really want to delete this day?",
+        "deleteDialogAccept": "Confirm",
+        "deleteDialogDecline": "Cancel",
+        "noDataMessage": "No days",
+        "events": {
+          "label": "Events",
+          "title": {
+            "label": "Title",
+            "description": "Title of the event",
+            "error": {
+              "required": "Title must not be empty"
+            }
+          },
+          "addTooltip": "Add event",
+          "removeTooltip": "Delete event",
+          "deleteDialogTitle": "Confirm deletion",
+          "deleteDialogMessage": "Do you really want to delete this event?",
+          "deleteDialogAccept": "Confirm",
+          "deleteDialogDecline": "Cancel",
+          "copyTooltip": "Copy event",
+          "copyDialogTitle": "Copy event",
+          "copyDialogText": "Copy event to another date",
+          "copyDialogMessage": "Copy event to another date",
+          "copyDialogAccept": "Confirm",
+          "copyDialogDecline": "Cancel",
+          "noDataMessage": "No events",
+          "description": {
+            "label": "Description",
+            "description": "Additional information, e.g., responsible person or location"
+          },
+          "start": {
+            "label": "Start Time",
+            "description": "Start time. Format: HH:MM",
+            "error": {
+              "required": "Start time must not be empty"
+            }
+          },
+          "end": {
+            "label": "End Time",
+            "description": "End time. Format: HH:MM",
+            "error": {
+              "required": "End time must not be empty"
+            }
+          },
+          "category": {
+            "label": "Category",
+            "description": "Short name of the desired category"
+          },
+          "openEnd": {
+            "label": "Open End",
+            "description": "Whether the event has an open end"
+          },
+          "forceHorizontalText": {
+            "label": "Force Horizontal Text",
+            "description": "Whether the event text should always be displayed horizontally"
+          },
+          "appearsIn": {
+            "label": "Appears in",
+            "description": "The columns where the event should appear"
+          },
+          "zIndex": {
+            "label": "Z-Index",
+            "description": "Defines above which events this event should be drawn"
+          }
+        }
+      }
+    }
+  }
+}
