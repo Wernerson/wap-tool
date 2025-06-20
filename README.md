@@ -87,7 +87,7 @@ weeks:
       - Eine Wochenbemerkung
 ```
 
-2. Upload to the frontend (wernerson.github.io/wap-tool)
+2. Upload to the frontend ([wernerson.github.io/wap-tool](https://squad987.github.io/wap-tool/))
 3. Edit in the frontend to your liking
 4. Export as either PDF or YAML
 
@@ -104,8 +104,8 @@ The [schema](schema/wap.json) remains the source of truth for the model.
 We describe the most important fields.
 
 - `meta` about the WAP.
-- `categories` used for styling. Currently background color and text color is supported: 
-<img src="examples/category.png" alt="drawing" width="100"/>
+- `categories` used for styling. Currently background color and text color is supported:  
+  <img src="examples/category.png" alt="drawing" width="100"/>
 - `weeks`
   - `remarks`: printed in right column
   - `days`
@@ -125,11 +125,11 @@ If a remark has no times defined, it is displayed plainly below the day.
 
 Events can overlap in time.
 In that case we can define a Z-Index, to determine which event should be drawn over another
-Example:
+Example:  
 <img src="examples/overlap.png" alt="drawing" width="200"/>
 
 An event can be marked `openEnd` to appear with a wavy bottom.
-Example:
+Example:  
 <img src="examples/openEnd.png" alt="drawing" width="200"/>
 
 When an event reaches an aspect ratio (height/width) of more than 2, the text is displayed vertically. The text can be forced to appear horizontal with the `forceHorizontalText` property.
@@ -173,5 +173,5 @@ While we target the use in our company first, it could be reused in other places
 
 - Validation messages are not printed very nicely in the frontend. They are the default messages form jsonForms, which can be cryptic at times. This could be improved upon.
 - There are still some features missing with the WAP tool. For example, events that take place in parallel such as this one: 
-<img src="examples/parallel.png" alt="drawing" width="200"/>
+  <img src="examples/parallel.png" alt="drawing" width="200"/>
 - One could add a live preview of the rendered PDF, such that one does not have to download the WAP to check it out on every change.
